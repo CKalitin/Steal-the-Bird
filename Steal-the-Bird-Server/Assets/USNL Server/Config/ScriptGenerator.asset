@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clientPackets: []
   serverPackets:
-  - packetName: 
+  - packetName: PlayerSpawned
     packetVariables:
-    - variableName: 
-      variableType: 0
-    sendType: 1
+    - variableName: Client Id
+      variableType: 2
+    - variableName: Player Synced Object UUID
+      variableType: 2
+    sendType: 0
     protocol: 0
     notes: 
   ClientPacketFoldouts: 

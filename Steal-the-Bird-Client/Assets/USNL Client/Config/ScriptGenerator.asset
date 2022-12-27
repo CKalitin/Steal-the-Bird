@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: ScriptGenerator
   m_EditorClassIdentifier: 
   clientPackets: []
-  serverPackets: []
+  serverPackets:
+  - packetName: PlayerSpawned
+    packetVariables:
+    - variableName: Client Id
+      variableType: 2
+    - variableName: Player Synced Object UUID
+      variableType: 2
+    sendType: 0
+    protocol: 0
+    notes: 
   ClientPacketFoldouts: 
-  ServerPacketFoldouts: 
+  ServerPacketFoldouts: 01

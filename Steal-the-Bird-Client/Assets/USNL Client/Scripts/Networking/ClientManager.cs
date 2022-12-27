@@ -93,6 +93,7 @@ namespace USNL {
         public ServerInfo ServerInfo { get => serverInfo; set => serverInfo = value; }
 
         public bool IsServerActive() { Package.ServerHost.ReadServerDataFile(); return Package.ServerHost.GetServerData().IsServerActive; }
+        public int ClientId { get => USNL.Package.Client.instance.ClientId; }
 
         #endregion
 

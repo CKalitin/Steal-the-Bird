@@ -31,6 +31,7 @@ namespace USNL {
         SyncedObjectRotInterpolation,
         SyncedObjectVec2ScaleInterpolation,
         SyncedObjectVec3ScaleInterpolation,
+        PlayerSpawned,
     }
 
     #endregion
@@ -43,7 +44,66 @@ namespace USNL {
     #region Packet Send
 
     public static class PacketSend {
+        #region TCP & UDP Send Functions
+    
+        private static void SendTCPData(int _toClient, USNL.Package.Packet _packet) {
+            _packet.WriteLength();
+            USNL.Package.Server.Clients[_toClient].Tcp.SendData(_packet);
+            if (USNL.Package.Server.Clients[_toClient].IsConnected) { NetworkDebugInfo.instance.PacketSent(_packet.PacketId, _packet.Length()); }
+        }
+    
+        private static void SendTCPDataToAll(USNL.Package.Packet _packet) {
+            _packet.WriteLength();
+            for (int i = 0; i < USNL.Package.Server.MaxClients; i++) {
+                USNL.Package.Server.Clients[i].Tcp.SendData(_packet);
+                if (USNL.Package.Server.Clients[i].IsConnected) { NetworkDebugInfo.instance.PacketSent(_packet.PacketId, _packet.Length()); }
+            }
+        }
+    
+        private static void SendTCPDataToAll(int _excpetClient, USNL.Package.Packet _packet) {
+            _packet.WriteLength();
+            for (int i = 0; i < USNL.Package.Server.MaxClients; i++) {
+                if (i != _excpetClient) {
+                    USNL.Package.Server.Clients[i].Tcp.SendData(_packet);
+                    if (USNL.Package.Server.Clients[i].IsConnected) { NetworkDebugInfo.instance.PacketSent(_packet.PacketId, _packet.Length()); }
+                }
+            }
+        }
+    
+        private static void SendUDPData(int _toClient, USNL.Package.Packet _packet) {
+            _packet.WriteLength();
+            USNL.Package.Server.Clients[_toClient].Udp.SendData(_packet);
+            if (USNL.Package.Server.Clients[_toClient].IsConnected) { NetworkDebugInfo.instance.PacketSent(_packet.PacketId, _packet.Length()); }
+        }
+    
+        private static void SendUDPDataToAll(USNL.Package.Packet _packet) {
+            _packet.WriteLength();
+            for (int i = 0; i < USNL.Package.Server.MaxClients; i++) {
+                USNL.Package.Server.Clients[i].Udp.SendData(_packet);
+                if (USNL.Package.Server.Clients[i].IsConnected) { NetworkDebugInfo.instance.PacketSent(_packet.PacketId, _packet.Length()); }
+            }
+        }
+    
+        private static void SendUDPDataToAll(int _excpetClient, USNL.Package.Packet _packet) {
+            _packet.WriteLength();
+            for (int i = 0; i < USNL.Package.Server.MaxClients; i++) {
+                if (i != _excpetClient) {
+                    USNL.Package.Server.Clients[i].Udp.SendData(_packet);
+                    if (USNL.Package.Server.Clients[i].IsConnected) { NetworkDebugInfo.instance.PacketSent(_packet.PacketId, _packet.Length()); }
+                }
+            }
+        }
+    
+        #endregion
+    
+        public static void PlayerSpawned(int _toClient, int _clientId, int _playerSyncedObjectUUID) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerSpawned)) {
+                _packet.Write(_clientId);
+                _packet.Write(_playerSyncedObjectUUID);
 
+                SendTCPData(_toClient, _packet);
+            }
+        }
         }
 
     #endregion
@@ -77,6 +137,7 @@ namespace USNL.Package {
         SyncedObjectRotInterpolation,
         SyncedObjectVec2ScaleInterpolation,
         SyncedObjectVec3ScaleInterpolation,
+        PlayerSpawned,
     }
     #endregion
 
@@ -263,6 +324,7 @@ namespace USNL.Package {
 
         public static void SyncedObjectInstantiate(int _toClient, string _syncedObjectTag, int _syncedObjectUUID, Vector3 _position, Quaternion _rotation, Vector3 _scale) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.SyncedObjectInstantiate)) {
+                Debug.Log(_syncedObjectUUID);
                 _packet.Write(_syncedObjectTag);
                 _packet.Write(_syncedObjectUUID);
                 _packet.Write(_position);

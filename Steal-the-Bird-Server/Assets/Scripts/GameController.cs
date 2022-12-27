@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     [SerializeField] private Transform playerSpawnPoint;
     [SerializeField] private GameObject playerPrefab;
 
-    private Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
+    private Dictionary<int, PlayerController> playerControllers = new Dictionary<int, PlayerController>();
 
     #endregion
 
@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
         USNL.CallbackEvents.OnClientConnected -= OnClientConnected;
         USNL.CallbackEvents.OnClientDisconnected -= OnClientDisconnected;
     }
-
+    
     #endregion
 
     #region Game Controller
@@ -35,7 +35,11 @@ public class GameController : MonoBehaviour {
     private void SpawnPlayer(int _clientId) {
         GameObject newPlayer = Instantiate(playerPrefab, playerSpawnPoint.position, playerSpawnPoint.rotation);
         newPlayer.GetComponent<PlayerController>().ClientId = _clientId;
-        players.Add(_clientId, newPlayer);
+        playerControllers.Add(_clientId, newPlayer.GetComponent<PlayerController>());
+
+        int[] connectedClients = USNL.ServerManager.GetConnectedClientIds();
+        for (int i = 0; i < connectedClients.Length; i++)
+            USNL.PacketSend.PlayerSpawned(connectedClients[i], connectedClients[i], newPlayer.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
     }
 
     #endregion
@@ -45,12 +49,15 @@ public class GameController : MonoBehaviour {
     private void OnClientConnected(object _clientIdObject) {
         int clientId = (int)_clientIdObject;
         SpawnPlayer(clientId);
+
+        for (int i = 0; i < playerControllers.Count; i++)
+            USNL.PacketSend.PlayerSpawned(clientId, playerControllers[i].gameObject.GetComponent<PlayerController>().ClientId, playerControllers[i].gameObject.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
     }
 
     private void OnClientDisconnected(object _clientIdObject) {
         int clientId = (int)_clientIdObject;
-        Destroy(players[clientId]);
-        players.Remove(clientId);
+        Destroy(playerControllers[clientId].gameObject);
+        playerControllers.Remove(clientId);
     }
     
     #endregion

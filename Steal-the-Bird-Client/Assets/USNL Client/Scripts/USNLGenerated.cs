@@ -30,12 +30,25 @@ namespace USNL {
         SyncedObjectRotInterpolation,
         SyncedObjectVec2ScaleInterpolation,
         SyncedObjectVec3ScaleInterpolation,
+        PlayerSpawned,
     }
 
     #endregion
 
     #region Packet Structs
 
+    public struct PlayerSpawnedPacket {
+        private int clientId;
+        private int playerSyncedObjectUUID;
+
+        public PlayerSpawnedPacket(int _clientId, int _playerSyncedObjectUUID) {
+            clientId = _clientId;
+            playerSyncedObjectUUID = _playerSyncedObjectUUID;
+        }
+
+        public int ClientId { get => clientId; set => clientId = value; }
+        public int PlayerSyncedObjectUUID { get => playerSyncedObjectUUID; set => playerSyncedObjectUUID = value; }
+    }
 
 
     #endregion
@@ -64,8 +77,16 @@ namespace USNL {
             { Package.PacketHandlers.SyncedObjectRotInterpolation },
             { Package.PacketHandlers.SyncedObjectVec2ScaleInterpolation },
             { Package.PacketHandlers.SyncedObjectVec3ScaleInterpolation },
+            { PlayerSpawned },
         };
 
+        public static void PlayerSpawned(Package.Packet _packet) {
+            int clientId = _packet.ReadInt();
+            int playerSyncedObjectUUID = _packet.ReadInt();
+
+            USNL.PlayerSpawnedPacket playerSpawnedPacket = new USNL.PlayerSpawnedPacket(clientId, playerSyncedObjectUUID);
+            Package.PacketManager.instance.PacketReceived(_packet, playerSpawnedPacket);
+        }
     }
 
     #endregion
@@ -107,6 +128,7 @@ namespace USNL.Package {
         SyncedObjectRotInterpolation,
         SyncedObjectVec2ScaleInterpolation,
         SyncedObjectVec3ScaleInterpolation,
+        PlayerSpawned,
     }
     #endregion
 
@@ -392,6 +414,7 @@ namespace USNL.Package {
             { SyncedObjectRotInterpolation },
             { SyncedObjectVec2ScaleInterpolation },
             { SyncedObjectVec3ScaleInterpolation },
+            { USNL.PacketHandlers.PlayerSpawned },
         };
 
         public static void Welcome(Package.Packet _packet) {
@@ -626,6 +649,7 @@ namespace USNL {
             CallOnSyncedObjectRotInterpolationPacketCallbacks,
             CallOnSyncedObjectVec2ScaleInterpolationPacketCallbacks,
             CallOnSyncedObjectVec3ScaleInterpolationPacketCallbacks,
+            CallOnPlayerSpawnedPacketCallbacks,
         };
 
         public static event CallbackEvent OnConnected;
@@ -650,6 +674,7 @@ namespace USNL {
         public static event CallbackEvent OnSyncedObjectRotInterpolationPacket;
         public static event CallbackEvent OnSyncedObjectVec2ScaleInterpolationPacket;
         public static event CallbackEvent OnSyncedObjectVec3ScaleInterpolationPacket;
+        public static event CallbackEvent OnPlayerSpawnedPacket;
 
         public static void CallOnConnectedCallbacks(object _param) { if (OnConnected != null) { OnConnected(_param); } }
         public static void CallOnDisconnectedCallbacks(object _param) { if (OnDisconnected != null) { OnDisconnected(_param); } }
@@ -673,6 +698,7 @@ namespace USNL {
         public static void CallOnSyncedObjectRotInterpolationPacketCallbacks(object _param) { if (OnSyncedObjectRotInterpolationPacket != null) { OnSyncedObjectRotInterpolationPacket(_param); } }
         public static void CallOnSyncedObjectVec2ScaleInterpolationPacketCallbacks(object _param) { if (OnSyncedObjectVec2ScaleInterpolationPacket != null) { OnSyncedObjectVec2ScaleInterpolationPacket(_param); } }
         public static void CallOnSyncedObjectVec3ScaleInterpolationPacketCallbacks(object _param) { if (OnSyncedObjectVec3ScaleInterpolationPacket != null) { OnSyncedObjectVec3ScaleInterpolationPacket(_param); } }
+        public static void CallOnPlayerSpawnedPacketCallbacks(object _param) { if (OnPlayerSpawnedPacket != null) { OnPlayerSpawnedPacket(_param); } }
     }
 }
 
