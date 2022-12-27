@@ -127,7 +127,7 @@ namespace USNL {
 
         #endregion
 
-        #region Helper Functions
+        #region Server Manager Helper Functions
 
         private void CheckClientsTimedout() {
             for (int i = 0; i < USNL.Package.Server.Clients.Count; i++) {
@@ -154,32 +154,6 @@ namespace USNL {
             }
         }
         
-        #endregion
-
-        #region Public Functions
-
-        public static int GetNumberOfConnectedClients() {
-            int result = 0;
-            for (int i = 0; i < USNL.Package.Server.Clients.Count; i++) {
-                if (USNL.Package.Server.Clients[i].IsConnected)
-                    result++;
-            }
-            return result;
-        }
-
-        public static int[] GetConnectedClientIds() {
-            List<int> result = new List<int>();
-            for (int i = 0; i < USNL.Package.Server.Clients.Count; i++) {
-                if (USNL.Package.Server.Clients[i].IsConnected)
-                    result.Add(i);
-            }
-            return result.ToArray();
-        }
-        
-        public void ClientDisconnected(int _clientId) {
-            USNL.CallbackEvents.CallOnClientDisconnectedCallbacks(_clientId);
-        }
-
         #endregion
 
         #region Server Config and Data
@@ -306,6 +280,32 @@ namespace USNL {
             ipOctets[3] = (int)((_id / 1) % 256);
 
             return ipOctets[0] + "." + ipOctets[1] + "." + ipOctets[2] + "." + ipOctets[3];
+        }
+
+        #endregion
+
+        #region Public Functions
+
+        public static int GetNumberOfConnectedClients() {
+            int result = 0;
+            for (int i = 0; i < USNL.Package.Server.Clients.Count; i++) {
+                if (USNL.Package.Server.Clients[i].IsConnected)
+                    result++;
+            }
+            return result;
+        }
+
+        public static int[] GetConnectedClientIds() {
+            List<int> result = new List<int>();
+            for (int i = 0; i < USNL.Package.Server.Clients.Count; i++) {
+                if (USNL.Package.Server.Clients[i].IsConnected)
+                    result.Add(i);
+            }
+            return result.ToArray();
+        }
+
+        public void ClientDisconnected(int _clientId) {
+            USNL.CallbackEvents.CallOnClientDisconnectedCallbacks(_clientId);
         }
 
         #endregion

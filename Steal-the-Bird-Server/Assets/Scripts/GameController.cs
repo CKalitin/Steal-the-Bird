@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour {
 
         int[] connectedClients = USNL.ServerManager.GetConnectedClientIds();
         for (int i = 0; i < connectedClients.Length; i++)
-            USNL.PacketSend.PlayerSpawned(connectedClients[i], connectedClients[i], newPlayer.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
+            USNL.PacketSend.PlayerSpawned(connectedClients[i], _clientId, newPlayer.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
     }
 
     #endregion

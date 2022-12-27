@@ -324,7 +324,7 @@ namespace USNL.Package {
 
         public static void SyncedObjectInstantiate(int _toClient, string _syncedObjectTag, int _syncedObjectUUID, Vector3 _position, Quaternion _rotation, Vector3 _scale) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.SyncedObjectInstantiate)) {
-                Debug.Log(_syncedObjectUUID);
+                
                 _packet.Write(_syncedObjectTag);
                 _packet.Write(_syncedObjectUUID);
                 _packet.Write(_position);
