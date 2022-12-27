@@ -38,8 +38,9 @@ public class GameController : MonoBehaviour {
         playerControllers.Add(_clientId, newPlayer.GetComponent<PlayerController>());
 
         int[] connectedClients = USNL.ServerManager.GetConnectedClientIds();
-        for (int i = 0; i < connectedClients.Length; i++)
+        for (int i = 0; i < connectedClients.Length; i++) {
             USNL.PacketSend.PlayerSpawned(connectedClients[i], _clientId, newPlayer.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
+        }
     }
 
     #endregion
@@ -50,8 +51,9 @@ public class GameController : MonoBehaviour {
         int clientId = (int)_clientIdObject;
         SpawnPlayer(clientId);
 
-        for (int i = 0; i < playerControllers.Count; i++)
+        for (int i = 0; i < playerControllers.Count; i++) {
             USNL.PacketSend.PlayerSpawned(clientId, playerControllers[i].gameObject.GetComponent<PlayerController>().ClientId, playerControllers[i].gameObject.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
+        }
     }
 
     private void OnClientDisconnected(object _clientIdObject) {

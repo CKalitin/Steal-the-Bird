@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 167941270310249515}
   - component: {fileID: 4036447212129926543}
   - component: {fileID: 8467391961451932928}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7837312809829047298}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TW-Bridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 6540287367847795043}
   - component: {fileID: 3108596575721565723}
   - component: {fileID: 5855724593043287284}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}

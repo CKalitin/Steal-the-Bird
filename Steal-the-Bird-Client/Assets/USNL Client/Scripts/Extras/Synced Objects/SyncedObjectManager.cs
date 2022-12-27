@@ -91,7 +91,7 @@ namespace USNL {
 
         private void OnSyncedObjectInterpolationModePacket(object _packetObject) {
             USNL.Package.SyncedObjectInterpolationModePacket packet = (USNL.Package.SyncedObjectInterpolationModePacket)_packetObject;
-            clientSideInterpolation = !packet.ServerInterpolation;
+            //clientSideInterpolation = !packet.ServerInterpolation;
         }
 
         private void OnSyncedObjectInstantiatePacket(object _packetObject) {

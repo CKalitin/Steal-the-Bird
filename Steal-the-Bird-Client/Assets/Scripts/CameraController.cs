@@ -15,14 +15,19 @@ public class CameraController : MonoBehaviour {
     [Space]
     [SerializeField] private GameObject cameraPrefab;
 
-    [Header("Lerp Follow")]
-    [SerializeField] private float lerpStep;
-    [SerializeField] private float snapDistance;
-    [Space]
+    [Header("Follow")]
     [SerializeField] private Transform followTransform;
     
     private void Update() {
         Zoom();
+        FollowPlayer();
+    }
+
+    private void LateUpdate() {
+        FollowPlayer();
+    }
+
+    private void FixedUpdate() {
         FollowPlayer();
     }
 
@@ -31,7 +36,6 @@ public class CameraController : MonoBehaviour {
     
     private void FollowPlayer() {
         if (followTransform == null) return;
-
         transform.position = followTransform.position;
     }
     
@@ -50,12 +54,9 @@ public class CameraController : MonoBehaviour {
 
     private void OnPlayerSpawnedPacket(object _packetObject) {
         USNL.PlayerSpawnedPacket _packet = (USNL.PlayerSpawnedPacket)_packetObject;
-            
+
         if (_packet.ClientId == USNL.ClientManager.instance.ClientId) {
             followTransform = USNL.SyncedObjectManager.instance.GetSyncedObject(_packet.PlayerSyncedObjectUUID).transform;
-            //transform.position = USNL.SyncedObjectManager.instance.GetSyncedObject(_packet.PlayerSyncedObjectUUID).transform.position;
-            //transform.parent = USNL.SyncedObjectManager.instance.GetSyncedObject(_packet.PlayerSyncedObjectUUID).transform;
-            //transform.parent.GetComponent<PlayerController>().CameraTransform = transform;
         }
     }
 }

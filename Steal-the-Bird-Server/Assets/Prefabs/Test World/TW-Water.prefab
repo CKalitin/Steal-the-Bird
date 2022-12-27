@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7837312809829047298}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TW-Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 6540287367847795043}
   - component: {fileID: 3108596575721565723}
   - component: {fileID: 5855724593043287284}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}

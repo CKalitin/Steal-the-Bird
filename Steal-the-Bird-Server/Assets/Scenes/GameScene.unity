@@ -274,6 +274,10 @@ PrefabInstance:
       propertyPath: vector2Mode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7110925763707054688, guid: 07a14c5067869a4429dcb3a1e0dde3ff, type: 3}
+      propertyPath: serverSideInterpolation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7110925763707054693, guid: 07a14c5067869a4429dcb3a1e0dde3ff, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -679,7 +683,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8910119136914160662, guid: 7dd01494c3f75c546a00083c214686ed, type: 3}
       propertyPath: m_Name
-      value: Meshes
+      value: TW Meshes
       objectReference: {fileID: 0}
     - target: {fileID: 8910119136914160663, guid: 7dd01494c3f75c546a00083c214686ed, type: 3}
       propertyPath: m_RootOrder
