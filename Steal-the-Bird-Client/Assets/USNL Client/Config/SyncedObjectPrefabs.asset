@@ -16,3 +16,6 @@ MonoBehaviour:
   - tag: Player
     prefab: {fileID: 7273311560703294795, guid: 351c6b65f56209d4493b010d3cbde58a,
       type: 3}
+  - tag: Seagull
+    prefab: {fileID: 6581614858996632650, guid: 6d6e6cafb97e9ad4791fe7c9be0cf568,
+      type: 3}

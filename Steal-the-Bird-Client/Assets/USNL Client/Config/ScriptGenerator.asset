@@ -24,4 +24,4 @@ MonoBehaviour:
     protocol: 0
     notes: 
   ClientPacketFoldouts: 
-  ServerPacketFoldouts: 01
+  ServerPacketFoldouts: 00
