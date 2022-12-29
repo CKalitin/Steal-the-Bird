@@ -10,12 +10,19 @@ public class GameController : MonoBehaviour {
 
     private Dictionary<int, PlayerController> playerControllers = new Dictionary<int, PlayerController>();
 
+    private MatchState previousMatchState = MatchState.Lobby;
+
     #endregion
 
     #region Core
 
     private void Awake() {
         Debug.LogError("Opened Console.");
+    }
+
+    private void Update() {
+        //if (previousMatchState != MatchManager.instance.MatchState) OnMatchStateChange(MatchManager.instance.MatchState);
+        //previousMatchState = MatchManager.instance.MatchState;
     }
 
     private void OnEnable() {
@@ -27,7 +34,33 @@ public class GameController : MonoBehaviour {
         USNL.CallbackEvents.OnClientConnected -= OnClientConnected;
         USNL.CallbackEvents.OnClientDisconnected -= OnClientDisconnected;
     }
-    
+
+    #endregion
+
+    #region Match State
+
+    private void OnMatchStateChange(MatchState _ms) {
+        if (_ms == MatchState.Lobby) {
+            USNL.ServerManager.instance.AllowNewConnections = true;
+        } else if (_ms == MatchState.InGame) {
+            USNL.ServerManager.instance.AllowNewConnections = false;
+            StartGame();
+        } else if (_ms == MatchState.Ended) {
+            ResetGame();
+        }
+    }
+
+    private void StartGame() {
+        for (int i = 0; i < USNL.ServerManager.GetConnectedClientIds().Length; i++) {
+            SpawnPlayer(i);
+        }
+    }
+
+    private void ResetGame() {
+        DestroyAllPlayers();
+        BirdSpawner.instance.DestroyAllBirds();
+    }
+
     #endregion
 
     #region Game Controller
@@ -42,6 +75,13 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < connectedClients.Length; i++) {
             USNL.PacketSend.PlayerSpawned(connectedClients[i], _clientId, newPlayer.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
         }
+    }
+
+    private void DestroyAllPlayers() {
+        for (int i = 0; i < playerControllers.Count; i++) {
+            Destroy(playerControllers[i].gameObject);
+        }
+        playerControllers.Clear();
     }
 
     #endregion

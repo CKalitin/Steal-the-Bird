@@ -33,6 +33,8 @@ namespace USNL {
         SyncedObjectVec2ScaleInterpolation,
         SyncedObjectVec3ScaleInterpolation,
         PlayerSpawned,
+        MatchUpdate,
+        Countdown,
     }
 
     #endregion
@@ -123,12 +125,30 @@ namespace USNL {
     
         #endregion
     
-        public static void PlayerSpawned(int _toClient, int _clientId, int _playerSyncedObjectUUID) {
+        public static void PlayerSpawned(int _toClient, int _matchState, int _playerSyncedObjectUUID) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerSpawned)) {
-                _packet.Write(_clientId);
+                _packet.Write(_matchState);
                 _packet.Write(_playerSyncedObjectUUID);
 
                 SendTCPData(_toClient, _packet);
+            }
+        }
+
+        public static void MatchUpdate(int _matchState) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.MatchUpdate)) {
+                _packet.Write(_matchState);
+
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void Countdown(int[] _startTime, float _duration, string _countdownTag) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.Countdown)) {
+                _packet.Write(_startTime);
+                _packet.Write(_duration);
+                _packet.Write(_countdownTag);
+
+                SendTCPDataToAll(_packet);
             }
         }
         }
@@ -166,6 +186,8 @@ namespace USNL.Package {
         SyncedObjectVec2ScaleInterpolation,
         SyncedObjectVec3ScaleInterpolation,
         PlayerSpawned,
+        MatchUpdate,
+        Countdown,
     }
     #endregion
 

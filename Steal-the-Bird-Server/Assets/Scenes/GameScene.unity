@@ -628,12 +628,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35ec839b56241a44d8bd836b534ccfa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBirds: 50
+  maxBirds: 6
   birdParent: {fileID: 632214395}
   peacefulBirds:
   - prefab: {fileID: 7498374795693127707, guid: ac35dfee0c3c17949a615b58c2020572, type: 3}
     probability: 1
-  peacefulBirdSpawnRate: 0.1
+  peacefulBirdSpawnRate: 1
   peacefulSpawnPoints:
   - spawnPoint: {fileID: 1010300153}
     direction: {fileID: 196631422}

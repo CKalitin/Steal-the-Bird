@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ScriptGenerator
   m_EditorClassIdentifier: 
   clientPackets:
-  - packetName: RaycastFromCamera
+  - packetName: Raycast From Camera
     packetVariables:
     - variableName: Camera Position
       variableType: 8
@@ -28,7 +28,7 @@ MonoBehaviour:
     protocol: 0
     notes: 
   serverPackets:
-  - packetName: PlayerSpawned
+  - packetName: Player Spawned
     packetVariables:
     - variableName: Client Id
       variableType: 2
@@ -37,5 +37,23 @@ MonoBehaviour:
     sendType: 0
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 01
-  ServerPacketFoldouts: 00
+  - packetName: Match Update
+    packetVariables:
+    - variableName: Match State
+      variableType: 2
+    sendType: 1
+    protocol: 0
+    notes: 
+  - packetName: Countdown
+    packetVariables:
+    - variableName: Start Time
+      variableType: 12
+    - variableName: Duration
+      variableType: 4
+    - variableName: Countdown Tag
+      variableType: 6
+    sendType: 1
+    protocol: 0
+    notes: 
+  ClientPacketFoldouts: 00
+  ServerPacketFoldouts: 000000

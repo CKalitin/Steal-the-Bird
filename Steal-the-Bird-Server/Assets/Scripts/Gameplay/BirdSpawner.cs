@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BirdSpawner : MonoBehaviour {
+    public static BirdSpawner instance;
+
     [Header("Birds")]
     [SerializeField] private int maxBirds;
     [SerializeField] private Transform birdParent;
@@ -39,6 +41,13 @@ public class BirdSpawner : MonoBehaviour {
     }
 
     private void Awake() {
+        if (instance == null) {
+            instance = this;
+        } else {
+            Debug.Log($"Bird Spawner instance already exists on ({gameObject}), destroying this.");
+            Destroy(this);
+        }
+
         for (int i = 0; i < peacefulBirds.Length; i++) {
             totalPeacefulBirdProbabilities += peacefulBirds[i].Probability;
         }
@@ -57,17 +66,17 @@ public class BirdSpawner : MonoBehaviour {
 
     private void SpawnBirdPeacefully() {
         PeacefulBirdSpawnPoint spawnPoint = peacefulSpawnPoints[UnityEngine.Random.Range(0, peacefulSpawnPoints.Length)];
-        GameObject birdPrefab = GetRandomBird(peacefulBirds).Prefab;
+        GameObject birdPrefab = GetRandomBirdSpawnData(peacefulBirds).Prefab;
 
         GameObject bird = Instantiate(birdPrefab, spawnPoint.SpawnPoint.position, Quaternion.identity, birdParent) as GameObject;
         
         Vector3 target = spawnPoint.Direction.position - spawnPoint.SpawnPoint.position;
         target.x += UnityEngine.Random.Range(-peacefulBirdHeadingRandomness, peacefulBirdHeadingRandomness);
         target.z += UnityEngine.Random.Range(-peacefulBirdHeadingRandomness, peacefulBirdHeadingRandomness);
-        bird.GetComponent<Bird>().PeacefulTarget = target;
+        bird.GetComponent<Bird>().PeacefulTarget = target.normalized;
     }
 
-    private BirdSpawnData GetRandomBird(BirdSpawnData[] _bsd) {
+    private BirdSpawnData GetRandomBirdSpawnData(BirdSpawnData[] _bsd) {
         float randomValue = UnityEngine.Random.Range(0, totalPeacefulBirdProbabilities);
 
         float currentProbability = 0;
@@ -77,5 +86,11 @@ public class BirdSpawner : MonoBehaviour {
         }
 
         return new BirdSpawnData();
+    }
+
+    public void DestroyAllBirds() {
+        for (int i = 0; i < birdParent.childCount; i++) {
+            Destroy(birdParent.GetChild(i).gameObject);
+        }
     }
 }

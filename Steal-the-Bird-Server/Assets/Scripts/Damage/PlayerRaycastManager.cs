@@ -22,8 +22,12 @@ public class PlayerRaycastManager : MonoBehaviour {
     #region Core
 
     private void Awake() {
-        if (instance == null) instance = this;
-        else Destroy(this);
+        if (instance == null) {
+            instance = this;
+        } else {
+            Debug.Log($"Player Raycast Manager instance already exists on ({gameObject}), destroying this.");
+            Destroy(this);
+        }
     }
 
     private void OnEnable() {

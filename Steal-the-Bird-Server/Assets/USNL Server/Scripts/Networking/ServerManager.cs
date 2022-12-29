@@ -44,7 +44,9 @@ namespace USNL {
         public int LanServerId { get => lanServerId; }
         public string WanServerIp { get => wanServerIp; }
         public string LanServerIP { get => lanServerIp; }
-        
+
+        public bool AllowNewConnections { get => USNL.Package.Server.AllowNewConnections; set => USNL.Package.Server.AllowNewConnections = value; }
+
         #endregion
 
         #region Core
