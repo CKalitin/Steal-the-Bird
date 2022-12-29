@@ -12,7 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d05a1a1c1d22ce4fb1a339517d8329e, type: 3}
   m_Name: ScriptGenerator
   m_EditorClassIdentifier: 
-  clientPackets: []
+  clientPackets:
+  - packetName: RaycastFromCamera
+    packetVariables:
+    - variableName: Camera Position
+      variableType: 8
+    - variableName: Camera Rotation
+      variableType: 9
+    - variableName: Resolution
+      variableType: 7
+    - variableName: Field Of View
+      variableType: 4
+    - variableName: Mouse Position
+      variableType: 7
+    protocol: 0
+    notes: 
   serverPackets:
   - packetName: PlayerSpawned
     packetVariables:
@@ -23,5 +37,5 @@ MonoBehaviour:
     sendType: 0
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 
+  ClientPacketFoldouts: 01
   ServerPacketFoldouts: 00

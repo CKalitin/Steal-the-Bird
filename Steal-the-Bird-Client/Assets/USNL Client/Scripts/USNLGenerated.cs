@@ -8,6 +8,7 @@ namespace USNL {
         WelcomeReceived,
         Ping,
         ClientInput,
+        RaycastFromCamera,
     }
 
     public enum ServerPackets {
@@ -94,7 +95,33 @@ namespace USNL {
     #region Packet Send
 
     public static class PacketSend {
+        private static void SendTCPData(USNL.Package.Packet _packet) {
+            _packet.WriteLength();
+            if (USNL.Package.Client.instance.IsConnected) {
+                USNL.Package.Client.instance.Tcp.SendData(_packet);
+                NetworkDebugInfo.instance.PacketSent(_packet.PacketId, _packet.Length());
+            }
+        }
+    
+        private static void SendUDPData(USNL.Package.Packet _packet) {
+            _packet.WriteLength();
+            if (USNL.Package.Client.instance.IsConnected) {
+                USNL.Package.Client.instance.Udp.SendData(_packet);
+                NetworkDebugInfo.instance.PacketSent(_packet.PacketId, _packet.Length());
+            }
+        }
+    
+        public static void RaycastFromCamera(Vector3 _cameraPosition, Quaternion _cameraRotation, Vector2 _resolution, float _fieldOfView, Vector2 _mousePosition) {
+            using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.RaycastFromCamera)) {
+                _packet.Write(_cameraPosition);
+                _packet.Write(_cameraRotation);
+                _packet.Write(_resolution);
+                _packet.Write(_fieldOfView);
+                _packet.Write(_mousePosition);
 
+                SendTCPData(_packet);
+            }
+        }
     }
 
 #endregion
@@ -106,6 +133,7 @@ namespace USNL.Package {
         WelcomeReceived,
         Ping,
         ClientInput,
+        RaycastFromCamera,
     }
 
     public enum ServerPackets {

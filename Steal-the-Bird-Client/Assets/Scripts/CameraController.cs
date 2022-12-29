@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
     [Header("Zoom")]
-    [SerializeField] private Transform cam;
     [SerializeField] private Transform defaultCamPosition;
     [Space]
     [SerializeField] private float minCameraDist = 3f;
@@ -17,10 +16,18 @@ public class CameraController : MonoBehaviour {
 
     [Header("Follow")]
     [SerializeField] private Transform followTransform;
-    
+
+    [Header("Raycast")]
+    [SerializeField] private Camera cam;
+    [SerializeField] private LayerMask raycastLayerMask;
+
     private void Update() {
         Zoom();
         FollowPlayer();
+
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            RaycastFromCamera();
+        }
     }
 
     private void LateUpdate() {
@@ -48,8 +55,12 @@ public class CameraController : MonoBehaviour {
         Vector3 targetPos = Vector3.Lerp(defaultCamPosition.position, transform.position, currentZoom);
 
         if (Vector3.Distance(transform.position, targetPos) <= maxCameraDist && Vector3.Distance(transform.position, targetPos) >= minCameraDist) {
-            cam.position = targetPos;
+            cam.transform.position = targetPos;
         }
+    }
+
+    private void RaycastFromCamera() {
+        USNL.PacketSend.RaycastFromCamera(cam.transform.position, cam.transform.rotation, new Vector2(Screen.width, Screen.height), cam.fieldOfView, cam.ScreenToViewportPoint(Input.mousePosition));
     }
 
     private void OnPlayerSpawnedPacket(object _packetObject) {
