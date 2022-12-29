@@ -3,25 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public struct BirdSpawnData {
-    [SerializeField] private GameObject prefab;
-    [Tooltip("Relative to all other birds.")]
-    [SerializeField] private float probability;
-
-    public GameObject Prefab { get => prefab; set => prefab = value; }
-    public float Probability { get => probability; set => probability = value; }
-}
-
-[Serializable]
-public struct PeacefulBirdSpawnPoint {
-    [SerializeField] private Transform spawnPoint;
-    [SerializeField] private Transform direction;
-
-    public Transform SpawnPoint { get => spawnPoint; set => spawnPoint = value; }
-    public Transform Direction { get => direction; set => direction = value; }
-}
-
 public class BirdSpawner : MonoBehaviour {
     [Header("Birds")]
     [SerializeField] private int maxBirds;
@@ -37,6 +18,25 @@ public class BirdSpawner : MonoBehaviour {
     float totalPeacefulBirdProbabilities = 0;
 
     private int numBirds { get => birdParent.childCount; }
+
+    [Serializable]
+    public struct BirdSpawnData {
+        [SerializeField] private GameObject prefab;
+        [Tooltip("Relative to all other birds.")]
+        [SerializeField] private float probability;
+
+        public GameObject Prefab { get => prefab; set => prefab = value; }
+        public float Probability { get => probability; set => probability = value; }
+    }
+
+    [Serializable]
+    public struct PeacefulBirdSpawnPoint {
+        [SerializeField] private Transform spawnPoint;
+        [SerializeField] private Transform direction;
+
+        public Transform SpawnPoint { get => spawnPoint; set => spawnPoint = value; }
+        public Transform Direction { get => direction; set => direction = value; }
+    }
 
     private void Awake() {
         for (int i = 0; i < peacefulBirds.Length; i++) {

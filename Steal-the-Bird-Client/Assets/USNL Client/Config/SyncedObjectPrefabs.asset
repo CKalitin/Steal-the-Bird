@@ -19,3 +19,6 @@ MonoBehaviour:
   - tag: Seagull
     prefab: {fileID: 6581614858996632650, guid: 6d6e6cafb97e9ad4791fe7c9be0cf568,
       type: 3}
+  - tag: Ranged Weapon 1
+    prefab: {fileID: 7941611912937212512, guid: c9a4a3aa91ce0d24eb0dd93cf238d0e4,
+      type: 3}

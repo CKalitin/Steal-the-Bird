@@ -24,7 +24,5 @@ public class Bird : MonoBehaviour {
         transform.LookAt(transform.position - peacefulTarget);
         
         rb.velocity = peacefulTarget * moveSpeed;
-
-        //rb.MovePosition(transform.position + ((transform.position + peacefulTarget) * moveSpeed * Time.fixedDeltaTime));
     }
 }

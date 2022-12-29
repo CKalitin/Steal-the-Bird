@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damager : MonoBehaviour {
     [Tooltip("Damage is dealt to these tags.")]
     [SerializeField] private string[] targetTags;
-    
+
     public void DealDamage(Health[] healthComponents, float _healthChange) {
         for (int i = 0; i < healthComponents.Length; i++) {
             if (CheckObjectTag(healthComponents[i].tag))

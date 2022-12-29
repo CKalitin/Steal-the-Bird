@@ -35,6 +35,7 @@ public class GameController : MonoBehaviour {
     private void SpawnPlayer(int _clientId) {
         GameObject newPlayer = Instantiate(playerPrefab, playerSpawnPoint.position, playerSpawnPoint.rotation);
         newPlayer.GetComponent<PlayerController>().ClientId = _clientId;
+        newPlayer.GetComponent<PlayerWeaponController>().ClientId = _clientId;
         playerControllers.Add(_clientId, newPlayer.GetComponent<PlayerController>());
 
         int[] connectedClients = USNL.ServerManager.GetConnectedClientIds();

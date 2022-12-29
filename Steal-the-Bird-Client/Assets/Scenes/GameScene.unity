@@ -404,7 +404,7 @@ PrefabInstance:
     - target: {fileID: 5312388765440194745, guid: dcbdd65ab627a0448921e3b1f79f3341,
         type: 3}
       propertyPath: clientSideInterpolation
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8115309673269438032, guid: dcbdd65ab627a0448921e3b1f79f3341,
         type: 3}

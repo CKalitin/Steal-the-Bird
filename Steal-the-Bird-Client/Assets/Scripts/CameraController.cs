@@ -24,10 +24,6 @@ public class CameraController : MonoBehaviour {
     private void Update() {
         Zoom();
         FollowPlayer();
-
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
-            RaycastFromCamera();
-        }
     }
 
     private void LateUpdate() {
@@ -36,6 +32,8 @@ public class CameraController : MonoBehaviour {
 
     private void FixedUpdate() {
         FollowPlayer();
+
+        RaycastFromCamera();
     }
 
     private void OnEnable() { USNL.CallbackEvents.OnPlayerSpawnedPacket += OnPlayerSpawnedPacket; }
