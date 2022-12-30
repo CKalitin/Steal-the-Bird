@@ -73,7 +73,7 @@ public class BirdSpawner : MonoBehaviour {
         Vector3 target = spawnPoint.Direction.position - spawnPoint.SpawnPoint.position;
         target.x += UnityEngine.Random.Range(-peacefulBirdHeadingRandomness, peacefulBirdHeadingRandomness);
         target.z += UnityEngine.Random.Range(-peacefulBirdHeadingRandomness, peacefulBirdHeadingRandomness);
-        bird.GetComponent<Bird>().PeacefulTarget = target.normalized;
+        if (bird.GetComponent<Bird>()) bird.GetComponent<Bird>().PeacefulTarget = target.normalized;
     }
 
     private BirdSpawnData GetRandomBirdSpawnData(BirdSpawnData[] _bsd) {

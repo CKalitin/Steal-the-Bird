@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 5467307105600899317}
   - component: {fileID: 8725316314000905913}
   - component: {fileID: 5595339114260027317}
+  - component: {fileID: 5010423109997612937}
   - component: {fileID: 6496605457961160666}
-  - component: {fileID: 1610936736040121804}
   m_Layer: 0
-  m_Name: Seagull
+  m_Name: Seagull - Old
   m_TagString: Bird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,6 +86,20 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 0
   interpolateScale: 0
+--- !u!114 &5010423109997612937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7498374795693127707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d28ade2a0e3d3b94191d696f1476aa8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3.5
+  rb: {fileID: 8725316314000905913}
 --- !u!114 &6496605457961160666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,27 +115,6 @@ MonoBehaviour:
   maxHealth: 10
   currentHealth: 10
   destroyOnZeroHealth: 1
---- !u!114 &1610936736040121804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7498374795693127707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0239f8ef606b1b4181ddac423be71cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 250
-  turnSpeed: 0.15
-  rollModifier: 100
-  playerAttackDistance: 7
-  playerLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  nthBirdUpdate: 3
-  rb: {fileID: 8725316314000905913}
 --- !u!1001 &7486269287591751215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -159,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.00000058114523
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalRotation.x
@@ -167,7 +160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalRotation.z
@@ -179,7 +172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
