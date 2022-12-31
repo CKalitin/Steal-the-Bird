@@ -664,7 +664,7 @@ MonoBehaviour:
   peacefulBirds:
   - prefab: {fileID: 7498374795693127707, guid: 5e58402b9ceb6de47ba386d3b68d11a7, type: 3}
     probability: 1
-  peacefulBirdSpawnRate: 1
+  peacefulBirdSpawnRate: 0.7
   peacefulSpawnPoints:
   - spawnPoint: {fileID: 1010300153}
     direction: {fileID: 196631422}

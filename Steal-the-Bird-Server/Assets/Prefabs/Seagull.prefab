@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 250
-  turnSpeed: 0.15
+  turnSpeed: 0.8
   rollModifier: 100
   playerAttackDistance: 7
   playerLayerMask:

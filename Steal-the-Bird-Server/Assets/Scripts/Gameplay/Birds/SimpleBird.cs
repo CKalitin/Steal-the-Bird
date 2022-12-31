@@ -15,6 +15,7 @@ public class SimpleBird : MonoBehaviour {
     private float rotationLerp = 0f;
 
     private float rollAmmout = 0f;
+    private int rollDirection = 1;
 
     [Header("Attack")]
     [SerializeField] private float playerAttackDistance = 7f;
@@ -70,8 +71,15 @@ public class SimpleBird : MonoBehaviour {
 
     private void FindNewMarker() {
         markerTarget = BirdController.instance.BirdMarkers[Random.Range(0, BirdController.instance.BirdMarkers.Length)];
+        
         startRotation = transform.rotation;
+        
         rotationLerp = 0f;
+        
+        rollDirection = 1;
+        Vector3 targetDir = (markerTarget.position - transform.position).normalized;
+        if (Vector3.Dot(targetDir, transform.right) < 0) rollDirection *= -1; // If target is to the left
+        if (Vector3.Dot(targetDir, transform.forward) < 0) rollDirection *= -1; // If target is to the behind
     }
 
     #endregion
@@ -94,18 +102,14 @@ public class SimpleBird : MonoBehaviour {
             if (markerTarget == null) CheckMarker();
 
             Vector3 targetDir = (markerTarget.position - transform.position).normalized;
-            if (targetDir.x > transform.forward.x + 0.06f) rollAmmout = 1 * rollModifier * Mathf.Abs(rotationLerp - 0.5f);
-            else if (targetDir.x < transform.forward.x - 0.06f) rollAmmout = -1 * rollModifier * Mathf.Abs(rotationLerp - 0.5f);
-            else rollAmmout = 0f;
-
             Quaternion _lookRotation = Quaternion.LookRotation(targetDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, rotationLerp);
-            
-            rotationLerp = Mathf.Clamp(rotationLerp + (turnSpeed * Time.deltaTime), 0, 1);
-            
+            transform.rotation = Quaternion.Lerp(startRotation, _lookRotation, rotationLerp);
+
+            rollAmmout = rollDirection * rollModifier * Mathf.Abs(Mathf.Abs(rotationLerp - 0.5f) - 0.5f);
+
             transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, rollAmmout));
 
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, rollAmmout);
+            rotationLerp = Mathf.Clamp(rotationLerp + (turnSpeed * Time.deltaTime), 0, 1);
         }
     }
 
