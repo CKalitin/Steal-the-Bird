@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
 
     private Dictionary<int, PlayerController> playerControllers = new Dictionary<int, PlayerController>();
 
-    private MatchState previousMatchState = MatchState.Lobby;
+    //private MatchState previousMatchState = MatchState.Lobby;
 
     #endregion
 

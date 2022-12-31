@@ -659,7 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35ec839b56241a44d8bd836b534ccfa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBirds: 6
+  maxBirds: 1
   birdParent: {fileID: 632214395}
   peacefulBirds:
   - prefab: {fileID: 7498374795693127707, guid: 5e58402b9ceb6de47ba386d3b68d11a7, type: 3}
