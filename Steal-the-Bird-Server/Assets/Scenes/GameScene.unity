@@ -1644,7 +1644,7 @@ GameObject:
   - component: {fileID: 1861629655}
   - component: {fileID: 1861629656}
   m_Layer: 0
-  m_Name: Bird Controller
+  m_Name: Birds Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

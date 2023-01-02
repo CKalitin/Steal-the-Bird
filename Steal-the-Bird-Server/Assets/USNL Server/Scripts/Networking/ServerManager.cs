@@ -63,7 +63,7 @@ namespace USNL {
                 Application.runInBackground = true;
             }
 
-            SetServerId();
+            StartCoroutine(SetServerId());
         }
 
         private void Start() {
@@ -222,12 +222,19 @@ namespace USNL {
 
         #region IP and ID Functions
 
-        private void SetServerId() {
+        private IEnumerator SetServerId() {
             wanServerIp = GetWanIP();
             lanServerIp = GetLanIP();
-            
-            wanServerId = IpToId(wanServerIp);
-            lanServerId = IpToId(lanServerIp);
+
+            while (true) {
+                if (wanServerIp != "" & lanServerIp != "") {
+                    wanServerId = IpToId(wanServerIp);
+                    lanServerId = IpToId(lanServerIp);
+                    yield break;
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
         }
 
         private string GetWanIP() {

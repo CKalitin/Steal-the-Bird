@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BirdController : MonoBehaviour {
-    public static BirdController instance;
+public class BirdsController : MonoBehaviour {
+    public static BirdsController instance;
 
     [Tooltip("Birds fly to these")]
     [SerializeField] private Transform[] birdMarkers;

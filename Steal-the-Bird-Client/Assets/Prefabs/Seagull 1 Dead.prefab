@@ -9,10 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6581614858996632651}
-  - component: {fileID: 5152942404911385657}
-  - component: {fileID: 5149732610709857535}
+  - component: {fileID: 869545871134523581}
   m_Layer: 0
-  m_Name: Seagull 1
+  m_Name: Seagull 1 Dead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5152942404911385657
+--- !u!114 &869545871134523581
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,25 +42,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6581614858996632650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d238336ce6d6ba48a8a57712a560150, type: 3}
+  m_Script: {fileID: 11500000, guid: 55d511f0a14313740b84c9b7fd3c1de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolate: 0
---- !u!114 &5149732610709857535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6581614858996632650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd0c9f70d7c33d546b5446065fae05b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deadBird: {fileID: 6581614858996632650, guid: 64a930e2bd429e24b8d8e3f476cea50c,
-    type: 3}
-  syncedObject: {fileID: 5152942404911385657}
+  sinkSpeed: 0.09
+  fallSpeedDivider: 30
 --- !u!1001 &6581614857727711180
 PrefabInstance:
   m_ObjectHideFlags: 0

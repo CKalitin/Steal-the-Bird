@@ -101,6 +101,7 @@ public class GameController : MonoBehaviour {
     #region Public Functions
 
     public void OnPlayerDeath(int _clientId) {
+        playerControllers.Remove(_clientId);
         StartCoroutine(RespawnPlayer(_clientId));
     }
 

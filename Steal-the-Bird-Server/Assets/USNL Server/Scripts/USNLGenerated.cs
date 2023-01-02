@@ -35,6 +35,7 @@ namespace USNL {
         PlayerSpawned,
         MatchUpdate,
         Countdown,
+        BirdDeath,
     }
 
     #endregion
@@ -142,11 +143,22 @@ namespace USNL {
             }
         }
 
-        public static void Countdown(int[] _startTime, float _duration, string _countdownTag) {
+        public static void Countdown(int[] _landPosition, float _landOnWater, string _countdownTag) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.Countdown)) {
-                _packet.Write(_startTime);
-                _packet.Write(_duration);
+                _packet.Write(_landPosition);
+                _packet.Write(_landOnWater);
                 _packet.Write(_countdownTag);
+
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void BirdDeath(int _syncedObjectUUID, Vector3 _landPosition, bool _landOnWater, float _fallSpeed) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.BirdDeath)) {
+                _packet.Write(_syncedObjectUUID);
+                _packet.Write(_landPosition);
+                _packet.Write(_landOnWater);
+                _packet.Write(_fallSpeed);
 
                 SendTCPDataToAll(_packet);
             }
@@ -188,6 +200,7 @@ namespace USNL.Package {
         PlayerSpawned,
         MatchUpdate,
         Countdown,
+        BirdDeath,
     }
     #endregion
 

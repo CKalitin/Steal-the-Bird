@@ -34,6 +34,7 @@ namespace USNL {
         PlayerSpawned,
         MatchUpdate,
         Countdown,
+        BirdDeath,
     }
 
     #endregion
@@ -64,19 +65,38 @@ namespace USNL {
     }
 
     public struct CountdownPacket {
-        private int[] startTime;
-        private float duration;
+        private int[] landPosition;
+        private float landOnWater;
         private string countdownTag;
 
-        public CountdownPacket(int[] _startTime, float _duration, string _countdownTag) {
-            startTime = _startTime;
-            duration = _duration;
+        public CountdownPacket(int[] _landPosition, float _landOnWater, string _countdownTag) {
+            landPosition = _landPosition;
+            landOnWater = _landOnWater;
             countdownTag = _countdownTag;
         }
 
-        public int[] StartTime { get => startTime; set => startTime = value; }
-        public float Duration { get => duration; set => duration = value; }
+        public int[] LandPosition { get => landPosition; set => landPosition = value; }
+        public float LandOnWater { get => landOnWater; set => landOnWater = value; }
         public string CountdownTag { get => countdownTag; set => countdownTag = value; }
+    }
+
+    public struct BirdDeathPacket {
+        private int syncedObjectUUID;
+        private Vector3 landPosition;
+        private bool landOnWater;
+        private float fallSpeed;
+
+        public BirdDeathPacket(int _syncedObjectUUID, Vector3 _landPosition, bool _landOnWater, float _fallSpeed) {
+            syncedObjectUUID = _syncedObjectUUID;
+            landPosition = _landPosition;
+            landOnWater = _landOnWater;
+            fallSpeed = _fallSpeed;
+        }
+
+        public int SyncedObjectUUID { get => syncedObjectUUID; set => syncedObjectUUID = value; }
+        public Vector3 LandPosition { get => landPosition; set => landPosition = value; }
+        public bool LandOnWater { get => landOnWater; set => landOnWater = value; }
+        public float FallSpeed { get => fallSpeed; set => fallSpeed = value; }
     }
 
 
@@ -109,6 +129,7 @@ namespace USNL {
             { PlayerSpawned },
             { MatchUpdate },
             { Countdown },
+            { BirdDeath },
         };
 
         public static void PlayerSpawned(Package.Packet _packet) {
@@ -127,12 +148,22 @@ namespace USNL {
         }
 
         public static void Countdown(Package.Packet _packet) {
-            int[] startTime = _packet.ReadInts();
-            float duration = _packet.ReadFloat();
+            int[] landPosition = _packet.ReadInts();
+            float landOnWater = _packet.ReadFloat();
             string countdownTag = _packet.ReadString();
 
-            USNL.CountdownPacket countdownPacket = new USNL.CountdownPacket(startTime, duration, countdownTag);
+            USNL.CountdownPacket countdownPacket = new USNL.CountdownPacket(landPosition, landOnWater, countdownTag);
             Package.PacketManager.instance.PacketReceived(_packet, countdownPacket);
+        }
+
+        public static void BirdDeath(Package.Packet _packet) {
+            int syncedObjectUUID = _packet.ReadInt();
+            Vector3 landPosition = _packet.ReadVector3();
+            bool landOnWater = _packet.ReadBool();
+            float fallSpeed = _packet.ReadFloat();
+
+            USNL.BirdDeathPacket birdDeathPacket = new USNL.BirdDeathPacket(syncedObjectUUID, landPosition, landOnWater, fallSpeed);
+            Package.PacketManager.instance.PacketReceived(_packet, birdDeathPacket);
         }
     }
 
@@ -205,6 +236,7 @@ namespace USNL.Package {
         PlayerSpawned,
         MatchUpdate,
         Countdown,
+        BirdDeath,
     }
     #endregion
 
@@ -493,6 +525,7 @@ namespace USNL.Package {
             { USNL.PacketHandlers.PlayerSpawned },
             { USNL.PacketHandlers.MatchUpdate },
             { USNL.PacketHandlers.Countdown },
+            { USNL.PacketHandlers.BirdDeath },
         };
 
         public static void Welcome(Package.Packet _packet) {
@@ -730,6 +763,7 @@ namespace USNL {
             CallOnPlayerSpawnedPacketCallbacks,
             CallOnMatchUpdatePacketCallbacks,
             CallOnCountdownPacketCallbacks,
+            CallOnBirdDeathPacketCallbacks,
         };
 
         public static event CallbackEvent OnConnected;
@@ -757,6 +791,7 @@ namespace USNL {
         public static event CallbackEvent OnPlayerSpawnedPacket;
         public static event CallbackEvent OnMatchUpdatePacket;
         public static event CallbackEvent OnCountdownPacket;
+        public static event CallbackEvent OnBirdDeathPacket;
 
         public static void CallOnConnectedCallbacks(object _param) { if (OnConnected != null) { OnConnected(_param); } }
         public static void CallOnDisconnectedCallbacks(object _param) { if (OnDisconnected != null) { OnDisconnected(_param); } }
@@ -783,6 +818,7 @@ namespace USNL {
         public static void CallOnPlayerSpawnedPacketCallbacks(object _param) { if (OnPlayerSpawnedPacket != null) { OnPlayerSpawnedPacket(_param); } }
         public static void CallOnMatchUpdatePacketCallbacks(object _param) { if (OnMatchUpdatePacket != null) { OnMatchUpdatePacket(_param); } }
         public static void CallOnCountdownPacketCallbacks(object _param) { if (OnCountdownPacket != null) { OnCountdownPacket(_param); } }
+        public static void CallOnBirdDeathPacketCallbacks(object _param) { if (OnBirdDeathPacket != null) { OnBirdDeathPacket(_param); } }
     }
 }
 

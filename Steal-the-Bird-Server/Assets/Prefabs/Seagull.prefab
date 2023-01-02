@@ -113,20 +113,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0239f8ef606b1b4181ddac423be71cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 250
+  flySpeed: 250
   turnSpeed: 0.8
   rollModifier: 50
   flightHeight: 7
   swoopSpeed: 0.5
-  swoopAngleModifier: 80
+  swoopAngle: 50
   damage: 5
   playerAttackDistance: 9
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 256
   nthBirdUpdate: 3
+  worldLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  birdDeathForwardSpeed: 0.75
   rb: {fileID: 8725316314000905913}
   health: {fileID: 6496605457961160666}
+  syncedObject: {fileID: 5595339114260027317}
 --- !u!1001 &7486269287591751215
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -46,14 +46,27 @@ MonoBehaviour:
     notes: 
   - packetName: Countdown
     packetVariables:
-    - variableName: Start Time
+    - variableName: Land Position
       variableType: 12
-    - variableName: Duration
+    - variableName: Land On Water
       variableType: 4
     - variableName: Countdown Tag
       variableType: 6
     sendType: 1
     protocol: 0
     notes: 
+  - packetName: Bird Death
+    packetVariables:
+    - variableName: Synced Object UUID
+      variableType: 2
+    - variableName: Land Position
+      variableType: 8
+    - variableName: Land On Water
+      variableType: 5
+    - variableName: Fall Speed
+      variableType: 4
+    sendType: 1
+    protocol: 0
+    notes: 
   ClientPacketFoldouts: 00
-  ServerPacketFoldouts: 000000
+  ServerPacketFoldouts: 00000000

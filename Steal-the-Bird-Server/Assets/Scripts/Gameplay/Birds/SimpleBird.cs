@@ -7,7 +7,7 @@ public class SimpleBird : MonoBehaviour {
     #region Variables
 
     [Header("Flying")]
-    [SerializeField] private float speed = 5f;
+    [SerializeField] private float flySpeed = 250f;
     [SerializeField] private float turnSpeed = 0.8f;
     [SerializeField] private float rollModifier = 50f;
     [Space]
@@ -35,10 +35,14 @@ public class SimpleBird : MonoBehaviour {
     [Header("Bird Management")]
     [Tooltip("How many updates per bird update")]
     [SerializeField] private int nthBirdUpdate = 3;
+    [Space]
+    [SerializeField] private LayerMask worldLayerMask;
+    [SerializeField] private float birdDeathForwardSpeed;
 
     [Header("Other")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Health health;
+    [SerializeField] private USNL.SyncedObject syncedObject;
 
     private float previousCurrentHealth;
 
@@ -91,7 +95,7 @@ public class SimpleBird : MonoBehaviour {
     }
 
     private void FindNewMarker() {
-        markerTarget = BirdController.instance.BirdMarkers[Random.Range(0, BirdController.instance.BirdMarkers.Length)];
+        markerTarget = BirdsController.instance.BirdMarkers[Random.Range(0, BirdsController.instance.BirdMarkers.Length)];
         FlyToMarker(markerTarget.position);
     }
 
@@ -144,7 +148,7 @@ public class SimpleBird : MonoBehaviour {
     #region Flying Movement Functions
 
     private void FlyTowardsMarker() {
-        rb.velocity = transform.forward * speed * Time.fixedDeltaTime;
+        rb.velocity = transform.forward * flySpeed * Time.fixedDeltaTime;
 
         RotateTowardsPoint(markerTarget.position, ref rotationLerp);
     }
@@ -155,7 +159,7 @@ public class SimpleBird : MonoBehaviour {
         if (flyToTargetIndex == 0) {
             RotateTowardsPoint(playerTarget.position, ref rotationLerp);
 
-            rb.velocity = transform.forward * speed * Time.fixedDeltaTime;
+            rb.velocity = transform.forward * flySpeed * Time.fixedDeltaTime;
 
             if (Vector3.Distance(transform.position, playerTarget.position) < playerAttackDistance) {
                 flyToTargetIndex = 1;
@@ -164,7 +168,7 @@ public class SimpleBird : MonoBehaviour {
         } else if (flyToTargetIndex == 1) {
             RotateTowardsPoint(playerTarget.position, ref rotationLerp);
 
-            rb.velocity = transform.forward * speed * Time.fixedDeltaTime;
+            rb.velocity = transform.forward * flySpeed * Time.fixedDeltaTime;
             
             SwoopDown(swoopLerp);
             swoopLerp = Mathf.Clamp(swoopLerp + (swoopSpeed * Time.deltaTime), 0, 1);
@@ -175,7 +179,7 @@ public class SimpleBird : MonoBehaviour {
                 flyToTargetIndex = 2;
             }
         } else if (flyToTargetIndex == 2) {
-            rb.velocity = transform.forward * speed * Time.fixedDeltaTime;
+            rb.velocity = transform.forward * flySpeed * Time.fixedDeltaTime;
 
             SwoopUp(swoopLerp);
 
@@ -213,6 +217,28 @@ public class SimpleBird : MonoBehaviour {
         float swoopAmount = -((swoopAngle * 2) * Mathf.Abs(Mathf.Abs(_lerp - 0.5f) - 0.5f));
 
         transform.rotation = Quaternion.Euler(new Vector3(swoopAmount, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z));
+    }
+
+    #endregion
+
+    #region Other
+
+    private void OnDestroy() {
+        RaycastHit hit;
+
+        float height = transform.position.y;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 100f, worldLayerMask)) {
+            height = Vector3.Distance(hit.point, transform.position);
+        }
+
+        Vector3 raycastPoint = transform.position + (transform.forward * birdDeathForwardSpeed * height);
+        raycastPoint.y += 100f;
+        
+        Debug.DrawRay(raycastPoint, Vector3.down * 500, Color.red, 3f);
+
+        if (Physics.Raycast(raycastPoint, Vector3.down, out hit, 500f, worldLayerMask)) {
+            USNL.PacketSend.BirdDeath(syncedObject.SyncedObjectUUID, hit.point, hit.transform.gameObject.tag == "Water", flySpeed);
+        }
     }
 
     #endregion
