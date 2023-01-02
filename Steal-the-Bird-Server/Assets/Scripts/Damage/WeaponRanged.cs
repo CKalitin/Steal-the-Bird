@@ -48,10 +48,11 @@ public class WeaponRanged : MonoBehaviour {
         if (animator) animator.SetTrigger("Attack");
         
         coolingDownShot = true;
-        Invoke(nameof(ResetShotCooldown), rateOfFire);
+        StartCoroutine(ResetShotCooldown());
     }
 
-    private void ResetShotCooldown() {
+    private IEnumerator ResetShotCooldown() {
+        yield return new WaitForSeconds(rateOfFire);
         coolingDownShot = false;
     }
 }

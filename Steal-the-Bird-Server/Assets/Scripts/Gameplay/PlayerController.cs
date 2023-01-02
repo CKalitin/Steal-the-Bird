@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour {
     private bool isGrounded;
 
     [Header("Other")]
-    [SerializeField] private CharacterController cc;
+    [SerializeField] private CharacterController characterController;
+    [SerializeField] private Health health;
 
     USNL.ClientInput clientInput;
 
@@ -40,9 +41,16 @@ public class PlayerController : MonoBehaviour {
         if (clientInput.GetKey(KeyCode.A)) movementInput.x -= 1;
 
         Vector3 move = transform.right * movementInput.x + transform.forward * movementInput.z;
-        cc.Move(move * moveSpeed * Time.deltaTime);
+        characterController.Move(move * moveSpeed * Time.deltaTime);
 
         velocity.y -= gravitySpeed * Time.deltaTime;
-        cc.Move(velocity * Time.deltaTime);
+        characterController.Move(velocity * Time.deltaTime);
+    }
+
+    private void Update() {
+        if (health.CurrentHealth <= 0) {
+            GameController.instance.OnPlayerDeath(ClientId);
+            Destroy(gameObject);
+        }
     }
 }

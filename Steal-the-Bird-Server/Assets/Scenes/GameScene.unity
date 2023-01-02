@@ -247,7 +247,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1657050050}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &26650237
 MonoBehaviour:
@@ -461,6 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18fac14921fb47343afd8ba40167e56f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnTime: 5
   playerSpawnPoint: {fileID: 840706316}
   playerPrefab: {fileID: 2284219960324187443, guid: 8ba8a54e00b752f4c94985b229de6468, type: 3}
 --- !u!1 &621677678
@@ -645,7 +646,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1657050050}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &641561349
 MonoBehaviour:
@@ -659,7 +660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35ec839b56241a44d8bd836b534ccfa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBirds: 1
+  maxBirds: 5
   birdParent: {fileID: 632214395}
   peacefulBirds:
   - prefab: {fileID: 7498374795693127707, guid: 5e58402b9ceb6de47ba386d3b68d11a7, type: 3}
@@ -1524,8 +1525,8 @@ Transform:
   - {fileID: 634638877}
   - {fileID: 752168275}
   - {fileID: 506922441}
-  - {fileID: 641561348}
   - {fileID: 26650236}
+  - {fileID: 641561348}
   - {fileID: 1861629655}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1789,6 +1790,10 @@ PrefabInstance:
     - target: {fileID: 8910119136914160662, guid: 7dd01494c3f75c546a00083c214686ed, type: 3}
       propertyPath: m_Name
       value: TW Meshes
+      objectReference: {fileID: 0}
+    - target: {fileID: 8910119136914160662, guid: 7dd01494c3f75c546a00083c214686ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8910119136914160663, guid: 7dd01494c3f75c546a00083c214686ed, type: 3}
       propertyPath: m_RootOrder

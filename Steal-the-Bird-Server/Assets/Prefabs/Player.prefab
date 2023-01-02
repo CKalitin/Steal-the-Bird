@@ -127,7 +127,8 @@ GameObject:
   - component: {fileID: 1887679815529917340}
   - component: {fileID: -2371786410241645153}
   - component: {fileID: 6679365863864408026}
-  m_Layer: 0
+  - component: {fileID: 4962451429328475404}
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +211,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
-  cc: {fileID: 4534795076670421440}
+  characterController: {fileID: 4534795076670421440}
+  health: {fileID: 4962451429328475404}
 --- !u!114 &6679365863864408026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +227,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponGameObject: {fileID: 6252426185226593280}
   weaponParent: {fileID: 6252426185226593295}
-  pc: {fileID: -2371786410241645153}
+  playerController: {fileID: 0}
+--- !u!114 &4962451429328475404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284219960324187443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892fd77c12c492b4fb8f1284f520ece7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 100
+  destroyOnZeroHealth: 0
 --- !u!1001 &4990877088903668691
 PrefabInstance:
   m_ObjectHideFlags: 0

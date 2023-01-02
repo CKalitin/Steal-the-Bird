@@ -5,6 +5,12 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
     #region Variables
 
+    public static GameController instance;
+
+    [Header("Gameplay")]
+    [SerializeField] private float respawnTime = 5f;
+
+    [Header("Management")]
     [SerializeField] private Transform playerSpawnPoint;
     [SerializeField] private GameObject playerPrefab;
 
@@ -18,6 +24,12 @@ public class GameController : MonoBehaviour {
 
     private void Awake() {
         Debug.LogError("Opened Console.");
+
+        if (instance == null) instance = this;
+        else {
+            Debug.Log($"Match Manager instance already exists on ({gameObject}), destroying this.");
+            Destroy(this);
+        }
     }
 
     private void Update() {
@@ -82,6 +94,19 @@ public class GameController : MonoBehaviour {
             Destroy(playerControllers[i].gameObject);
         }
         playerControllers.Clear();
+    }
+
+    #endregion
+
+    #region Public Functions
+
+    public void OnPlayerDeath(int _clientId) {
+        StartCoroutine(RespawnPlayer(_clientId));
+    }
+
+    private IEnumerator RespawnPlayer(int _clientId) {
+        yield return new WaitForSeconds(respawnTime);
+        SpawnPlayer(_clientId);
     }
 
     #endregion

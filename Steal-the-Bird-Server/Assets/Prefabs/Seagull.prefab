@@ -115,13 +115,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 250
   turnSpeed: 0.8
-  rollModifier: 100
-  playerAttackDistance: 7
+  rollModifier: 50
+  flightHeight: 7
+  swoopSpeed: 0.5
+  swoopAngleModifier: 80
+  damage: 5
+  playerAttackDistance: 9
   playerLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   nthBirdUpdate: 3
   rb: {fileID: 8725316314000905913}
+  health: {fileID: 6496605457961160666}
 --- !u!1001 &7486269287591751215
 PrefabInstance:
   m_ObjectHideFlags: 0
