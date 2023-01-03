@@ -233,8 +233,6 @@ public class SimpleBird : MonoBehaviour {
 
         Vector3 raycastPoint = transform.position + (transform.forward * birdDeathForwardSpeed * height);
         raycastPoint.y += 100f;
-        
-        Debug.DrawRay(raycastPoint, Vector3.down * 500, Color.red, 3f);
 
         if (Physics.Raycast(raycastPoint, Vector3.down, out hit, 500f, worldLayerMask)) {
             USNL.PacketSend.BirdDeath(syncedObject.SyncedObjectUUID, hit.point, hit.transform.gameObject.tag == "Water", flySpeed);

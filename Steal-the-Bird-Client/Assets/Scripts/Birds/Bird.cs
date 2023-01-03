@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bird : MonoBehaviour {
-    [SerializeField] private GameObject deadBird;
+    [SerializeField] private Transform birdModel;
     [Space]
     [SerializeField] private USNL.SyncedObject syncedObject;
 
     private void OnDestroy() {
         if (GameController.ApplicationQuitting) return; // Fixes bug
 
-        DeadBird newDeadBird = Instantiate(deadBird, transform.position, transform.rotation).GetComponent<DeadBird>();
+        birdModel.parent = null;
 
-        newDeadBird.SyncedObjectUUID = syncedObject.SyncedObjectUuid;
-        newDeadBird.StartPosition = transform.position;
+        birdModel.GetComponent<DeadBird>().enabled = true;
+        birdModel.GetComponent<Animator>().enabled = true;
+
+        birdModel.GetComponent<DeadBird>().StartRotation = transform.rotation;
+
+        birdModel.GetComponent<DeadBird>().SetDead();
+
+        birdModel.GetComponent<DeadBird>().SyncedObjectUUID = syncedObject.SyncedObjectUuid;
+        birdModel.GetComponent<DeadBird>().StartPosition = transform.position;
     }
 }

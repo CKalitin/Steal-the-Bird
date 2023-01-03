@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DeadBird : MonoBehaviour {
-    [SerializeField] private float sinkSpeed = 0.05f;
-    [SerializeField] private float fallSpeedDivider = 10f;
+    [SerializeField] private float sinkSpeed = 0.09f;
+    [SerializeField] private float fallSpeedDivider = 30f;
+    [Space]
+    [SerializeField] private BirdAnimator birdAnimator;
 
     private int syncedObjectUUID;
     private Vector3 startPosition;
@@ -13,19 +15,31 @@ public class DeadBird : MonoBehaviour {
     private bool landInWater;
     private float fallSpeed;
 
+    private Quaternion startRotation;
+
     private float fallDistance = 0f;
 
     private bool foundDeadBirdInfo = false;
 
     private float lerp;
 
+    private bool dead = false;
     private bool deathComplete = false;
     private bool hitWorld = false;
 
     public int SyncedObjectUUID { get => syncedObjectUUID; set => syncedObjectUUID = value; }
     public Vector3 StartPosition { get => startPosition; set => startPosition = value; }
+    public Quaternion StartRotation { get => startRotation; set => startRotation = value; }
+    public bool Dead { get => dead; set => dead = value; }
+
+    public void SetDead() {
+        dead = true;
+        birdAnimator.SetDead();
+    }
 
     private void Update() {
+        if (!dead) return;
+        
         if (deathComplete) return;
         
         LookForDeadBirdInfo();
@@ -55,12 +69,25 @@ public class DeadBird : MonoBehaviour {
 
         transform.position = Vector3.Lerp(startPosition, landPosition, lerp);
 
-        if (Vector3.Distance(transform.position, landPosition) <= 0.1f) hitWorld = true;
-        if (hitWorld & !landInWater) deathComplete = true;
+        if (Vector3.Distance(transform.position, landPosition) <= 2f) {
+            birdAnimator.SetFly(false);
+            birdAnimator.SetLanded();
+        }
+        if (Vector3.Distance(transform.position, landPosition) <= 0.1f) {
+            hitWorld = true;
+            birdAnimator.SetExit();
+
+            birdAnimator.Animator.enabled = false;
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+        }
+        if (hitWorld & !landInWater) {
+            deathComplete = true;
+        }
     }
 
     private void SinkIntoWater() {
         if (!foundDeadBirdInfo) return;
+        
         if (transform.position.y - landPosition.y < -2f) deathComplete = true;
         
         transform.position += Vector3.down * sinkSpeed * Time.deltaTime;
