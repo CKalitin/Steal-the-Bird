@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sinkSpeed: 0.09
-  fallSpeedDivider: 30
+  fallSpeedDivider: 42
   birdAnimator: {fileID: 4430238877880163190}
 --- !u!114 &4430238877880163190
 MonoBehaviour:

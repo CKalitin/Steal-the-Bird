@@ -6,6 +6,8 @@ public class DeadBird : MonoBehaviour {
     [SerializeField] private float sinkSpeed = 0.09f;
     [SerializeField] private float fallSpeedDivider = 30f;
     [Space]
+    [SerializeField] private float despawnTime = 60f;
+    [Space]
     [SerializeField] private BirdAnimator birdAnimator;
 
     private int syncedObjectUUID;
@@ -27,6 +29,8 @@ public class DeadBird : MonoBehaviour {
     private bool deathComplete = false;
     private bool hitWorld = false;
 
+    private float totalDeltaTime;
+
     public int SyncedObjectUUID { get => syncedObjectUUID; set => syncedObjectUUID = value; }
     public Vector3 StartPosition { get => startPosition; set => startPosition = value; }
     public Quaternion StartRotation { get => startRotation; set => startRotation = value; }
@@ -39,13 +43,18 @@ public class DeadBird : MonoBehaviour {
 
     private void Update() {
         if (!dead) return;
-        
+
         if (deathComplete) return;
+
+        if (totalDeltaTime >= 1f && !foundDeadBirdInfo) Destroy(gameObject);
+        if (totalDeltaTime >= despawnTime) Destroy(gameObject);
         
         LookForDeadBirdInfo();
 
         if (!hitWorld) FallFromSky();
         else if (landInWater) SinkIntoWater();
+
+        totalDeltaTime += Time.deltaTime;
     }
 
     private void LookForDeadBirdInfo() {

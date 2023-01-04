@@ -14,9 +14,8 @@ public class BirdSpawner : MonoBehaviour {
     
     [Header("Spawning")]
     [Tooltip("When the game isn't hectic and the world is functioning normally, birds spawn here.")]
-    [SerializeField] private float peacefulBirdSpawnRate = 2f;
+    [SerializeField] private float peacefulBirdSpawnRate = 1f;
     [SerializeField] private PeacefulBirdSpawnPoint[] peacefulSpawnPoints;
-    [SerializeField] private float peacefulBirdHeadingRandomness = 0.1f;
     float totalPeacefulBirdProbabilities = 0;
 
     private int numBirds { get => birdParent.childCount; }
@@ -69,11 +68,6 @@ public class BirdSpawner : MonoBehaviour {
         GameObject birdPrefab = GetRandomBirdSpawnData(peacefulBirds).Prefab;
 
         GameObject bird = Instantiate(birdPrefab, spawnPoint.SpawnPoint.position, Quaternion.identity, birdParent) as GameObject;
-        
-        Vector3 target = spawnPoint.Direction.position - spawnPoint.SpawnPoint.position;
-        target.x += UnityEngine.Random.Range(-peacefulBirdHeadingRandomness, peacefulBirdHeadingRandomness);
-        target.z += UnityEngine.Random.Range(-peacefulBirdHeadingRandomness, peacefulBirdHeadingRandomness);
-        if (bird.GetComponent<Bird>()) bird.GetComponent<Bird>().PeacefulTarget = target.normalized;
     }
 
     private BirdSpawnData GetRandomBirdSpawnData(BirdSpawnData[] _bsd) {
