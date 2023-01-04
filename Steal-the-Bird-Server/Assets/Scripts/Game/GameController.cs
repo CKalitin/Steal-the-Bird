@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour {
 
     private Dictionary<int, PlayerController> playerControllers = new Dictionary<int, PlayerController>();
 
-    //private MatchState previousMatchState = MatchState.Lobby;
+    private MatchState previousMatchState = MatchState.Lobby;
 
     #endregion
 
@@ -27,14 +27,14 @@ public class GameController : MonoBehaviour {
 
         if (instance == null) instance = this;
         else {
-            Debug.Log($"Match Manager instance already exists on ({gameObject}), destroying this.");
+            Debug.Log($"Game Controller instance already exists on ({gameObject}), destroying this.");
             Destroy(this);
         }
     }
 
     private void Update() {
-        //if (previousMatchState != MatchManager.instance.MatchState) OnMatchStateChange(MatchManager.instance.MatchState);
-        //previousMatchState = MatchManager.instance.MatchState;
+        if (previousMatchState != MatchManager.instance.MatchState) OnMatchStateChange(MatchManager.instance.MatchState);
+        previousMatchState = MatchManager.instance.MatchState;
     }
 
     private void OnEnable() {

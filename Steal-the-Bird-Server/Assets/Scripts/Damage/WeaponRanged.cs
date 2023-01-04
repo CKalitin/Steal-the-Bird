@@ -25,14 +25,20 @@ public class WeaponRanged : MonoBehaviour {
     [SerializeField] private Damager damager;
     [Tooltip("Uses 'Attack' trigger in Animation Controller")]
     [SerializeField] private Animator animator;
-    
-    bool coolingDownShot = false;
+    [Space]
+    [SerializeField] private PlayerController playerController;
+
+    private bool coolingDownShot = false;
 
     public float ShotRange { get => shotRange; set => shotRange = value; }
     public Transform ShootPosition { get => shootPosition; set => shootPosition = value; }
     public RangedWeaponAmmoTypes AmmoType { get => ammoType; set => ammoType = value; }
     public int AmmoAmount { get => ammoAmount; set => ammoAmount = value; }
     public int MaxAmmo { get => maxAmmo; set => maxAmmo = value; }
+
+    private void Start() {
+        if (playerController != null) damager.ClientDamagerId = playerController.ClientId;
+    }
 
     public void Shoot() {
         if (coolingDownShot) return;

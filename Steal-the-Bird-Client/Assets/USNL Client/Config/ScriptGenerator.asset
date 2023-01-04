@@ -27,6 +27,18 @@ MonoBehaviour:
       variableType: 7
     protocol: 0
     notes: 
+  - packetName: Player Info
+    packetVariables:
+    - variableName: Username
+      variableType: 6
+    protocol: 0
+    notes: 
+  - packetName: Player Ready
+    packetVariables:
+    - variableName: Ready
+      variableType: 5
+    protocol: 0
+    notes: 
   serverPackets:
   - packetName: Player Spawned
     packetVariables:
@@ -46,9 +58,9 @@ MonoBehaviour:
     notes: 
   - packetName: Countdown
     packetVariables:
-    - variableName: Land Position
+    - variableName: Start Time Array
       variableType: 12
-    - variableName: Land On Water
+    - variableName: Duration
       variableType: 4
     - variableName: Countdown Tag
       variableType: 6
@@ -68,5 +80,33 @@ MonoBehaviour:
     sendType: 1
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 00
-  ServerPacketFoldouts: 00000000
+  - packetName: Player Info
+    packetVariables:
+    - variableName: Client Id
+      variableType: 2
+    - variableName: Username
+      variableType: 6
+    - variableName: Damage Dealt
+      variableType: 4
+    - variableName: Damage Taken
+      variableType: 4
+    - variableName: Player Kills
+      variableType: 2
+    - variableName: Player Deaths
+      variableType: 2
+    - variableName: Enemy Kills
+      variableType: 2
+    - variableName: Enemy Deaths
+      variableType: 2
+    sendType: 1
+    protocol: 0
+    notes: 
+  - packetName: Player Ready
+    packetVariables:
+    - variableName: Ready
+      variableType: 5
+    sendType: 1
+    protocol: 0
+    notes: 
+  ClientPacketFoldouts: 000000
+  ServerPacketFoldouts: 000000000000

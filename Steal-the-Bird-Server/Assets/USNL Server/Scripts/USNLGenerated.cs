@@ -10,6 +10,8 @@ namespace USNL {
         Ping,
         ClientInput,
         RaycastFromCamera,
+        PlayerInfo,
+        PlayerReady,
     }
 
     public enum ServerPackets {
@@ -36,6 +38,8 @@ namespace USNL {
         MatchUpdate,
         Countdown,
         BirdDeath,
+        PlayerInfo,
+        PlayerReady,
     }
 
     #endregion
@@ -66,6 +70,34 @@ namespace USNL {
         public Vector2 Resolution { get => resolution; set => resolution = value; }
         public float FieldOfView { get => fieldOfView; set => fieldOfView = value; }
         public Vector2 MousePosition { get => mousePosition; set => mousePosition = value; }
+    }
+
+    public struct PlayerInfoPacket {
+        private int fromClient;
+
+        private string username;
+
+        public PlayerInfoPacket(int _fromClient, string _username) {
+            fromClient = _fromClient;
+            username = _username;
+        }
+
+        public int FromClient { get => fromClient; set => fromClient = value; }
+        public string Username { get => username; set => username = value; }
+    }
+
+    public struct PlayerReadyPacket {
+        private int fromClient;
+
+        private bool ready;
+
+        public PlayerReadyPacket(int _fromClient, bool _ready) {
+            fromClient = _fromClient;
+            ready = _ready;
+        }
+
+        public int FromClient { get => fromClient; set => fromClient = value; }
+        public bool Ready { get => ready; set => ready = value; }
     }
 
 
@@ -143,10 +175,10 @@ namespace USNL {
             }
         }
 
-        public static void Countdown(int[] _landPosition, float _landOnWater, string _countdownTag) {
+        public static void Countdown(int[] _startTimeArray, float _duration, string _countdownTag) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.Countdown)) {
-                _packet.Write(_landPosition);
-                _packet.Write(_landOnWater);
+                _packet.Write(_startTimeArray);
+                _packet.Write(_duration);
                 _packet.Write(_countdownTag);
 
                 SendTCPDataToAll(_packet);
@@ -163,6 +195,29 @@ namespace USNL {
                 SendTCPDataToAll(_packet);
             }
         }
+
+        public static void PlayerInfo(int _clientId, string _username, float _damageDealt, float _damageTaken, int _playerKills, int _playerDeaths, int _enemyKills, int _enemyDeaths) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerInfo)) {
+                _packet.Write(_clientId);
+                _packet.Write(_username);
+                _packet.Write(_damageDealt);
+                _packet.Write(_damageTaken);
+                _packet.Write(_playerKills);
+                _packet.Write(_playerDeaths);
+                _packet.Write(_enemyKills);
+                _packet.Write(_enemyDeaths);
+
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void PlayerReady(bool _ready) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerReady)) {
+                _packet.Write(_ready);
+
+                SendTCPDataToAll(_packet);
+            }
+        }
         }
 
     #endregion
@@ -175,6 +230,8 @@ namespace USNL.Package {
         Ping,
         ClientInput,
         RaycastFromCamera,
+        PlayerInfo,
+        PlayerReady,
     }
 
     public enum ServerPackets {
@@ -201,6 +258,8 @@ namespace USNL.Package {
         MatchUpdate,
         Countdown,
         BirdDeath,
+        PlayerInfo,
+        PlayerReady,
     }
     #endregion
 
@@ -266,6 +325,8 @@ namespace USNL.Package {
             { Ping },
             { ClientInput },
             { RaycastFromCamera },
+            { PlayerInfo },
+            { PlayerReady },
         };
 
         public static void WelcomeReceived(Packet _packet) {
@@ -300,6 +361,20 @@ namespace USNL.Package {
 
             RaycastFromCameraPacket raycastFromCameraPacket = new RaycastFromCameraPacket(_packet.FromClient, cameraPosition, cameraRotation, resolution, fieldOfView, mousePosition);
             PacketManager.instance.PacketReceived(_packet, raycastFromCameraPacket);
+        }
+
+        public static void PlayerInfo(Packet _packet) {
+            string username = _packet.ReadString();
+
+            PlayerInfoPacket playerInfoPacket = new PlayerInfoPacket(_packet.FromClient, username);
+            PacketManager.instance.PacketReceived(_packet, playerInfoPacket);
+        }
+
+        public static void PlayerReady(Packet _packet) {
+            bool ready = _packet.ReadBool();
+
+            PlayerReadyPacket playerReadyPacket = new PlayerReadyPacket(_packet.FromClient, ready);
+            PacketManager.instance.PacketReceived(_packet, playerReadyPacket);
         }
     }
 
@@ -550,6 +625,8 @@ namespace USNL {
             CallOnPingPacketCallbacks,
             CallOnClientInputPacketCallbacks,
             CallOnRaycastFromCameraPacketCallbacks,
+            CallOnPlayerInfoPacketCallbacks,
+            CallOnPlayerReadyPacketCallbacks,
         };
 
         public static event CallbackEvent OnServerStarted;
@@ -561,6 +638,8 @@ namespace USNL {
         public static event CallbackEvent OnPingPacket;
         public static event CallbackEvent OnClientInputPacket;
         public static event CallbackEvent OnRaycastFromCameraPacket;
+        public static event CallbackEvent OnPlayerInfoPacket;
+        public static event CallbackEvent OnPlayerReadyPacket;
 
         public static void CallOnServerStartedCallbacks(object _param) { if (OnServerStarted != null) { OnServerStarted(_param); } }
         public static void CallOnServerStoppedCallbacks(object _param) { if (OnServerStopped != null) { OnServerStopped(_param); } }
@@ -571,6 +650,8 @@ namespace USNL {
         public static void CallOnPingPacketCallbacks(object _param) { if (OnPingPacket != null) { OnPingPacket(_param); } }
         public static void CallOnClientInputPacketCallbacks(object _param) { if (OnClientInputPacket != null) { OnClientInputPacket(_param); } }
         public static void CallOnRaycastFromCameraPacketCallbacks(object _param) { if (OnRaycastFromCameraPacket != null) { OnRaycastFromCameraPacket(_param); } }
+        public static void CallOnPlayerInfoPacketCallbacks(object _param) { if (OnPlayerInfoPacket != null) { OnPlayerInfoPacket(_param); } }
+        public static void CallOnPlayerReadyPacketCallbacks(object _param) { if (OnPlayerReadyPacket != null) { OnPlayerReadyPacket(_param); } }
     }
 }
 

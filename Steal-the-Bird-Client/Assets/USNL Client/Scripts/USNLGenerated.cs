@@ -9,6 +9,8 @@ namespace USNL {
         Ping,
         ClientInput,
         RaycastFromCamera,
+        PlayerInfo,
+        PlayerReady,
     }
 
     public enum ServerPackets {
@@ -35,6 +37,8 @@ namespace USNL {
         MatchUpdate,
         Countdown,
         BirdDeath,
+        PlayerInfo,
+        PlayerReady,
     }
 
     #endregion
@@ -65,18 +69,18 @@ namespace USNL {
     }
 
     public struct CountdownPacket {
-        private int[] landPosition;
-        private float landOnWater;
+        private int[] startTimeArray;
+        private float duration;
         private string countdownTag;
 
-        public CountdownPacket(int[] _landPosition, float _landOnWater, string _countdownTag) {
-            landPosition = _landPosition;
-            landOnWater = _landOnWater;
+        public CountdownPacket(int[] _startTimeArray, float _duration, string _countdownTag) {
+            startTimeArray = _startTimeArray;
+            duration = _duration;
             countdownTag = _countdownTag;
         }
 
-        public int[] LandPosition { get => landPosition; set => landPosition = value; }
-        public float LandOnWater { get => landOnWater; set => landOnWater = value; }
+        public int[] StartTimeArray { get => startTimeArray; set => startTimeArray = value; }
+        public float Duration { get => duration; set => duration = value; }
         public string CountdownTag { get => countdownTag; set => countdownTag = value; }
     }
 
@@ -97,6 +101,47 @@ namespace USNL {
         public Vector3 LandPosition { get => landPosition; set => landPosition = value; }
         public bool LandOnWater { get => landOnWater; set => landOnWater = value; }
         public float FallSpeed { get => fallSpeed; set => fallSpeed = value; }
+    }
+
+    public struct PlayerInfoPacket {
+        private int clientId;
+        private string username;
+        private float damageDealt;
+        private float damageTaken;
+        private int playerKills;
+        private int playerDeaths;
+        private int enemyKills;
+        private int enemyDeaths;
+
+        public PlayerInfoPacket(int _clientId, string _username, float _damageDealt, float _damageTaken, int _playerKills, int _playerDeaths, int _enemyKills, int _enemyDeaths) {
+            clientId = _clientId;
+            username = _username;
+            damageDealt = _damageDealt;
+            damageTaken = _damageTaken;
+            playerKills = _playerKills;
+            playerDeaths = _playerDeaths;
+            enemyKills = _enemyKills;
+            enemyDeaths = _enemyDeaths;
+        }
+
+        public int ClientId { get => clientId; set => clientId = value; }
+        public string Username { get => username; set => username = value; }
+        public float DamageDealt { get => damageDealt; set => damageDealt = value; }
+        public float DamageTaken { get => damageTaken; set => damageTaken = value; }
+        public int PlayerKills { get => playerKills; set => playerKills = value; }
+        public int PlayerDeaths { get => playerDeaths; set => playerDeaths = value; }
+        public int EnemyKills { get => enemyKills; set => enemyKills = value; }
+        public int EnemyDeaths { get => enemyDeaths; set => enemyDeaths = value; }
+    }
+
+    public struct PlayerReadyPacket {
+        private bool ready;
+
+        public PlayerReadyPacket(bool _ready) {
+            ready = _ready;
+        }
+
+        public bool Ready { get => ready; set => ready = value; }
     }
 
 
@@ -130,6 +175,8 @@ namespace USNL {
             { MatchUpdate },
             { Countdown },
             { BirdDeath },
+            { PlayerInfo },
+            { PlayerReady },
         };
 
         public static void PlayerSpawned(Package.Packet _packet) {
@@ -148,11 +195,11 @@ namespace USNL {
         }
 
         public static void Countdown(Package.Packet _packet) {
-            int[] landPosition = _packet.ReadInts();
-            float landOnWater = _packet.ReadFloat();
+            int[] startTimeArray = _packet.ReadInts();
+            float duration = _packet.ReadFloat();
             string countdownTag = _packet.ReadString();
 
-            USNL.CountdownPacket countdownPacket = new USNL.CountdownPacket(landPosition, landOnWater, countdownTag);
+            USNL.CountdownPacket countdownPacket = new USNL.CountdownPacket(startTimeArray, duration, countdownTag);
             Package.PacketManager.instance.PacketReceived(_packet, countdownPacket);
         }
 
@@ -164,6 +211,27 @@ namespace USNL {
 
             USNL.BirdDeathPacket birdDeathPacket = new USNL.BirdDeathPacket(syncedObjectUUID, landPosition, landOnWater, fallSpeed);
             Package.PacketManager.instance.PacketReceived(_packet, birdDeathPacket);
+        }
+
+        public static void PlayerInfo(Package.Packet _packet) {
+            int clientId = _packet.ReadInt();
+            string username = _packet.ReadString();
+            float damageDealt = _packet.ReadFloat();
+            float damageTaken = _packet.ReadFloat();
+            int playerKills = _packet.ReadInt();
+            int playerDeaths = _packet.ReadInt();
+            int enemyKills = _packet.ReadInt();
+            int enemyDeaths = _packet.ReadInt();
+
+            USNL.PlayerInfoPacket playerInfoPacket = new USNL.PlayerInfoPacket(clientId, username, damageDealt, damageTaken, playerKills, playerDeaths, enemyKills, enemyDeaths);
+            Package.PacketManager.instance.PacketReceived(_packet, playerInfoPacket);
+        }
+
+        public static void PlayerReady(Package.Packet _packet) {
+            bool ready = _packet.ReadBool();
+
+            USNL.PlayerReadyPacket playerReadyPacket = new USNL.PlayerReadyPacket(ready);
+            Package.PacketManager.instance.PacketReceived(_packet, playerReadyPacket);
         }
     }
 
@@ -199,6 +267,22 @@ namespace USNL {
                 SendTCPData(_packet);
             }
         }
+
+        public static void PlayerInfo(string _username) {
+            using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.PlayerInfo)) {
+                _packet.Write(_username);
+
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void PlayerReady(bool _ready) {
+            using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.PlayerReady)) {
+                _packet.Write(_ready);
+
+                SendTCPData(_packet);
+            }
+        }
     }
 
 #endregion
@@ -211,6 +295,8 @@ namespace USNL.Package {
         Ping,
         ClientInput,
         RaycastFromCamera,
+        PlayerInfo,
+        PlayerReady,
     }
 
     public enum ServerPackets {
@@ -237,6 +323,8 @@ namespace USNL.Package {
         MatchUpdate,
         Countdown,
         BirdDeath,
+        PlayerInfo,
+        PlayerReady,
     }
     #endregion
 
@@ -526,6 +614,8 @@ namespace USNL.Package {
             { USNL.PacketHandlers.MatchUpdate },
             { USNL.PacketHandlers.Countdown },
             { USNL.PacketHandlers.BirdDeath },
+            { USNL.PacketHandlers.PlayerInfo },
+            { USNL.PacketHandlers.PlayerReady },
         };
 
         public static void Welcome(Package.Packet _packet) {
@@ -764,6 +854,8 @@ namespace USNL {
             CallOnMatchUpdatePacketCallbacks,
             CallOnCountdownPacketCallbacks,
             CallOnBirdDeathPacketCallbacks,
+            CallOnPlayerInfoPacketCallbacks,
+            CallOnPlayerReadyPacketCallbacks,
         };
 
         public static event CallbackEvent OnConnected;
@@ -792,6 +884,8 @@ namespace USNL {
         public static event CallbackEvent OnMatchUpdatePacket;
         public static event CallbackEvent OnCountdownPacket;
         public static event CallbackEvent OnBirdDeathPacket;
+        public static event CallbackEvent OnPlayerInfoPacket;
+        public static event CallbackEvent OnPlayerReadyPacket;
 
         public static void CallOnConnectedCallbacks(object _param) { if (OnConnected != null) { OnConnected(_param); } }
         public static void CallOnDisconnectedCallbacks(object _param) { if (OnDisconnected != null) { OnDisconnected(_param); } }
@@ -819,6 +913,8 @@ namespace USNL {
         public static void CallOnMatchUpdatePacketCallbacks(object _param) { if (OnMatchUpdatePacket != null) { OnMatchUpdatePacket(_param); } }
         public static void CallOnCountdownPacketCallbacks(object _param) { if (OnCountdownPacket != null) { OnCountdownPacket(_param); } }
         public static void CallOnBirdDeathPacketCallbacks(object _param) { if (OnBirdDeathPacket != null) { OnBirdDeathPacket(_param); } }
+        public static void CallOnPlayerInfoPacketCallbacks(object _param) { if (OnPlayerInfoPacket != null) { OnPlayerInfoPacket(_param); } }
+        public static void CallOnPlayerReadyPacketCallbacks(object _param) { if (OnPlayerReadyPacket != null) { OnPlayerReadyPacket(_param); } }
     }
 }
 
