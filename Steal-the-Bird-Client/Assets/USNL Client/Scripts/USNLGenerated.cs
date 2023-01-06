@@ -9,7 +9,7 @@ namespace USNL {
         Ping,
         ClientInput,
         RaycastFromCamera,
-        PlayerInfo,
+        PlayerSetupInfo,
         PlayerReady,
     }
 
@@ -135,12 +135,15 @@ namespace USNL {
     }
 
     public struct PlayerReadyPacket {
+        private int clientId;
         private bool ready;
 
-        public PlayerReadyPacket(bool _ready) {
+        public PlayerReadyPacket(int _clientId, bool _ready) {
+            clientId = _clientId;
             ready = _ready;
         }
 
+        public int ClientId { get => clientId; set => clientId = value; }
         public bool Ready { get => ready; set => ready = value; }
     }
 
@@ -228,9 +231,10 @@ namespace USNL {
         }
 
         public static void PlayerReady(Package.Packet _packet) {
+            int clientId = _packet.ReadInt();
             bool ready = _packet.ReadBool();
 
-            USNL.PlayerReadyPacket playerReadyPacket = new USNL.PlayerReadyPacket(ready);
+            USNL.PlayerReadyPacket playerReadyPacket = new USNL.PlayerReadyPacket(clientId, ready);
             Package.PacketManager.instance.PacketReceived(_packet, playerReadyPacket);
         }
     }
@@ -268,8 +272,8 @@ namespace USNL {
             }
         }
 
-        public static void PlayerInfo(string _username) {
-            using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.PlayerInfo)) {
+        public static void PlayerSetupInfo(string _username) {
+            using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.PlayerSetupInfo)) {
                 _packet.Write(_username);
 
                 SendTCPData(_packet);
@@ -295,7 +299,7 @@ namespace USNL.Package {
         Ping,
         ClientInput,
         RaycastFromCamera,
-        PlayerInfo,
+        PlayerSetupInfo,
         PlayerReady,
     }
 

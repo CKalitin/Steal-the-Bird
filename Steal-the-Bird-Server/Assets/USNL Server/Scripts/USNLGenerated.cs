@@ -10,7 +10,7 @@ namespace USNL {
         Ping,
         ClientInput,
         RaycastFromCamera,
-        PlayerInfo,
+        PlayerSetupInfo,
         PlayerReady,
     }
 
@@ -72,12 +72,12 @@ namespace USNL {
         public Vector2 MousePosition { get => mousePosition; set => mousePosition = value; }
     }
 
-    public struct PlayerInfoPacket {
+    public struct PlayerSetupInfoPacket {
         private int fromClient;
 
         private string username;
 
-        public PlayerInfoPacket(int _fromClient, string _username) {
+        public PlayerSetupInfoPacket(int _fromClient, string _username) {
             fromClient = _fromClient;
             username = _username;
         }
@@ -211,8 +211,9 @@ namespace USNL {
             }
         }
 
-        public static void PlayerReady(bool _ready) {
+        public static void PlayerReady(int _clientId, bool _ready) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerReady)) {
+                _packet.Write(_clientId);
                 _packet.Write(_ready);
 
                 SendTCPDataToAll(_packet);
@@ -230,7 +231,7 @@ namespace USNL.Package {
         Ping,
         ClientInput,
         RaycastFromCamera,
-        PlayerInfo,
+        PlayerSetupInfo,
         PlayerReady,
     }
 
@@ -325,7 +326,7 @@ namespace USNL.Package {
             { Ping },
             { ClientInput },
             { RaycastFromCamera },
-            { PlayerInfo },
+            { PlayerSetupInfo },
             { PlayerReady },
         };
 
@@ -363,11 +364,11 @@ namespace USNL.Package {
             PacketManager.instance.PacketReceived(_packet, raycastFromCameraPacket);
         }
 
-        public static void PlayerInfo(Packet _packet) {
+        public static void PlayerSetupInfo(Packet _packet) {
             string username = _packet.ReadString();
 
-            PlayerInfoPacket playerInfoPacket = new PlayerInfoPacket(_packet.FromClient, username);
-            PacketManager.instance.PacketReceived(_packet, playerInfoPacket);
+            PlayerSetupInfoPacket playerSetupInfoPacket = new PlayerSetupInfoPacket(_packet.FromClient, username);
+            PacketManager.instance.PacketReceived(_packet, playerSetupInfoPacket);
         }
 
         public static void PlayerReady(Packet _packet) {
@@ -625,7 +626,7 @@ namespace USNL {
             CallOnPingPacketCallbacks,
             CallOnClientInputPacketCallbacks,
             CallOnRaycastFromCameraPacketCallbacks,
-            CallOnPlayerInfoPacketCallbacks,
+            CallOnPlayerSetupInfoPacketCallbacks,
             CallOnPlayerReadyPacketCallbacks,
         };
 
@@ -638,7 +639,7 @@ namespace USNL {
         public static event CallbackEvent OnPingPacket;
         public static event CallbackEvent OnClientInputPacket;
         public static event CallbackEvent OnRaycastFromCameraPacket;
-        public static event CallbackEvent OnPlayerInfoPacket;
+        public static event CallbackEvent OnPlayerSetupInfoPacket;
         public static event CallbackEvent OnPlayerReadyPacket;
 
         public static void CallOnServerStartedCallbacks(object _param) { if (OnServerStarted != null) { OnServerStarted(_param); } }
@@ -650,7 +651,7 @@ namespace USNL {
         public static void CallOnPingPacketCallbacks(object _param) { if (OnPingPacket != null) { OnPingPacket(_param); } }
         public static void CallOnClientInputPacketCallbacks(object _param) { if (OnClientInputPacket != null) { OnClientInputPacket(_param); } }
         public static void CallOnRaycastFromCameraPacketCallbacks(object _param) { if (OnRaycastFromCameraPacket != null) { OnRaycastFromCameraPacket(_param); } }
-        public static void CallOnPlayerInfoPacketCallbacks(object _param) { if (OnPlayerInfoPacket != null) { OnPlayerInfoPacket(_param); } }
+        public static void CallOnPlayerSetupInfoPacketCallbacks(object _param) { if (OnPlayerSetupInfoPacket != null) { OnPlayerSetupInfoPacket(_param); } }
         public static void CallOnPlayerReadyPacketCallbacks(object _param) { if (OnPlayerReadyPacket != null) { OnPlayerReadyPacket(_param); } }
     }
 }

@@ -174,7 +174,7 @@ public class SimpleBird : MonoBehaviour {
             swoopLerp = Mathf.Clamp(swoopLerp + (swoopSpeed * Time.deltaTime), 0, 1);
 
             if (Vector3.Distance(transform.position, playerTarget.position) < 0.5f) {
-                playerTarget.GetComponent<Health>().ChangeHealth(-Mathf.Abs(damage));
+                playerTarget.GetComponent<Health>().ChangeHealth(-Mathf.Abs(damage), -1);
                 swoopLerp = 0f;
                 flyToTargetIndex = 2;
             }

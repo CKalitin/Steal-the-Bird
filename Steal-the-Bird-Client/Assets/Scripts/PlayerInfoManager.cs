@@ -7,18 +7,18 @@ using UnityEngine;
 [Serializable]
 public class PlayerInfo {
     [SerializeField] private string username;
-
+    
     [SerializeField] private float damageDealt;
     [SerializeField] private float damageTaken;
-
+    
     [SerializeField] private int playerKills;
     [SerializeField] private int playerDeaths;
-
+    
     [SerializeField] private int enemyKills;
     [SerializeField] private int enemyDeaths;
-
+    
     [SerializeField] private bool ready;
-
+    
     public PlayerInfo() {
         username = "";
         damageDealt = 0f;
@@ -46,10 +46,10 @@ public class PlayerInfo {
 
 public class PlayerInfoManager : MonoBehaviour {
     #region Variables
-
+    
     public static PlayerInfoManager instance;
 
-    public List<PlayerInfo> playerInfos = new List<PlayerInfo>();
+    public List<PlayerInfo> playerInfos = null;
 
     public List<PlayerInfo> PlayerInfos { get => playerInfos; set => playerInfos = value; }
 
@@ -64,56 +64,51 @@ public class PlayerInfoManager : MonoBehaviour {
             Debug.Log($"Match Manager instance already exists on ({gameObject}), destroying this.");
             Destroy(this);
         }
-        
-        Initialize();
     }
 
     private void OnEnable() {
-        USNL.CallbackEvents.OnPlayerSetupInfoPacket += OnPlayerSetupInfoPacket;
+        USNL.CallbackEvents.OnPlayerInfoPacket += OnPlayerInfoPacket;
         USNL.CallbackEvents.OnPlayerReadyPacket += OnPlayerReadyPacket;
-        USNL.CallbackEvents.OnClientDisconnected += OnClientDisconnected;
+        USNL.CallbackEvents.OnServerInfoPacket += OnServerInfoPacket;
     }
 
     private void OnDisable() {
-        USNL.CallbackEvents.OnPlayerSetupInfoPacket -= OnPlayerSetupInfoPacket;
+        USNL.CallbackEvents.OnPlayerInfoPacket -= OnPlayerInfoPacket;
         USNL.CallbackEvents.OnPlayerReadyPacket -= OnPlayerReadyPacket;
-        USNL.CallbackEvents.OnClientDisconnected -= OnClientDisconnected;
-    }
-
-    #endregion
-    
-    #region Player Info Management
-
-    private void Initialize() {
-        playerInfos = new List<PlayerInfo>();
-        for (int i = 0; i < USNL.ServerManager.instance.ServerConfig.MaxClients; i++)
-            playerInfos.Add(new PlayerInfo());
-    }
-
-    public void SendPlayerInfo(int _id) {
-        USNL.PacketSend.PlayerInfo(_id, playerInfos[_id].Username, playerInfos[_id].DamageDealt, playerInfos[_id].DamageTaken, playerInfos[_id].PlayerKills, playerInfos[_id].PlayerDeaths, playerInfos[_id].EnemyKills, playerInfos[_id].EnemyDeaths);
+        USNL.CallbackEvents.OnServerInfoPacket -= OnServerInfoPacket;
     }
 
     #endregion
 
     #region Callbacks
 
-    private void OnPlayerSetupInfoPacket(object _packetObject) {
-        USNL.PlayerSetupInfoPacket packet = (USNL.PlayerSetupInfoPacket)_packetObject;
-        playerInfos[packet.FromClient].Username = packet.Username;
+    private void OnPlayerInfoPacket(object _packetObject) {
+        USNL.PlayerInfoPacket packet = (USNL.PlayerInfoPacket)_packetObject;
+
+        if (playerInfos.Count <= 0) return;
+        
+        playerInfos[packet.ClientId].Username = packet.Username;
+        playerInfos[packet.ClientId].DamageDealt = packet.DamageDealt;
+        playerInfos[packet.ClientId].DamageTaken = packet.DamageTaken;
+        playerInfos[packet.ClientId].PlayerKills = packet.PlayerKills;
+        playerInfos[packet.ClientId].PlayerDeaths = packet.PlayerDeaths;
+        playerInfos[packet.ClientId].EnemyKills = packet.EnemyKills;
+        playerInfos[packet.ClientId].EnemyDeaths = packet.EnemyDeaths;
     }
 
     private void OnPlayerReadyPacket(object _packetObject) {
         USNL.PlayerReadyPacket packet = (USNL.PlayerReadyPacket)_packetObject;
-        playerInfos[packet.FromClient].Ready = packet.Ready;
+        playerInfos[packet.ClientId].Ready = packet.Ready;
     }
 
-    private void OnClientDisconnected(object _clientIdObject) {
-        int clientId = (int)_clientIdObject;
-
-        playerInfos[clientId] = new PlayerInfo();
-
-        SendPlayerInfo(clientId);
+    private void OnServerInfoPacket(object _clientIdObject) {
+        USNL.Package.ServerInfoPacket packet = (USNL.Package.ServerInfoPacket)_clientIdObject;
+        
+        if (playerInfos.Count > 0) return;
+        
+        playerInfos = new List<PlayerInfo>();
+        for (int i = 0; i < packet.MaxClients; i++)
+            playerInfos.Add(new PlayerInfo());
     }
 
     #endregion

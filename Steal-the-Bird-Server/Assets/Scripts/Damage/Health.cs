@@ -15,12 +15,6 @@ public class Health : MonoBehaviour {
         //currentHealth = maxHealth;
     }
     
-    public void ChangeHealth(float _damage) {
-        currentHealth += _damage;
-        if (currentHealth <= 0)
-            if (destroyOnZeroHealth) Destroy(gameObject);
-    }
-
     public void ChangeHealth(float _damage, int _damagerClientId) {
         currentHealth += _damage;
         
@@ -30,23 +24,34 @@ public class Health : MonoBehaviour {
     }
 
     private void HandlePlayerInfo(float _damage, int _damagerClientId) {
-        if (_damagerClientId >= 0) {
-            PlayerInfoManager.instance.PlayerInfos[_damagerClientId].DamageDealt += _damage;
-        }
+        bool updateDamagerInfo = false;
 
+        if (_damagerClientId >= 0) {
+            PlayerInfoManager.instance.PlayerInfos[_damagerClientId].DamageDealt += Mathf.Abs(_damage);
+            updateDamagerInfo = true;
+        }
+        
         if (GetComponent<PlayerController>() != null) {
             PlayerController pc = GetComponent<PlayerController>();
 
-            PlayerInfoManager.instance.PlayerInfos[pc.ClientId].DamageTaken += _damage;
+            PlayerInfoManager.instance.PlayerInfos[pc.ClientId].DamageTaken += Mathf.Abs(_damage);
 
             if (currentHealth <= 0 & _damagerClientId >= 0) {
                 PlayerInfoManager.instance.PlayerInfos[pc.ClientId].PlayerDeaths += 1;
                 PlayerInfoManager.instance.PlayerInfos[_damagerClientId].PlayerKills += 1;
+                updateDamagerInfo = true;
             } else if (currentHealth <= 0) {
                 PlayerInfoManager.instance.PlayerInfos[pc.ClientId].EnemyDeaths += 1;
             }
+
+            PlayerInfoManager.instance.SendPlayerInfo(pc.ClientId);
         } else {
-            if (currentHealth <= 0 & destroyOnZeroHealth & _damagerClientId >= 0) PlayerInfoManager.instance.PlayerInfos[_damagerClientId].EnemyKills += 1;
+            if (currentHealth <= 0 & destroyOnZeroHealth & _damagerClientId >= 0) {
+                PlayerInfoManager.instance.PlayerInfos[_damagerClientId].EnemyKills += 1;
+                updateDamagerInfo = true;
+            }
         }
+
+        if (updateDamagerInfo) PlayerInfoManager.instance.SendPlayerInfo(_damagerClientId);
     }
 }

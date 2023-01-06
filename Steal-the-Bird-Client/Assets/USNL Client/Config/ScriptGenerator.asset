@@ -27,7 +27,7 @@ MonoBehaviour:
       variableType: 7
     protocol: 0
     notes: 
-  - packetName: Player Info
+  - packetName: Player Setup Info
     packetVariables:
     - variableName: Username
       variableType: 6
@@ -103,6 +103,8 @@ MonoBehaviour:
     notes: 
   - packetName: Player Ready
     packetVariables:
+    - variableName: Client Id
+      variableType: 2
     - variableName: Ready
       variableType: 5
     sendType: 1

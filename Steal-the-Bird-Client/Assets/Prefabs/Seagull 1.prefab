@@ -338,8 +338,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55d511f0a14313740b84c9b7fd3c1de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sinkSpeed: 0.09
+  sinkSpeed: 0.055
   fallSpeedDivider: 42
+  despawnTime: 60
   birdAnimator: {fileID: 4430238877880163190}
 --- !u!114 &4430238877880163190
 MonoBehaviour:
