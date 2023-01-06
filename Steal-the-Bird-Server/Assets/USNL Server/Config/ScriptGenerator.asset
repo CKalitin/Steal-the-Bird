@@ -27,7 +27,7 @@ MonoBehaviour:
       variableType: 7
     protocol: 0
     notes: 
-  - packetName: Player Info
+  - packetName: Player Setup Info
     packetVariables:
     - variableName: Username
       variableType: 6
@@ -98,15 +98,19 @@ MonoBehaviour:
       variableType: 2
     - variableName: Enemy Deaths
       variableType: 2
+    - variableName: Score
+      variableType: 2
     sendType: 1
     protocol: 0
     notes: 
   - packetName: Player Ready
     packetVariables:
+    - variableName: Client Id
+      variableType: 2
     - variableName: Ready
       variableType: 5
     sendType: 1
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 000101
-  ServerPacketFoldouts: 000000000101
+  ClientPacketFoldouts: 000000
+  ServerPacketFoldouts: 000000000100

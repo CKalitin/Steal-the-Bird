@@ -98,6 +98,8 @@ MonoBehaviour:
       variableType: 2
     - variableName: Enemy Deaths
       variableType: 2
+    - variableName: Score
+      variableType: 2
     sendType: 1
     protocol: 0
     notes: 

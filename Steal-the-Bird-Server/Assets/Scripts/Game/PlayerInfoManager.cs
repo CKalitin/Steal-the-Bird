@@ -18,6 +18,8 @@ public class PlayerInfo {
     [SerializeField] private int enemyDeaths;
 
     [SerializeField] private bool ready;
+    
+    [SerializeField] private int score;
 
     public PlayerInfo() {
         username = "";
@@ -28,6 +30,7 @@ public class PlayerInfo {
         enemyKills = 0;
         enemyDeaths = 0;
         ready = false;
+        score = 0;
     }
 
     public string Username { get => username; set => username = value; }
@@ -42,6 +45,35 @@ public class PlayerInfo {
     public int EnemyDeaths { get => enemyDeaths; set => enemyDeaths = value; }
 
     public bool Ready { get => ready; set => ready = value; }
+    
+    public int Score { get => score; set => score = value; }
+
+    public void UpdatePlayerScore() {
+        ScoreConfig sc = PlayerInfoManager.instance.ScoreConfig;
+        score = (int) (sc.PlayerKillScore * playerKills + sc.PlayerDeathScore * playerDeaths + sc.EnemyKillScore * enemyKills + sc.EnemyDeathScore * enemyDeaths);
+        score += Mathf.RoundToInt(sc.DamageDealtScoreMultipler * damageDealt + sc.DamageTakenScoreMultipler * damageTaken);
+    }
+}
+
+[Serializable]
+public struct ScoreConfig {
+    [SerializeField] private int playerKillScore;
+    [SerializeField] private int playerDeathScore;
+    [Space]
+    [SerializeField] private int enemyKillScore;
+    [SerializeField] private int enemyDeathScore;
+    [Space]
+    [SerializeField] private float damageDealtScoreMultipler;
+    [SerializeField] private float damageTakenScoreMultipler;
+
+    public int PlayerKillScore { get => playerKillScore; set => playerKillScore = value; }
+    public int PlayerDeathScore { get => playerDeathScore; set => playerDeathScore = value; }
+    
+    public int EnemyKillScore { get => enemyKillScore; set => enemyKillScore = value; }
+    public int EnemyDeathScore { get => enemyDeathScore; set => enemyDeathScore = value; }
+
+    public float DamageDealtScoreMultipler { get => damageDealtScoreMultipler; set => damageDealtScoreMultipler = value; }
+    public float DamageTakenScoreMultipler { get => damageTakenScoreMultipler; set => damageTakenScoreMultipler = value; }
 }
 
 public class PlayerInfoManager : MonoBehaviour {
@@ -49,8 +81,11 @@ public class PlayerInfoManager : MonoBehaviour {
 
     public static PlayerInfoManager instance;
 
-    public List<PlayerInfo> playerInfos = new List<PlayerInfo>();
+    [SerializeField] private ScoreConfig scoreConfig;
+    [Space]
+    [SerializeField] private List<PlayerInfo> playerInfos = new List<PlayerInfo>();
 
+    public ScoreConfig ScoreConfig { get => scoreConfig; set => scoreConfig = value; }
     public List<PlayerInfo> PlayerInfos { get => playerInfos; set => playerInfos = value; }
 
     #endregion
@@ -91,7 +126,8 @@ public class PlayerInfoManager : MonoBehaviour {
     }
 
     public void SendPlayerInfo(int _id) {
-        USNL.PacketSend.PlayerInfo(_id, playerInfos[_id].Username, playerInfos[_id].DamageDealt, playerInfos[_id].DamageTaken, playerInfos[_id].PlayerKills, playerInfos[_id].PlayerDeaths, playerInfos[_id].EnemyKills, playerInfos[_id].EnemyDeaths);
+        playerInfos[_id].UpdatePlayerScore();
+        USNL.PacketSend.PlayerInfo(_id, playerInfos[_id].Username, playerInfos[_id].DamageDealt, playerInfos[_id].DamageTaken, playerInfos[_id].PlayerKills, playerInfos[_id].PlayerDeaths, playerInfos[_id].EnemyKills, playerInfos[_id].EnemyDeaths, playerInfos[_id].Score);
     }
 
     #endregion

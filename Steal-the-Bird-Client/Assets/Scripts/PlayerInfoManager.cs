@@ -7,18 +7,20 @@ using UnityEngine;
 [Serializable]
 public class PlayerInfo {
     [SerializeField] private string username;
-    
+
     [SerializeField] private float damageDealt;
     [SerializeField] private float damageTaken;
-    
+
     [SerializeField] private int playerKills;
     [SerializeField] private int playerDeaths;
-    
+
     [SerializeField] private int enemyKills;
     [SerializeField] private int enemyDeaths;
-    
+
     [SerializeField] private bool ready;
-    
+
+    [SerializeField] private int score;
+
     public PlayerInfo() {
         username = "";
         damageDealt = 0f;
@@ -28,6 +30,7 @@ public class PlayerInfo {
         enemyKills = 0;
         enemyDeaths = 0;
         ready = false;
+        score = 0;
     }
 
     public string Username { get => username; set => username = value; }
@@ -42,6 +45,8 @@ public class PlayerInfo {
     public int EnemyDeaths { get => enemyDeaths; set => enemyDeaths = value; }
 
     public bool Ready { get => ready; set => ready = value; }
+
+    public int Score { get => score; set => score = value; }
 }
 
 public class PlayerInfoManager : MonoBehaviour {
@@ -49,7 +54,7 @@ public class PlayerInfoManager : MonoBehaviour {
     
     public static PlayerInfoManager instance;
 
-    public List<PlayerInfo> playerInfos = null;
+    [SerializeField] private List<PlayerInfo> playerInfos = null;
 
     public List<PlayerInfo> PlayerInfos { get => playerInfos; set => playerInfos = value; }
 
@@ -94,6 +99,7 @@ public class PlayerInfoManager : MonoBehaviour {
         playerInfos[packet.ClientId].PlayerDeaths = packet.PlayerDeaths;
         playerInfos[packet.ClientId].EnemyKills = packet.EnemyKills;
         playerInfos[packet.ClientId].EnemyDeaths = packet.EnemyDeaths;
+        playerInfos[packet.ClientId].Score = packet.Score;
     }
 
     private void OnPlayerReadyPacket(object _packetObject) {

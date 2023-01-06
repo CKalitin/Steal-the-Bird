@@ -112,8 +112,9 @@ namespace USNL {
         private int playerDeaths;
         private int enemyKills;
         private int enemyDeaths;
+        private int score;
 
-        public PlayerInfoPacket(int _clientId, string _username, float _damageDealt, float _damageTaken, int _playerKills, int _playerDeaths, int _enemyKills, int _enemyDeaths) {
+        public PlayerInfoPacket(int _clientId, string _username, float _damageDealt, float _damageTaken, int _playerKills, int _playerDeaths, int _enemyKills, int _enemyDeaths, int _score) {
             clientId = _clientId;
             username = _username;
             damageDealt = _damageDealt;
@@ -122,6 +123,7 @@ namespace USNL {
             playerDeaths = _playerDeaths;
             enemyKills = _enemyKills;
             enemyDeaths = _enemyDeaths;
+            score = _score;
         }
 
         public int ClientId { get => clientId; set => clientId = value; }
@@ -132,6 +134,7 @@ namespace USNL {
         public int PlayerDeaths { get => playerDeaths; set => playerDeaths = value; }
         public int EnemyKills { get => enemyKills; set => enemyKills = value; }
         public int EnemyDeaths { get => enemyDeaths; set => enemyDeaths = value; }
+        public int Score { get => score; set => score = value; }
     }
 
     public struct PlayerReadyPacket {
@@ -225,8 +228,9 @@ namespace USNL {
             int playerDeaths = _packet.ReadInt();
             int enemyKills = _packet.ReadInt();
             int enemyDeaths = _packet.ReadInt();
+            int score = _packet.ReadInt();
 
-            USNL.PlayerInfoPacket playerInfoPacket = new USNL.PlayerInfoPacket(clientId, username, damageDealt, damageTaken, playerKills, playerDeaths, enemyKills, enemyDeaths);
+            USNL.PlayerInfoPacket playerInfoPacket = new USNL.PlayerInfoPacket(clientId, username, damageDealt, damageTaken, playerKills, playerDeaths, enemyKills, enemyDeaths, score);
             Package.PacketManager.instance.PacketReceived(_packet, playerInfoPacket);
         }
 
@@ -362,19 +366,19 @@ namespace USNL.Package {
 
     public struct ServerInfoPacket {
         private string serverName;
-        private int[] connectedClientsIds;
+        private int[] connectedClientIds;
         private int maxClients;
         private bool serverFull;
 
-        public ServerInfoPacket(string _serverName, int[] _connectedClientsIds, int _maxClients, bool _serverFull) {
+        public ServerInfoPacket(string _serverName, int[] _connectedClientIds, int _maxClients, bool _serverFull) {
             serverName = _serverName;
-            connectedClientsIds = _connectedClientsIds;
+            connectedClientIds = _connectedClientIds;
             maxClients = _maxClients;
             serverFull = _serverFull;
         }
 
         public string ServerName { get => serverName; set => serverName = value; }
-        public int[] ConnectedClientsIds { get => connectedClientsIds; set => connectedClientsIds = value; }
+        public int[] ConnectedClientIds { get => connectedClientIds; set => connectedClientIds = value; }
         public int MaxClients { get => maxClients; set => maxClients = value; }
         public bool ServerFull { get => serverFull; set => serverFull = value; }
     }
@@ -640,11 +644,11 @@ namespace USNL.Package {
 
         public static void ServerInfo(Package.Packet _packet) {
             string serverName = _packet.ReadString();
-            int[] connectedClientsIds = _packet.ReadInts();
+            int[] connectedClientIds = _packet.ReadInts();
             int maxClients = _packet.ReadInt();
             bool serverFull = _packet.ReadBool();
 
-            Package.ServerInfoPacket serverInfoPacket = new Package.ServerInfoPacket(serverName, connectedClientsIds, maxClients, serverFull);
+            Package.ServerInfoPacket serverInfoPacket = new Package.ServerInfoPacket(serverName, connectedClientIds, maxClients, serverFull);
             Package.PacketManager.instance.PacketReceived(_packet, serverInfoPacket);
         }
 

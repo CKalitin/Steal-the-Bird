@@ -196,7 +196,7 @@ namespace USNL {
             }
         }
 
-        public static void PlayerInfo(int _clientId, string _username, float _damageDealt, float _damageTaken, int _playerKills, int _playerDeaths, int _enemyKills, int _enemyDeaths) {
+        public static void PlayerInfo(int _clientId, string _username, float _damageDealt, float _damageTaken, int _playerKills, int _playerDeaths, int _enemyKills, int _enemyDeaths, int _score) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerInfo)) {
                 _packet.Write(_clientId);
                 _packet.Write(_username);
@@ -206,6 +206,7 @@ namespace USNL {
                 _packet.Write(_playerDeaths);
                 _packet.Write(_enemyKills);
                 _packet.Write(_enemyDeaths);
+                _packet.Write(_score);
 
                 SendTCPDataToAll(_packet);
             }

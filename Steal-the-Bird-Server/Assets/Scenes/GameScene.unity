@@ -1308,6 +1308,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cbf9c91db6017440b889131417203aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreConfig:
+    playerKillScore: 50
+    playerDeathScore: -50
+    enemyKillScore: 5
+    enemyDeathScore: -50
+    damageDealtScoreMultipler: 0.15
+    damageTakenScoreMultipler: -0.15
+  playerInfos: []
 --- !u!1 &1472552713
 GameObject:
   m_ObjectHideFlags: 0
