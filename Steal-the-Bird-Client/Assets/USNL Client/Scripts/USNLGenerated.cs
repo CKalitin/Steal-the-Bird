@@ -39,6 +39,7 @@ namespace USNL {
         BirdDeath,
         PlayerInfo,
         PlayerReady,
+        HealthBar,
     }
 
     #endregion
@@ -150,6 +151,22 @@ namespace USNL {
         public bool Ready { get => ready; set => ready = value; }
     }
 
+    public struct HealthBarPacket {
+        private int clientId;
+        private float currentHealth;
+        private float maxHealth;
+
+        public HealthBarPacket(int _clientId, float _currentHealth, float _maxHealth) {
+            clientId = _clientId;
+            currentHealth = _currentHealth;
+            maxHealth = _maxHealth;
+        }
+
+        public int ClientId { get => clientId; set => clientId = value; }
+        public float CurrentHealth { get => currentHealth; set => currentHealth = value; }
+        public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    }
+
 
     #endregion
 
@@ -183,6 +200,7 @@ namespace USNL {
             { BirdDeath },
             { PlayerInfo },
             { PlayerReady },
+            { HealthBar },
         };
 
         public static void PlayerSpawned(Package.Packet _packet) {
@@ -240,6 +258,15 @@ namespace USNL {
 
             USNL.PlayerReadyPacket playerReadyPacket = new USNL.PlayerReadyPacket(clientId, ready);
             Package.PacketManager.instance.PacketReceived(_packet, playerReadyPacket);
+        }
+
+        public static void HealthBar(Package.Packet _packet) {
+            int clientId = _packet.ReadInt();
+            float currentHealth = _packet.ReadFloat();
+            float maxHealth = _packet.ReadFloat();
+
+            USNL.HealthBarPacket healthBarPacket = new USNL.HealthBarPacket(clientId, currentHealth, maxHealth);
+            Package.PacketManager.instance.PacketReceived(_packet, healthBarPacket);
         }
     }
 
@@ -333,6 +360,7 @@ namespace USNL.Package {
         BirdDeath,
         PlayerInfo,
         PlayerReady,
+        HealthBar,
     }
     #endregion
 
@@ -624,6 +652,7 @@ namespace USNL.Package {
             { USNL.PacketHandlers.BirdDeath },
             { USNL.PacketHandlers.PlayerInfo },
             { USNL.PacketHandlers.PlayerReady },
+            { USNL.PacketHandlers.HealthBar },
         };
 
         public static void Welcome(Package.Packet _packet) {
@@ -864,6 +893,7 @@ namespace USNL {
             CallOnBirdDeathPacketCallbacks,
             CallOnPlayerInfoPacketCallbacks,
             CallOnPlayerReadyPacketCallbacks,
+            CallOnHealthBarPacketCallbacks,
         };
 
         public static event CallbackEvent OnConnected;
@@ -894,6 +924,7 @@ namespace USNL {
         public static event CallbackEvent OnBirdDeathPacket;
         public static event CallbackEvent OnPlayerInfoPacket;
         public static event CallbackEvent OnPlayerReadyPacket;
+        public static event CallbackEvent OnHealthBarPacket;
 
         public static void CallOnConnectedCallbacks(object _param) { if (OnConnected != null) { OnConnected(_param); } }
         public static void CallOnDisconnectedCallbacks(object _param) { if (OnDisconnected != null) { OnDisconnected(_param); } }
@@ -923,6 +954,7 @@ namespace USNL {
         public static void CallOnBirdDeathPacketCallbacks(object _param) { if (OnBirdDeathPacket != null) { OnBirdDeathPacket(_param); } }
         public static void CallOnPlayerInfoPacketCallbacks(object _param) { if (OnPlayerInfoPacket != null) { OnPlayerInfoPacket(_param); } }
         public static void CallOnPlayerReadyPacketCallbacks(object _param) { if (OnPlayerReadyPacket != null) { OnPlayerReadyPacket(_param); } }
+        public static void CallOnHealthBarPacketCallbacks(object _param) { if (OnHealthBarPacket != null) { OnHealthBarPacket(_param); } }
     }
 }
 

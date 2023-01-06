@@ -45,6 +45,7 @@ public class WeaponRanged : MonoBehaviour {
         if (useAmmo && ammoAmount <= 0) return;
 
         RaycastHit hit;
+        Debug.DrawRay(shootPosition.position, shootPosition.forward * 15, Color.red, 2f);
         if (Physics.Raycast(shootPosition.position, shootPosition.forward, out hit, shotRange)) {
             damager.DealDamage(new Collider[1] { hit.collider }, -Mathf.Abs(shotDamage));
         }

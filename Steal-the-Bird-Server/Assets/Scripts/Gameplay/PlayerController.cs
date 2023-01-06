@@ -23,10 +23,18 @@ public class PlayerController : MonoBehaviour {
 
     USNL.ClientInput clientInput;
 
+    private float previousHealth = 0f;
+
     public int ClientId { get => clientId; set => clientId = value; }
+
+    private void Awake() {
+        previousHealth = health.CurrentHealth;
+    }
 
     private void Start() {
         clientInput = USNL.InputManager.instance.GetClientInput(clientId);
+
+        USNL.PacketSend.HealthBar(clientId, clientId, health.CurrentHealth, health.MaxHealth);
     }
 
     private void FixedUpdate() {
@@ -48,9 +56,14 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
+        if (health.CurrentHealth == previousHealth) return;
+        previousHealth = health.CurrentHealth;
+        
         if (health.CurrentHealth <= 0) {
             GameController.instance.OnPlayerDeath(ClientId);
             Destroy(gameObject);
         }
+
+        USNL.PacketSend.HealthBar(clientId, clientId, health.CurrentHealth, health.MaxHealth);
     }
 }

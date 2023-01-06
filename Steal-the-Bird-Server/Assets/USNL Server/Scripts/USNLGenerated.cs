@@ -40,6 +40,7 @@ namespace USNL {
         BirdDeath,
         PlayerInfo,
         PlayerReady,
+        HealthBar,
     }
 
     #endregion
@@ -220,6 +221,16 @@ namespace USNL {
                 SendTCPDataToAll(_packet);
             }
         }
+
+        public static void HealthBar(int _toClient, int _clientId, float _healthBar, float _maxHealth) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.HealthBar)) {
+                _packet.Write(_clientId);
+                _packet.Write(_healthBar);
+                _packet.Write(_maxHealth);
+
+                SendTCPData(_toClient, _packet);
+            }
+        }
         }
 
     #endregion
@@ -262,6 +273,7 @@ namespace USNL.Package {
         BirdDeath,
         PlayerInfo,
         PlayerReady,
+        HealthBar,
     }
     #endregion
 
@@ -455,10 +467,10 @@ namespace USNL.Package {
             }
         }
 
-        public static void ServerInfo(int _toClient, string _serverName, int[] _connectedClientsIds, int _maxClients, bool _serverFull) {
+        public static void ServerInfo(int _toClient, string _serverName, int[] _connectedClientIds, int _maxClients, bool _serverFull) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.ServerInfo)) {
                 _packet.Write(_serverName);
-                _packet.Write(_connectedClientsIds);
+                _packet.Write(_connectedClientIds);
                 _packet.Write(_maxClients);
                 _packet.Write(_serverFull);
 
