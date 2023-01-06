@@ -39,6 +39,8 @@ public class PlayerInfoDisplay : MonoBehaviour {
     private void DisplayPlayerInfos() {
         int[] connectedClientIds = USNL.ClientManager.instance.ServerInfo.ConnectedClientIds;
 
+        //CheckForDisconnectedClients(connectedClientIds);
+
         List<PlayerInfo> pis = PlayerInfoManager.instance.PlayerInfos;
 
         int[] playerScores = new int[connectedClientIds.Length];
@@ -53,26 +55,27 @@ public class PlayerInfoDisplay : MonoBehaviour {
         for (int i = 0; i < pis.Count; i++)
             if (connectedClientIds.Contains(i)) playerKDRatios[i] = Mathf.Clamp(pis[i].PlayerKills, 1, 999999999) / Mathf.Clamp(pis[i].PlayerDeaths, 1, 999999999);
 
-        if (displayType == DisplayType.SortById) DisplayPlayerInfos(connectedClientIds);
-        Debug.Log($"1: ({String.Join(", ", connectedClientIds)}), ({String.Join(", ", playerScores)})");
-        Array.Sort(connectedClientIds, playerScores);
-        Debug.Log($"2: ({String.Join(", ", connectedClientIds)}), ({String.Join(", ", playerScores)})");
-        if (displayType == DisplayType.SortByScore) DisplayPlayerInfos(connectedClientIds);
-        Array.Sort(kDRatios, connectedClientIds);
-        if (displayType == DisplayType.SortByTotalKdRatio) DisplayPlayerInfos(connectedClientIds);
-        Array.Sort(playerKDRatios, connectedClientIds);
-        if (displayType == DisplayType.SortByPlayerKdRatio) DisplayPlayerInfos(connectedClientIds);
+        if (displayType == DisplayType.SortById) {
+            DisplayPlayerInfos(connectedClientIds);
+        } else if (displayType == DisplayType.SortByScore) {
+            //Debug.Log($"1: ({String.Join(", ", connectedClientIds)}), ({String.Join(", ", playerScores)})");
+            int[] ids = connectedClientIds.OrderBy(x => -playerScores[x]).ToArray();
+            DisplayPlayerInfos(ids);
+        } else if (displayType == DisplayType.SortByTotalKdRatio) {
+            int[] ids = connectedClientIds.OrderBy(x => -kDRatios[x]).ToArray();
+            DisplayPlayerInfos(ids);
+        } else if (displayType == DisplayType.SortByPlayerKdRatio) {
+            int[] ids = connectedClientIds.OrderBy(x => -playerKDRatios[x]).ToArray();
+            DisplayPlayerInfos(connectedClientIds);
+        }
     }
 
     private void DisplayPlayerInfos(int[] indexes) {
-        int[] clientIdsByScore = new int[USNL.ClientManager.instance.ServerInfo.ConnectedClientIds.Length];
-        Array.Sort(clientIdsByScore);
-
         int count = 0;
-        for (int i = 0; i < clientIdsByScore.Length; i++) {
+        for (int i = 0; i < indexes.Length; i++) {
             if (count >= maxElements) return;
 
-            int x = clientIdsByScore[i];
+            int x = indexes[i];
             if (playerInfoElements.ContainsKey(x)) {
                 playerInfoElements[x].localPosition = new Vector3(0, -count * ySpacing, 0);
                 count++;
@@ -81,6 +84,16 @@ public class PlayerInfoDisplay : MonoBehaviour {
                 playerInfoElements[x].localPosition = Vector3.zero;
                 playerInfoElements[x].localPosition = new Vector3(0, -count * ySpacing, 0);
                 count++;
+            }
+        }
+    }
+
+    // TODO DELETE
+    private void CheckForDisconnectedClients(int[] connectedClientIds) {
+        for (int i = 0; i < playerInfoElements.Count; i++) {
+            if (!connectedClientIds.Contains(i)) {
+                if (playerInfoElements[i]) Destroy(playerInfoElements[i].gameObject);
+                playerInfoElements.Remove(i);
             }
         }
     }

@@ -1197,6 +1197,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1684617260368919642, guid: 7a2c1da262c15984e836693ff29794c6,
         type: 3}
+      propertyPath: ySpacing
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 1684617260368919642, guid: 7a2c1da262c15984e836693ff29794c6,
+        type: 3}
       propertyPath: maxElements
       value: 5
       objectReference: {fileID: 0}
