@@ -106,12 +106,14 @@ public class PlayerInfoManager : MonoBehaviour {
     private void OnEnable() {
         USNL.CallbackEvents.OnPlayerSetupInfoPacket += OnPlayerSetupInfoPacket;
         USNL.CallbackEvents.OnPlayerReadyPacket += OnPlayerReadyPacket;
+        USNL.CallbackEvents.OnClientConnected += OnClientConnected;
         USNL.CallbackEvents.OnClientDisconnected += OnClientDisconnected;
     }
 
     private void OnDisable() {
         USNL.CallbackEvents.OnPlayerSetupInfoPacket -= OnPlayerSetupInfoPacket;
         USNL.CallbackEvents.OnPlayerReadyPacket -= OnPlayerReadyPacket;
+        USNL.CallbackEvents.OnClientConnected -= OnClientConnected;
         USNL.CallbackEvents.OnClientDisconnected -= OnClientDisconnected;
     }
 
@@ -137,11 +139,22 @@ public class PlayerInfoManager : MonoBehaviour {
     private void OnPlayerSetupInfoPacket(object _packetObject) {
         USNL.PlayerSetupInfoPacket packet = (USNL.PlayerSetupInfoPacket)_packetObject;
         playerInfos[packet.FromClient].Username = packet.Username;
+
+        SendPlayerInfo(packet.FromClient);
     }
 
     private void OnPlayerReadyPacket(object _packetObject) {
         USNL.PlayerReadyPacket packet = (USNL.PlayerReadyPacket)_packetObject;
         playerInfos[packet.FromClient].Ready = packet.Ready;
+    }
+
+    private void OnClientConnected(object _clientIdObject) {
+        int clientId = (int)_clientIdObject;
+
+        for (int i = 0; i < playerInfos.Count; i++) {
+            if (USNL.ServerManager.instance.GetClientConnected(i))
+                SendPlayerInfo(i);
+        }
     }
 
     private void OnClientDisconnected(object _clientIdObject) {
