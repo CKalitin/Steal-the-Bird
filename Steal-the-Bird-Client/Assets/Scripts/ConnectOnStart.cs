@@ -34,7 +34,7 @@ public class ConnectOnStart : MonoBehaviour {
         for (int i = 0; i < deactivateOnConnect.Length; i++)
             deactivateOnConnect[i].SetActive(false);
 
-        USNL.PacketSend.PlayerSetupInfo(PlayerPrefs.GetString("Username"));
+        USNL.PacketSend.PlayerSetupInfo(PlayerPrefs.GetString("Username", "Username"), PlayerPrefs.GetInt("Character Id", 0));
     }
 
     private IEnumerator Timeout() {

@@ -31,12 +31,22 @@ MonoBehaviour:
     packetVariables:
     - variableName: Username
       variableType: 6
+    - variableName: Character Index
+      variableType: 2
     protocol: 0
     notes: 
   - packetName: Player Ready
     packetVariables:
     - variableName: Ready
       variableType: 5
+    protocol: 0
+    notes: 
+  - packetName: Level Settings
+    packetVariables:
+    - variableName: Level Index
+      variableType: 2
+    - variableName: Difficulty
+      variableType: 2
     protocol: 0
     notes: 
   serverPackets:
@@ -116,12 +126,30 @@ MonoBehaviour:
     packetVariables:
     - variableName: Client Id
       variableType: 2
-    - variableName: Health Bar
+    - variableName: Current Health
       variableType: 4
     - variableName: Max Health
       variableType: 4
     sendType: 0
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 000000
-  ServerPacketFoldouts: 00000000000000
+  - packetName: Level Settings
+    packetVariables:
+    - variableName: Level Index
+      variableType: 2
+    - variableName: Difficulty
+      variableType: 2
+    sendType: 0
+    protocol: 0
+    notes: 
+  - packetName: Player Config
+    packetVariables:
+    - variableName: Client Id
+      variableType: 2
+    - variableName: Character Id
+      variableType: 2
+    sendType: 0
+    protocol: 0
+    notes: 
+  ClientPacketFoldouts: 00000000
+  ServerPacketFoldouts: 000000000000000000

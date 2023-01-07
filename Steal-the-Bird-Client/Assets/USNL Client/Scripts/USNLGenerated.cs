@@ -11,6 +11,7 @@ namespace USNL {
         RaycastFromCamera,
         PlayerSetupInfo,
         PlayerReady,
+        LevelSettings,
     }
 
     public enum ServerPackets {
@@ -40,6 +41,8 @@ namespace USNL {
         PlayerInfo,
         PlayerReady,
         HealthBar,
+        LevelSettings,
+        PlayerConfig,
     }
 
     #endregion
@@ -167,6 +170,32 @@ namespace USNL {
         public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     }
 
+    public struct LevelSettingsPacket {
+        private int levelIndex;
+        private int difficulty;
+
+        public LevelSettingsPacket(int _levelIndex, int _difficulty) {
+            levelIndex = _levelIndex;
+            difficulty = _difficulty;
+        }
+
+        public int LevelIndex { get => levelIndex; set => levelIndex = value; }
+        public int Difficulty { get => difficulty; set => difficulty = value; }
+    }
+
+    public struct PlayerConfigPacket {
+        private int clientId;
+        private int characterId;
+
+        public PlayerConfigPacket(int _clientId, int _characterId) {
+            clientId = _clientId;
+            characterId = _characterId;
+        }
+
+        public int ClientId { get => clientId; set => clientId = value; }
+        public int CharacterId { get => characterId; set => characterId = value; }
+    }
+
 
     #endregion
 
@@ -201,6 +230,8 @@ namespace USNL {
             { PlayerInfo },
             { PlayerReady },
             { HealthBar },
+            { LevelSettings },
+            { PlayerConfig },
         };
 
         public static void PlayerSpawned(Package.Packet _packet) {
@@ -268,6 +299,22 @@ namespace USNL {
             USNL.HealthBarPacket healthBarPacket = new USNL.HealthBarPacket(clientId, currentHealth, maxHealth);
             Package.PacketManager.instance.PacketReceived(_packet, healthBarPacket);
         }
+
+        public static void LevelSettings(Package.Packet _packet) {
+            int levelIndex = _packet.ReadInt();
+            int difficulty = _packet.ReadInt();
+
+            USNL.LevelSettingsPacket levelSettingsPacket = new USNL.LevelSettingsPacket(levelIndex, difficulty);
+            Package.PacketManager.instance.PacketReceived(_packet, levelSettingsPacket);
+        }
+
+        public static void PlayerConfig(Package.Packet _packet) {
+            int clientId = _packet.ReadInt();
+            int characterId = _packet.ReadInt();
+
+            USNL.PlayerConfigPacket playerConfigPacket = new USNL.PlayerConfigPacket(clientId, characterId);
+            Package.PacketManager.instance.PacketReceived(_packet, playerConfigPacket);
+        }
     }
 
     #endregion
@@ -303,9 +350,10 @@ namespace USNL {
             }
         }
 
-        public static void PlayerSetupInfo(string _username) {
+        public static void PlayerSetupInfo(string _username, int _characterId) {
             using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.PlayerSetupInfo)) {
                 _packet.Write(_username);
+                _packet.Write(_characterId);
 
                 SendTCPData(_packet);
             }
@@ -314,6 +362,15 @@ namespace USNL {
         public static void PlayerReady(bool _ready) {
             using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.PlayerReady)) {
                 _packet.Write(_ready);
+
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void LevelSettings(int _levelIndex, int _difficulty) {
+            using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.LevelSettings)) {
+                _packet.Write(_levelIndex);
+                _packet.Write(_difficulty);
 
                 SendTCPData(_packet);
             }
@@ -332,6 +389,7 @@ namespace USNL.Package {
         RaycastFromCamera,
         PlayerSetupInfo,
         PlayerReady,
+        LevelSettings,
     }
 
     public enum ServerPackets {
@@ -361,6 +419,8 @@ namespace USNL.Package {
         PlayerInfo,
         PlayerReady,
         HealthBar,
+        LevelSettings,
+        PlayerConfig,
     }
     #endregion
 
@@ -653,6 +713,8 @@ namespace USNL.Package {
             { USNL.PacketHandlers.PlayerInfo },
             { USNL.PacketHandlers.PlayerReady },
             { USNL.PacketHandlers.HealthBar },
+            { USNL.PacketHandlers.LevelSettings },
+            { USNL.PacketHandlers.PlayerConfig },
         };
 
         public static void Welcome(Package.Packet _packet) {
@@ -894,6 +956,8 @@ namespace USNL {
             CallOnPlayerInfoPacketCallbacks,
             CallOnPlayerReadyPacketCallbacks,
             CallOnHealthBarPacketCallbacks,
+            CallOnLevelSettingsPacketCallbacks,
+            CallOnPlayerConfigPacketCallbacks,
         };
 
         public static event CallbackEvent OnConnected;
@@ -925,6 +989,8 @@ namespace USNL {
         public static event CallbackEvent OnPlayerInfoPacket;
         public static event CallbackEvent OnPlayerReadyPacket;
         public static event CallbackEvent OnHealthBarPacket;
+        public static event CallbackEvent OnLevelSettingsPacket;
+        public static event CallbackEvent OnPlayerConfigPacket;
 
         public static void CallOnConnectedCallbacks(object _param) { if (OnConnected != null) { OnConnected(_param); } }
         public static void CallOnDisconnectedCallbacks(object _param) { if (OnDisconnected != null) { OnDisconnected(_param); } }
@@ -955,6 +1021,8 @@ namespace USNL {
         public static void CallOnPlayerInfoPacketCallbacks(object _param) { if (OnPlayerInfoPacket != null) { OnPlayerInfoPacket(_param); } }
         public static void CallOnPlayerReadyPacketCallbacks(object _param) { if (OnPlayerReadyPacket != null) { OnPlayerReadyPacket(_param); } }
         public static void CallOnHealthBarPacketCallbacks(object _param) { if (OnHealthBarPacket != null) { OnHealthBarPacket(_param); } }
+        public static void CallOnLevelSettingsPacketCallbacks(object _param) { if (OnLevelSettingsPacket != null) { OnLevelSettingsPacket(_param); } }
+        public static void CallOnPlayerConfigPacketCallbacks(object _param) { if (OnPlayerConfigPacket != null) { OnPlayerConfigPacket(_param); } }
     }
 }
 

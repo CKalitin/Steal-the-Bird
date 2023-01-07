@@ -12,6 +12,7 @@ namespace USNL {
         RaycastFromCamera,
         PlayerSetupInfo,
         PlayerReady,
+        LevelSettings,
     }
 
     public enum ServerPackets {
@@ -41,6 +42,8 @@ namespace USNL {
         PlayerInfo,
         PlayerReady,
         HealthBar,
+        LevelSettings,
+        PlayerConfig,
     }
 
     #endregion
@@ -77,14 +80,17 @@ namespace USNL {
         private int fromClient;
 
         private string username;
+        private int characterIndex;
 
-        public PlayerSetupInfoPacket(int _fromClient, string _username) {
+        public PlayerSetupInfoPacket(int _fromClient, string _username, int _characterIndex) {
             fromClient = _fromClient;
             username = _username;
+            characterIndex = _characterIndex;
         }
 
         public int FromClient { get => fromClient; set => fromClient = value; }
         public string Username { get => username; set => username = value; }
+        public int CharacterIndex { get => characterIndex; set => characterIndex = value; }
     }
 
     public struct PlayerReadyPacket {
@@ -99,6 +105,23 @@ namespace USNL {
 
         public int FromClient { get => fromClient; set => fromClient = value; }
         public bool Ready { get => ready; set => ready = value; }
+    }
+
+    public struct LevelSettingsPacket {
+        private int fromClient;
+
+        private int levelIndex;
+        private int difficulty;
+
+        public LevelSettingsPacket(int _fromClient, int _levelIndex, int _difficulty) {
+            fromClient = _fromClient;
+            levelIndex = _levelIndex;
+            difficulty = _difficulty;
+        }
+
+        public int FromClient { get => fromClient; set => fromClient = value; }
+        public int LevelIndex { get => levelIndex; set => levelIndex = value; }
+        public int Difficulty { get => difficulty; set => difficulty = value; }
     }
 
 
@@ -222,11 +245,29 @@ namespace USNL {
             }
         }
 
-        public static void HealthBar(int _toClient, int _clientId, float _healthBar, float _maxHealth) {
+        public static void HealthBar(int _toClient, int _clientId, float _currentHealth, float _maxHealth) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.HealthBar)) {
                 _packet.Write(_clientId);
-                _packet.Write(_healthBar);
+                _packet.Write(_currentHealth);
                 _packet.Write(_maxHealth);
+
+                SendTCPData(_toClient, _packet);
+            }
+        }
+
+        public static void LevelSettings(int _toClient, int _levelIndex, int _difficulty) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.LevelSettings)) {
+                _packet.Write(_levelIndex);
+                _packet.Write(_difficulty);
+
+                SendTCPData(_toClient, _packet);
+            }
+        }
+
+        public static void PlayerConfig(int _toClient, int _clientId, int _characterId) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerConfig)) {
+                _packet.Write(_clientId);
+                _packet.Write(_characterId);
 
                 SendTCPData(_toClient, _packet);
             }
@@ -245,6 +286,7 @@ namespace USNL.Package {
         RaycastFromCamera,
         PlayerSetupInfo,
         PlayerReady,
+        LevelSettings,
     }
 
     public enum ServerPackets {
@@ -274,6 +316,8 @@ namespace USNL.Package {
         PlayerInfo,
         PlayerReady,
         HealthBar,
+        LevelSettings,
+        PlayerConfig,
     }
     #endregion
 
@@ -341,6 +385,7 @@ namespace USNL.Package {
             { RaycastFromCamera },
             { PlayerSetupInfo },
             { PlayerReady },
+            { LevelSettings },
         };
 
         public static void WelcomeReceived(Packet _packet) {
@@ -379,8 +424,9 @@ namespace USNL.Package {
 
         public static void PlayerSetupInfo(Packet _packet) {
             string username = _packet.ReadString();
+            int characterIndex = _packet.ReadInt();
 
-            PlayerSetupInfoPacket playerSetupInfoPacket = new PlayerSetupInfoPacket(_packet.FromClient, username);
+            PlayerSetupInfoPacket playerSetupInfoPacket = new PlayerSetupInfoPacket(_packet.FromClient, username, characterIndex);
             PacketManager.instance.PacketReceived(_packet, playerSetupInfoPacket);
         }
 
@@ -389,6 +435,14 @@ namespace USNL.Package {
 
             PlayerReadyPacket playerReadyPacket = new PlayerReadyPacket(_packet.FromClient, ready);
             PacketManager.instance.PacketReceived(_packet, playerReadyPacket);
+        }
+
+        public static void LevelSettings(Packet _packet) {
+            int levelIndex = _packet.ReadInt();
+            int difficulty = _packet.ReadInt();
+
+            LevelSettingsPacket levelSettingsPacket = new LevelSettingsPacket(_packet.FromClient, levelIndex, difficulty);
+            PacketManager.instance.PacketReceived(_packet, levelSettingsPacket);
         }
     }
 
@@ -641,6 +695,7 @@ namespace USNL {
             CallOnRaycastFromCameraPacketCallbacks,
             CallOnPlayerSetupInfoPacketCallbacks,
             CallOnPlayerReadyPacketCallbacks,
+            CallOnLevelSettingsPacketCallbacks,
         };
 
         public static event CallbackEvent OnServerStarted;
@@ -654,6 +709,7 @@ namespace USNL {
         public static event CallbackEvent OnRaycastFromCameraPacket;
         public static event CallbackEvent OnPlayerSetupInfoPacket;
         public static event CallbackEvent OnPlayerReadyPacket;
+        public static event CallbackEvent OnLevelSettingsPacket;
 
         public static void CallOnServerStartedCallbacks(object _param) { if (OnServerStarted != null) { OnServerStarted(_param); } }
         public static void CallOnServerStoppedCallbacks(object _param) { if (OnServerStopped != null) { OnServerStopped(_param); } }
@@ -666,6 +722,7 @@ namespace USNL {
         public static void CallOnRaycastFromCameraPacketCallbacks(object _param) { if (OnRaycastFromCameraPacket != null) { OnRaycastFromCameraPacket(_param); } }
         public static void CallOnPlayerSetupInfoPacketCallbacks(object _param) { if (OnPlayerSetupInfoPacket != null) { OnPlayerSetupInfoPacket(_param); } }
         public static void CallOnPlayerReadyPacketCallbacks(object _param) { if (OnPlayerReadyPacket != null) { OnPlayerReadyPacket(_param); } }
+        public static void CallOnLevelSettingsPacketCallbacks(object _param) { if (OnLevelSettingsPacket != null) { OnLevelSettingsPacket(_param); } }
     }
 }
 
