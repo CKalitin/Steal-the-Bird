@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 6679365863864408026}
   - component: {fileID: 4962451429328475404}
   m_Layer: 8
-  m_Name: Player
+  m_Name: Player 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349a82be78bd7c74e9104b90ff1641c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncedObjectTag: Player
+  syncedObjectTag: Player 2
   useLocalChangeValues: 0
   minPosChange: 0.001
   minRotChange: 0.001

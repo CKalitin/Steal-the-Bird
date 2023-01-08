@@ -40,7 +40,6 @@ public class MatchManager : MonoBehaviour {
         
         float timePassed = (float)(DateTime.Now - startTime).TotalSeconds;
         if (timePassed >= duration) {
-            timerActive = false;
             ChangeMatchState(targetMatchState);
         }
     }
@@ -52,8 +51,16 @@ public class MatchManager : MonoBehaviour {
 
         USNL.PacketSend.MatchUpdate((int)matchState);
     }
-
+    
+    // If _duration is lower than 0, it cancels the timer client side.
     public void NewCountdown(float _duration, MatchState _targetMatchState, string _countdownTag) {
+        // Cancel timer if _duration is lower than 0
+        if (_duration < 0) {
+            timerActive = false;
+        } else {
+            timerActive = true;
+        }
+
         startTime = DateTime.Now;
         duration = _duration;
         targetMatchState = _targetMatchState;

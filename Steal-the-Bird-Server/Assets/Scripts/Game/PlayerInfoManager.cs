@@ -7,6 +7,7 @@ using UnityEngine;
 [Serializable]
 public class PlayerInfo {
     [SerializeField] private string username;
+    [SerializeField] private int characterId;
 
     [SerializeField] private float damageDealt;
     [SerializeField] private float damageTaken;
@@ -23,6 +24,7 @@ public class PlayerInfo {
 
     public PlayerInfo() {
         username = "";
+        characterId = 0;
         damageDealt = 0f;
         damageTaken = 0f;
         playerKills = 0;
@@ -34,6 +36,7 @@ public class PlayerInfo {
     }
 
     public string Username { get => username; set => username = value; }
+    public int CharacterId { get => characterId; set => characterId = value; }
 
     public float DamageDealt { get => damageDealt; set => damageDealt = value; }
     public float DamageTaken { get => damageTaken; set => damageTaken = value; }
@@ -139,6 +142,7 @@ public class PlayerInfoManager : MonoBehaviour {
     private void OnPlayerSetupInfoPacket(object _packetObject) {
         USNL.PlayerSetupInfoPacket packet = (USNL.PlayerSetupInfoPacket)_packetObject;
         playerInfos[packet.FromClient].Username = packet.Username;
+        playerInfos[packet.FromClient].CharacterId = packet.CharacterId;
 
         SendPlayerInfo(packet.FromClient);
     }
@@ -146,14 +150,19 @@ public class PlayerInfoManager : MonoBehaviour {
     private void OnPlayerReadyPacket(object _packetObject) {
         USNL.PlayerReadyPacket packet = (USNL.PlayerReadyPacket)_packetObject;
         playerInfos[packet.FromClient].Ready = packet.Ready;
+
+        USNL.PacketSend.PlayerReady(packet.FromClient, packet.Ready);
     }
 
     private void OnClientConnected(object _clientIdObject) {
         int clientId = (int)_clientIdObject;
 
         for (int i = 0; i < playerInfos.Count; i++) {
-            if (USNL.ServerManager.instance.GetClientConnected(i))
+            if (USNL.ServerManager.instance.GetClientConnected(i)) {
                 SendPlayerInfo(i);
+                USNL.PacketSend.PlayerReady(i, playerInfos[i].Ready);
+                USNL.PacketSend.PlayerConfig(i, playerInfos[i].CharacterId, playerInfos[i].Username);
+            }
         }
     }
 
@@ -163,6 +172,8 @@ public class PlayerInfoManager : MonoBehaviour {
         playerInfos[clientId] = new PlayerInfo();
 
         SendPlayerInfo(clientId);
+        
+        USNL.PacketSend.PlayerConfig(clientId, -1, "");
     }
 
     #endregion

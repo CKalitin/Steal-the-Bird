@@ -358,8 +358,8 @@ Transform:
   m_Children:
   - {fileID: 752168275}
   - {fileID: 2086592672}
-  - {fileID: 506922441}
   - {fileID: 1439395358}
+  - {fileID: 1397683326}
   m_Father: {fileID: 1657050050}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -423,8 +423,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 241716385}
-  m_RootOrder: 2
+  m_Father: {fileID: 719998220}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &506922442
 MonoBehaviour:
@@ -440,7 +440,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnTime: 5
   playerSpawnPoint: {fileID: 840706316}
-  playerPrefab: {fileID: 2284219960324187443, guid: 8ba8a54e00b752f4c94985b229de6468, type: 3}
+  playerPrefabs:
+  - {fileID: 2284219960324187443, guid: 9b820e327d3c0124c9af948262970c6c, type: 3}
+  - {fileID: 2284219960324187443, guid: dd0c570e83cb7ac44a0d9c8e84317d52, type: 3}
+  - {fileID: 2284219960324187443, guid: 8ba8a54e00b752f4c94985b229de6468, type: 3}
 --- !u!1 &621677678
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,7 +571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7110925763707054694, guid: 07a14c5067869a4429dcb3a1e0dde3ff, type: 3}
       propertyPath: serverConfig.maxClients
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7110925763707054694, guid: 07a14c5067869a4429dcb3a1e0dde3ff, type: 3}
       propertyPath: serverConfig.serverName
@@ -683,6 +686,7 @@ Transform:
   - {fileID: 26650236}
   - {fileID: 641561348}
   - {fileID: 1861629655}
+  - {fileID: 506922441}
   m_Father: {fileID: 1657050050}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1264,6 +1268,50 @@ Transform:
   m_Father: {fileID: 621677679}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
+--- !u!1 &1397683325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1397683326}
+  - component: {fileID: 1397683327}
+  m_Layer: 0
+  m_Name: Lobby Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1397683326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397683325}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 241716385}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1397683327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397683325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09b70e6c40e467447845ab0c9e70cd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1439395357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,7 +1342,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 241716385}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1439395359
 MonoBehaviour:

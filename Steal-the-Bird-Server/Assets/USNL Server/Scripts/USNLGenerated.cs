@@ -80,17 +80,17 @@ namespace USNL {
         private int fromClient;
 
         private string username;
-        private int characterIndex;
+        private int characterId;
 
-        public PlayerSetupInfoPacket(int _fromClient, string _username, int _characterIndex) {
+        public PlayerSetupInfoPacket(int _fromClient, string _username, int _characterId) {
             fromClient = _fromClient;
             username = _username;
-            characterIndex = _characterIndex;
+            characterId = _characterId;
         }
 
         public int FromClient { get => fromClient; set => fromClient = value; }
         public string Username { get => username; set => username = value; }
-        public int CharacterIndex { get => characterIndex; set => characterIndex = value; }
+        public int CharacterId { get => characterId; set => characterId = value; }
     }
 
     public struct PlayerReadyPacket {
@@ -245,31 +245,32 @@ namespace USNL {
             }
         }
 
-        public static void HealthBar(int _toClient, int _clientId, float _currentHealth, float _maxHealth) {
+        public static void HealthBar(int _clientId, float _currentHealth, float _maxHealth) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.HealthBar)) {
                 _packet.Write(_clientId);
                 _packet.Write(_currentHealth);
                 _packet.Write(_maxHealth);
 
-                SendTCPData(_toClient, _packet);
+                SendTCPDataToAll(_packet);
             }
         }
 
-        public static void LevelSettings(int _toClient, int _levelIndex, int _difficulty) {
+        public static void LevelSettings(int _levelIndex, int _difficulty) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.LevelSettings)) {
                 _packet.Write(_levelIndex);
                 _packet.Write(_difficulty);
 
-                SendTCPData(_toClient, _packet);
+                SendTCPDataToAll(_packet);
             }
         }
 
-        public static void PlayerConfig(int _toClient, int _clientId, int _characterId) {
+        public static void PlayerConfig(int _clientId, int _characterId, string _username) {
             using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerConfig)) {
                 _packet.Write(_clientId);
                 _packet.Write(_characterId);
+                _packet.Write(_username);
 
-                SendTCPData(_toClient, _packet);
+                SendTCPDataToAll(_packet);
             }
         }
         }
@@ -424,9 +425,9 @@ namespace USNL.Package {
 
         public static void PlayerSetupInfo(Packet _packet) {
             string username = _packet.ReadString();
-            int characterIndex = _packet.ReadInt();
+            int characterId = _packet.ReadInt();
 
-            PlayerSetupInfoPacket playerSetupInfoPacket = new PlayerSetupInfoPacket(_packet.FromClient, username, characterIndex);
+            PlayerSetupInfoPacket playerSetupInfoPacket = new PlayerSetupInfoPacket(_packet.FromClient, username, characterId);
             PacketManager.instance.PacketReceived(_packet, playerSetupInfoPacket);
         }
 

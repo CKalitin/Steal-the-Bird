@@ -186,14 +186,17 @@ namespace USNL {
     public struct PlayerConfigPacket {
         private int clientId;
         private int characterId;
+        private string username;
 
-        public PlayerConfigPacket(int _clientId, int _characterId) {
+        public PlayerConfigPacket(int _clientId, int _characterId, string _username) {
             clientId = _clientId;
             characterId = _characterId;
+            username = _username;
         }
 
         public int ClientId { get => clientId; set => clientId = value; }
         public int CharacterId { get => characterId; set => characterId = value; }
+        public string Username { get => username; set => username = value; }
     }
 
 
@@ -311,8 +314,9 @@ namespace USNL {
         public static void PlayerConfig(Package.Packet _packet) {
             int clientId = _packet.ReadInt();
             int characterId = _packet.ReadInt();
+            string username = _packet.ReadString();
 
-            USNL.PlayerConfigPacket playerConfigPacket = new USNL.PlayerConfigPacket(clientId, characterId);
+            USNL.PlayerConfigPacket playerConfigPacket = new USNL.PlayerConfigPacket(clientId, characterId, username);
             Package.PacketManager.instance.PacketReceived(_packet, playerConfigPacket);
         }
     }

@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour {
 
     [Header("Management")]
     [SerializeField] private Transform playerSpawnPoint;
-    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject[] playerPrefabs;
 
     private Dictionary<int, PlayerController> playerControllers = new Dictionary<int, PlayerController>();
 
@@ -78,7 +78,7 @@ public class GameController : MonoBehaviour {
     #region Game Controller
 
     private void SpawnPlayer(int _clientId) {
-        GameObject newPlayer = Instantiate(playerPrefab, playerSpawnPoint.position, playerSpawnPoint.rotation);
+        GameObject newPlayer = Instantiate(playerPrefabs[PlayerInfoManager.instance.PlayerInfos[_clientId].CharacterId], playerSpawnPoint.position, playerSpawnPoint.rotation);
         newPlayer.GetComponent<PlayerController>().ClientId = _clientId;
         newPlayer.GetComponent<PlayerWeaponController>().ClientId = _clientId;
         playerControllers.Add(_clientId, newPlayer.GetComponent<PlayerController>());

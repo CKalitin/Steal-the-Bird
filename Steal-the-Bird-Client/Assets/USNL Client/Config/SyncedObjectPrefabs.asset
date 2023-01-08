@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SyncedObjectPrefabs
   m_EditorClassIdentifier: 
   syncedObjectStructs:
-  - tag: Player
+  - tag: Player 1
     prefab: {fileID: 7273311560703294795, guid: 351c6b65f56209d4493b010d3cbde58a,
       type: 3}
   - tag: Seagull
@@ -21,4 +21,10 @@ MonoBehaviour:
       type: 3}
   - tag: Ranged Weapon 1
     prefab: {fileID: 7941611912937212512, guid: c9a4a3aa91ce0d24eb0dd93cf238d0e4,
+      type: 3}
+  - tag: Player 2
+    prefab: {fileID: 7273311560703294795, guid: a3afbc573bb75664ea8236b9a0a6e08c,
+      type: 3}
+  - tag: Player 3
+    prefab: {fileID: 7273311560703294795, guid: b31d27a47f0a1e94b94d1c078de1475b,
       type: 3}

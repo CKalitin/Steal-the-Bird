@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
     private void Start() {
         clientInput = USNL.InputManager.instance.GetClientInput(clientId);
 
-        USNL.PacketSend.HealthBar(clientId, clientId, health.CurrentHealth, health.MaxHealth);
+        USNL.PacketSend.HealthBar(clientId, health.CurrentHealth, health.MaxHealth);
     }
 
     private void FixedUpdate() {
@@ -64,6 +64,6 @@ public class PlayerController : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        USNL.PacketSend.HealthBar(clientId, clientId, health.CurrentHealth, health.MaxHealth);
+        USNL.PacketSend.HealthBar(clientId, health.CurrentHealth, health.MaxHealth);
     }
 }

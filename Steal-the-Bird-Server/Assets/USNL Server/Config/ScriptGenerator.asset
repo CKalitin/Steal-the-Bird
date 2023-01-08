@@ -31,7 +31,7 @@ MonoBehaviour:
     packetVariables:
     - variableName: Username
       variableType: 6
-    - variableName: Character Index
+    - variableName: Character Id
       variableType: 2
     protocol: 0
     notes: 
@@ -130,7 +130,7 @@ MonoBehaviour:
       variableType: 4
     - variableName: Max Health
       variableType: 4
-    sendType: 0
+    sendType: 1
     protocol: 0
     notes: 
   - packetName: Level Settings
@@ -139,7 +139,7 @@ MonoBehaviour:
       variableType: 2
     - variableName: Difficulty
       variableType: 2
-    sendType: 0
+    sendType: 1
     protocol: 0
     notes: 
   - packetName: Player Config
@@ -148,8 +148,10 @@ MonoBehaviour:
       variableType: 2
     - variableName: Character Id
       variableType: 2
-    sendType: 0
+    - variableName: Username
+      variableType: 6
+    sendType: 1
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 00000000
-  ServerPacketFoldouts: 000000000000000000
+  ClientPacketFoldouts: 00010000
+  ServerPacketFoldouts: 010000000000000000
