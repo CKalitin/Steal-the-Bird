@@ -195,6 +195,14 @@ namespace USNL {
             isAttempingConnection = false;
         }
 
+        public void Disconnect() {
+            USNL.Package.Client.instance.Disconnect();
+        }
+
+        public bool CheckClientConnected(int _id) {
+            return ServerInfo.ConnectedClientIds.Contains(_id);
+        }
+
         #endregion
 
         #region IP and ID Functions

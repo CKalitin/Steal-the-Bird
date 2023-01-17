@@ -26,6 +26,10 @@ public class LobbyController : MonoBehaviour {
         }
     }
 
+    private void Update() {
+        CheckForDisconnectedClients();
+    }
+
     private void OnEnable() {
         USNL.CallbackEvents.OnPlayerConfigPacket += OnPlayerConfigPacket;
         USNL.CallbackEvents.OnPlayerReadyPacket += OnPlayerReadyPacket;
@@ -42,7 +46,7 @@ public class LobbyController : MonoBehaviour {
         USNL.PlayerConfigPacket packet = (USNL.PlayerConfigPacket)_packetObject;
 
         int id = GetIndex(packet.ClientId);
-
+        
         // If client disconnected
         if (packet.CharacterId <= 0) {
             characterSelections[id].Toggle(false);
@@ -56,9 +60,18 @@ public class LobbyController : MonoBehaviour {
             characters.Remove(id);
         }
 
+        if (packet.CharacterId < 0) return;
+        
         GameObject newCharacter = Instantiate(syncedObjectPrefabs.SyncedObjects[characterIdsToSyncedObjectTags[packet.CharacterId]], characterLocations[id]);
         newCharacter.transform.localPosition = Vector3.zero;
         characters.Add(id, newCharacter);
+    }
+
+    private void CheckForDisconnectedClients() {
+        for (int i = 0; i < characterSelections.Length; i++) {
+            if (USNL.ClientManager.instance.CheckClientConnected(i)) continue;
+            characterSelections[GetIndex(i)].Toggle(false);
+        }
     }
 
     private void OnPlayerReadyPacket(object _packetObject) {

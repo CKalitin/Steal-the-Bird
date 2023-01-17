@@ -23,38 +23,37 @@ public class PlayerInfoDisplay : MonoBehaviour {
     private Dictionary<int, Transform> playerInfoElements = new Dictionary<int, Transform>();
 
     private void Update() {
-        DisplayPlayerInfos();
+        if (!USNL.ClientManager.instance.IsConnected) return;
+
+        CheckForDisconnectedClients(USNL.ClientManager.instance.ServerInfo.ConnectedClientIds);
     }
 
     private void OnEnable() {
-        USNL.CallbackEvents.OnDisconnectClientPacket += OnClientDisconnected;
         USNL.CallbackEvents.OnPlayerInfoPacket += OnPlayerInfoPacket;
     }
-
+    
     private void OnDisable() {
-        USNL.CallbackEvents.OnDisconnectClientPacket -= OnClientDisconnected;
         USNL.CallbackEvents.OnPlayerInfoPacket -= OnPlayerInfoPacket;
     }
 
     private void DisplayPlayerInfos() {
         int[] connectedClientIds = USNL.ClientManager.instance.ServerInfo.ConnectedClientIds;
 
-        //CheckForDisconnectedClients(connectedClientIds);
-
         List<PlayerInfo> pis = PlayerInfoManager.instance.PlayerInfos;
 
         int[] playerScores = new int[connectedClientIds.Length];
-        for (int i = 0; i < pis.Count; i++)
+        for (int i = 0; i < playerScores.Length; i++) {
             if (connectedClientIds.Contains(i)) playerScores[i] = pis[i].Score;
+        }
         
         int[] kDRatios = new int[connectedClientIds.Length];
-        for (int i = 0; i < pis.Count; i++)
+        for (int i = 0; i < kDRatios.Length; i++)
             if (connectedClientIds.Contains(i)) kDRatios[i] = Mathf.Clamp(pis[i].PlayerKills + pis[i].EnemyKills, 1, 999999999) / Mathf.Clamp(pis[i].PlayerDeaths + pis[i].PlayerKills, 1, 999999999);
 
         int[] playerKDRatios = new int[connectedClientIds.Length];
-        for (int i = 0; i < pis.Count; i++)
+        for (int i = 0; i < playerKDRatios.Length; i++)
             if (connectedClientIds.Contains(i)) playerKDRatios[i] = Mathf.Clamp(pis[i].PlayerKills, 1, 999999999) / Mathf.Clamp(pis[i].PlayerDeaths, 1, 999999999);
-
+        
         if (displayType == DisplayType.SortById) {
             DisplayPlayerInfos(connectedClientIds);
         } else if (displayType == DisplayType.SortByScore) {
@@ -87,27 +86,16 @@ public class PlayerInfoDisplay : MonoBehaviour {
             }
         }
     }
-
-    // TODO DELETE
+    
     private void CheckForDisconnectedClients(int[] connectedClientIds) {
         for (int i = 0; i < playerInfoElements.Count; i++) {
-            if (!connectedClientIds.Contains(i)) {
-                if (playerInfoElements[i]) Destroy(playerInfoElements[i].gameObject);
+            if (!connectedClientIds.Contains(i) && playerInfoElements.ContainsKey(i)) {
+                if (playerInfoElements[i].gameObject != null) Destroy(playerInfoElements[i].gameObject);
                 playerInfoElements.Remove(i);
             }
         }
     }
-
-    private void OnClientDisconnected(object _clientIdObject) {
-        int clientId = (int)_clientIdObject;
-
-        // Remove player info element if it disconnects
-        if (playerInfoElements.ContainsKey(clientId)) {
-            Destroy(playerInfoElements[clientId].gameObject);
-            playerInfoElements.Remove(clientId);
-        }
-    }
-
+    
     private void OnPlayerInfoPacket(object _packetObject) {
         USNL.PlayerInfoPacket packet = (USNL.PlayerInfoPacket)_packetObject;
 

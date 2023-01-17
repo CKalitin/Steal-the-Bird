@@ -111,7 +111,6 @@ public class PlayerInfoManager : MonoBehaviour {
         USNL.Package.ServerInfoPacket packet = (USNL.Package.ServerInfoPacket)_clientIdObject;
         
         if (playerInfos.Count > 0) return;
-        
         playerInfos = new List<PlayerInfo>();
         for (int i = 0; i < packet.MaxClients; i++)
             playerInfos.Add(new PlayerInfo());

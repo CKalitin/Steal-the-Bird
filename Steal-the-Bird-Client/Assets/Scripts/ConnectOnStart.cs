@@ -12,7 +12,18 @@ public class ConnectOnStart : MonoBehaviour {
     [SerializeField] private GameObject[] activateOnConnect;
     [SerializeField] private GameObject[] deactivateOnConnect;
     [Space]
+    [SerializeField] private GameObject[] activateOnAwake;
+    [SerializeField] private GameObject[] deactivateOnAwake;
+    [Space]
     [SerializeField] private GameObject[] activateOnTimeout;
+
+    private void Awake() {
+        for (int i = 0; i < activateOnAwake.Length; i++)
+            activateOnAwake[i].SetActive(true);
+
+        for (int i = 0; i < deactivateOnAwake.Length; i++)
+            deactivateOnAwake[i].SetActive(false);
+    }
 
     private void Start() {
         USNL.ClientManager.instance.ConnectToServer(PlayerPrefs.GetInt("HostId"), port);
