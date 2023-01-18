@@ -19,6 +19,7 @@ public class MatchManager : MonoBehaviour {
     private DateTime startTime;
     private float duration;
     private MatchState targetMatchState;
+    private string countdownTag = "Match State Countdown";
 
     public MatchState MatchState { get => matchState; set => matchState = value; }
 
@@ -33,6 +34,17 @@ public class MatchManager : MonoBehaviour {
     
     private void Update() {
         Countdown();
+
+        if (USNL.ServerManager.GetNumberOfConnectedClients() <= 0)
+            ChangeMatchState(MatchState.Lobby);
+    }
+
+    private void OnEnable() {
+        USNL.CallbackEvents.OnClientConnected += OnClientConnected;
+    }
+
+    private void OnDisable() {
+        USNL.CallbackEvents.OnClientConnected -= OnClientConnected;
     }
 
     private void Countdown() {
@@ -53,7 +65,7 @@ public class MatchManager : MonoBehaviour {
     }
     
     // If _duration is lower than 0, it cancels the timer client side.
-    public void NewCountdown(float _duration, MatchState _targetMatchState, string _countdownTag) {
+    public void NewCountdown(float _duration, MatchState _targetMatchState) {
         // Cancel timer if _duration is lower than 0
         if (_duration < 0) {
             timerActive = false;
@@ -64,9 +76,15 @@ public class MatchManager : MonoBehaviour {
         startTime = DateTime.Now;
         duration = _duration;
         targetMatchState = _targetMatchState;
-        
+
         int[] startTimeArray = new int[4] { startTime.Hour, startTime.Minute, startTime.Second, startTime.Millisecond };
 
-        USNL.PacketSend.Countdown(startTimeArray, duration, _countdownTag);
+        USNL.PacketSend.Countdown(startTimeArray, duration, countdownTag);
+    }
+
+    private void OnClientConnected(object _clientIdObject) {
+        int[] startTimeArray = new int[4] { startTime.Hour, startTime.Minute, startTime.Second, startTime.Millisecond };
+
+        USNL.PacketSend.Countdown(startTimeArray, duration, countdownTag);
     }
 }

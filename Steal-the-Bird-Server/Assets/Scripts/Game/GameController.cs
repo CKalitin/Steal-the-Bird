@@ -116,7 +116,6 @@ public class GameController : MonoBehaviour {
 
     private void OnClientConnected(object _clientIdObject) {
         int clientId = (int)_clientIdObject;
-        SpawnPlayer(clientId);
 
         for (int i = 0; i < playerControllers.Count; i++) {
             USNL.PacketSend.PlayerSpawned(clientId, playerControllers[i].gameObject.GetComponent<PlayerController>().ClientId, playerControllers[i].gameObject.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
@@ -125,8 +124,11 @@ public class GameController : MonoBehaviour {
 
     private void OnClientDisconnected(object _clientIdObject) {
         int clientId = (int)_clientIdObject;
-        Destroy(playerControllers[clientId].gameObject);
-        playerControllers.Remove(clientId);
+        
+        if (playerControllers.ContainsKey(clientId)) {
+            Destroy(playerControllers[clientId].gameObject);
+            playerControllers.Remove(clientId);
+        }
     }
     
     #endregion

@@ -9,21 +9,17 @@ public class HealthBar : MonoBehaviour {
     private int clientId = -1;
 
     private void OnEnable() {
-        USNL.CallbackEvents.OnConnected += OnConnected;
         USNL.CallbackEvents.OnHealthBarPacket += OnHealthBarPacket;
     }
 
     private void OnDisable() {
-        USNL.CallbackEvents.OnConnected -= OnConnected;
         USNL.CallbackEvents.OnHealthBarPacket -= OnHealthBarPacket;
     }
-
-    private void OnConnected(object _object) {
-        clientId = USNL.ClientManager.instance.ClientId;
-    }
-
+    
     private void OnHealthBarPacket(object _packetObject) {
         USNL.HealthBarPacket packet = (USNL.HealthBarPacket)_packetObject;
+
+        clientId = USNL.ClientManager.instance.ClientId;
 
         if (packet.ClientId == clientId)
             healthBarImage.fillAmount = packet.CurrentHealth / packet.MaxHealth;

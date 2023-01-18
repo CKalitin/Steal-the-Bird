@@ -11,7 +11,7 @@ public class LobbyController : MonoBehaviour {
     private bool allReady;
 
     private void Update() {
-
+        CheckReadiness();
     }
     
     private void CheckReadiness() {
@@ -20,28 +20,34 @@ public class LobbyController : MonoBehaviour {
         for (int i = 0; i < PlayerInfoManager.instance.PlayerInfos.Count; i++) {
             if (PlayerInfoManager.instance.PlayerInfos[i].Ready) readyCount++;
         }
-
-        if (readyCount == 0 && !noneReady) {
-            noneReady = true;
-            oneOrMoreReady = false;
-            allReady = false;
-            MatchManager.instance.NewCountdown(-1, MatchState.InGame, "Lobby Countdown");
+        
+        if (readyCount == 0) {
+            if (!noneReady) {
+                noneReady = true;
+                oneOrMoreReady = false;
+                allReady = false;
+                MatchManager.instance.NewCountdown(-1, MatchState.InGame);
+            }
             return;
         }
 
-        if (readyCount > 0 && !oneOrMoreReady) {
-            oneOrMoreReady = true;
-            noneReady = false;
-            allReady = false;
-            MatchManager.instance.NewCountdown(waitTimeOneOrMoreReady, MatchState.InGame, "Lobby Countdown");
+        if (readyCount == USNL.ServerManager.GetNumberOfConnectedClients()) {
+            if (!allReady) {
+                noneReady = false;
+                oneOrMoreReady = false;
+                allReady = true;
+                MatchManager.instance.NewCountdown(waitTimeAllReady, MatchState.InGame);
+            }
             return;
         }
 
-        if (readyCount == PlayerInfoManager.instance.PlayerInfos.Count && !allReady) {
-            noneReady = false;
-            oneOrMoreReady = false;
-            allReady = true;
-            MatchManager.instance.NewCountdown(waitTimeAllReady, MatchState.InGame, "Lobby Countdown");
+        if (readyCount > 0) {
+            if (!oneOrMoreReady) {
+                oneOrMoreReady = true;
+                noneReady = false;
+                allReady = false;
+                MatchManager.instance.NewCountdown(waitTimeOneOrMoreReady, MatchState.InGame);
+            }
             return;
         }
     }
