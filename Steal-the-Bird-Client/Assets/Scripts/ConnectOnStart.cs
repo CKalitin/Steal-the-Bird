@@ -9,22 +9,8 @@ public class ConnectOnStart : MonoBehaviour {
     [SerializeField] private float timeoutDelay;
 
     [Header("GUI")]
-    [SerializeField] private GameObject[] activateOnConnect;
-    [SerializeField] private GameObject[] deactivateOnConnect;
-    [Space]
-    [SerializeField] private GameObject[] activateOnAwake;
-    [SerializeField] private GameObject[] deactivateOnAwake;
-    [Space]
     [SerializeField] private GameObject[] activateOnTimeout;
-
-    private void Awake() {
-        for (int i = 0; i < activateOnAwake.Length; i++)
-            activateOnAwake[i].SetActive(true);
-
-        for (int i = 0; i < deactivateOnAwake.Length; i++)
-            deactivateOnAwake[i].SetActive(false);
-    }
-
+    
     private void Start() {
         USNL.ClientManager.instance.ConnectToServer(PlayerPrefs.GetInt("HostId"), port);
         StartCoroutine(Timeout());
@@ -39,12 +25,6 @@ public class ConnectOnStart : MonoBehaviour {
     }
 
     private void OnConnected(object _object) {
-        for (int i = 0; i < activateOnConnect.Length; i++)
-            activateOnConnect[i].SetActive(true);
-
-        for (int i = 0; i < deactivateOnConnect.Length; i++)
-            deactivateOnConnect[i].SetActive(false);
-
         USNL.PacketSend.PlayerSetupInfo(PlayerPrefs.GetString("Username", "Username"), PlayerPrefs.GetInt("Character Id", 0));
     }
 
