@@ -79,7 +79,7 @@ public class PlayerRaycastManager : MonoBehaviour {
         Ray ray = playerCameras[packet.FromClient].ViewportPointToRay(packet.MousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 9999, raycastLayerMask)) {
-            if (pwcs.ContainsKey(packet.FromClient)) pwcs[packet.FromClient].AimWeapon(hit.point);
+            if (pwcs.ContainsKey(packet.FromClient)) pwcs[packet.FromClient].AimWeapon(hit.collider.transform.position);
         }
     }
 

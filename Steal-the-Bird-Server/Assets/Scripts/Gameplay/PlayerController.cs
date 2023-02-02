@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Other")]
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private PlayerWeaponController playerWeaponController;
     [SerializeField] private Health health;
 
     USNL.ClientInput clientInput;
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour {
     private float previousHealth = 0f;
 
     public int ClientId { get => clientId; set => clientId = value; }
+    public PlayerWeaponController PlayerWeaponController { get => playerWeaponController; set => playerWeaponController = value; }
 
     private void Awake() {
         previousHealth = health.CurrentHealth;

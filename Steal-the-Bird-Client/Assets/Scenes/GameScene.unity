@@ -1693,6 +1693,12 @@ Transform:
   m_Father: {fileID: 255395168}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+--- !u!1 &933618760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9136023645807981215, guid: 7fe48272c721bb243a45896f6012954a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1015356855}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &936845978
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,6 +2007,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2711510821906492249, guid: d56d89333c9797f49a1bb79608a40f3c,
     type: 3}
   m_PrefabInstance: {fileID: 1031494100}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1036251617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9136023645807981215, guid: 25aa2dfe7c3544b4fa3a2ce5a0682ac8,
+    type: 3}
+  m_PrefabInstance: {fileID: 504417892}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1043661706
 PrefabInstance:
@@ -2359,8 +2371,8 @@ MonoBehaviour:
   - {fileID: 797945626}
   enableInGame:
   - {fileID: 1135281207}
-  timedOutCanvas: {fileID: 0}
-  serverClosedCanvas: {fileID: 0}
+  timedOutCanvas: {fileID: 1036251617}
+  serverClosedCanvas: {fileID: 933618760}
 --- !u!4 &1513103155
 Transform:
   m_ObjectHideFlags: 0

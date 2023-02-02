@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9cddf25b656484ebf534999851372a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rateOfFire: 0.2
+  rateOfFire: 0.15
   shotDamage: 5
   shotRange: 100
   shootPosition: {fileID: 8364644507574377139}
@@ -56,6 +56,7 @@ MonoBehaviour:
   useAmmo: 0
   damager: {fileID: 4221777876913259617}
   animator: {fileID: 0}
+  playerController: {fileID: 0}
 --- !u!114 &4221777876913259617
 MonoBehaviour:
   m_ObjectHideFlags: 0
