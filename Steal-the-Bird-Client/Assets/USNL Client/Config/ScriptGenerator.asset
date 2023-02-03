@@ -44,9 +44,15 @@ MonoBehaviour:
   - packetName: Level Settings
     packetVariables:
     - variableName: Level Index
-      variableType: 2
+      variableType: 4
     - variableName: Difficulty
       variableType: 2
+    protocol: 0
+    notes: 
+  - packetName: Mouse Scroll Delta
+    packetVariables:
+    - variableName: y
+      variableType: 4
     protocol: 0
     notes: 
   serverPackets:
@@ -153,5 +159,5 @@ MonoBehaviour:
     sendType: 1
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 00010001
+  ClientPacketFoldouts: 0000000101
   ServerPacketFoldouts: 000000000000000000

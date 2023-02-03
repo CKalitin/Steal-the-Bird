@@ -10,9 +10,11 @@ public class ConnectOnStart : MonoBehaviour {
 
     [Header("GUI")]
     [SerializeField] private GameObject[] activateOnTimeout;
+    [SerializeField] private GameObject connectingScreen;
     
     private void Start() {
         USNL.ClientManager.instance.ConnectToServer(PlayerPrefs.GetInt("HostId"), port);
+        connectingScreen.SetActive(true);
         StartCoroutine(Timeout());
     }
     
@@ -26,6 +28,7 @@ public class ConnectOnStart : MonoBehaviour {
 
     private void OnConnected(object _object) {
         USNL.PacketSend.PlayerSetupInfo(PlayerPrefs.GetString("Username", "Username"), PlayerPrefs.GetInt("Character Id", 0));
+        connectingScreen.SetActive(false);
     }
 
     private IEnumerator Timeout() {

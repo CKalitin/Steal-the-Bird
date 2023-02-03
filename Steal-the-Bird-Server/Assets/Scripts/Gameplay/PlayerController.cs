@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour {
         
         if (health.CurrentHealth <= 0) {
             GameController.instance.OnPlayerDeath(ClientId);
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }
 
         USNL.PacketSend.HealthBar(clientId, health.CurrentHealth, health.MaxHealth);

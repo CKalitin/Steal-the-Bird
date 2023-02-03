@@ -368,6 +368,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf4e4725682ab724b9c5f7ef61acac48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &145806175 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9136023645807981215, guid: 9b3bf719bd748484fb85eec58c169021,
+    type: 3}
+  m_PrefabInstance: {fileID: 9136023644887316406}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &188602388
 GameObject:
   m_ObjectHideFlags: 0
@@ -2677,6 +2683,7 @@ MonoBehaviour:
   port: 26950
   timeoutDelay: 10
   activateOnTimeout: []
+  connectingScreen: {fileID: 145806175}
 --- !u!1 &1895622414
 GameObject:
   m_ObjectHideFlags: 0
@@ -4137,27 +4144,27 @@ PrefabInstance:
     - target: {fileID: 9136023645807981211, guid: 9b3bf719bd748484fb85eec58c169021,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9136023645807981211, guid: 9b3bf719bd748484fb85eec58c169021,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9136023645807981211, guid: 9b3bf719bd748484fb85eec58c169021,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9136023645807981211, guid: 9b3bf719bd748484fb85eec58c169021,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.36530924
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9136023645807981211, guid: 9b3bf719bd748484fb85eec58c169021,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -7.8305264
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9136023645807981211, guid: 9b3bf719bd748484fb85eec58c169021,
         type: 3}

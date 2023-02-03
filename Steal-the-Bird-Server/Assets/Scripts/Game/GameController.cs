@@ -128,7 +128,7 @@ public class GameController : MonoBehaviour {
         int clientId = (int)_clientIdObject;
         
         if (playerControllers.ContainsKey(clientId)) {
-            Destroy(playerControllers[clientId].gameObject);
+            Destroy(playerControllers[clientId].transform.parent.gameObject);
             playerControllers.Remove(clientId);
         }
     }

@@ -49,6 +49,12 @@ MonoBehaviour:
       variableType: 2
     protocol: 0
     notes: 
+  - packetName: Mouse Scroll Delta
+    packetVariables:
+    - variableName: y
+      variableType: 4
+    protocol: 0
+    notes: 
   serverPackets:
   - packetName: Player Spawned
     packetVariables:
@@ -153,5 +159,5 @@ MonoBehaviour:
     sendType: 1
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 00010000
-  ServerPacketFoldouts: 010000000000000000
+  ClientPacketFoldouts: 0000000101
+  ServerPacketFoldouts: 000000000000000000

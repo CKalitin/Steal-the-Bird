@@ -10,6 +10,10 @@ public class GameController : MonoBehaviour {
         Debug.LogError("Opened Console.");
     }
 
+    private void Update() {
+        if (Input.mouseScrollDelta.y != 0) USNL.PacketSend.MouseScrollDelta(Input.mouseScrollDelta.y);
+    }
+
     private void OnApplicationQuit() {
         ApplicationQuitting = true;
     }

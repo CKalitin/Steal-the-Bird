@@ -42,7 +42,12 @@ public class PlayerWeaponController : MonoBehaviour {
     private void Update() {
         ControlWeaponChanging();
         Attack();
+        
+        currentMouseScrollDelta = 0;
     }
+
+    private void OnEnable() { USNL.CallbackEvents.OnMouseScrollDeltaPacket += OnMouseScrollDeltaPacket; }
+    private void OnDisable() { USNL.CallbackEvents.OnMouseScrollDeltaPacket -= OnMouseScrollDeltaPacket; }
 
     #endregion
 
@@ -69,8 +74,6 @@ public class PlayerWeaponController : MonoBehaviour {
     #region Switching Weapons
 
     private void ControlWeaponChanging() {
-        currentMouseScrollDelta += Input.mouseScrollDelta.y;
-
         if (Mathf.Abs(currentMouseScrollDelta) >= 1) {
             if (currentMouseScrollDelta > 0) ChangeWeapon(1);
             if (currentMouseScrollDelta < 0) ChangeWeapon(-1);
@@ -121,6 +124,17 @@ public class PlayerWeaponController : MonoBehaviour {
 
     private void OnDestroy() {
         PlayerRaycastManager.instance.Pwcs.Remove(clientId);
+    }
+
+    #endregion
+
+    #region Callbacks
+
+    private void OnMouseScrollDeltaPacket(object _packetObject) {
+        USNL.MouseScrollDeltaPacket packet = (USNL.MouseScrollDeltaPacket)_packetObject;
+        if (packet.FromClient == clientId) {
+            currentMouseScrollDelta += packet.Y;
+        }
     }
 
     #endregion

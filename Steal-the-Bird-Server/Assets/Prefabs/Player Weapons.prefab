@@ -51,9 +51,8 @@ MonoBehaviour:
     weaponTag: Ranged Weapon 1
     available: 1
   - weapon: {fileID: 499287398376750144}
-    weaponTag: Ranged Melee 1
-    available: 0
-  playerController: {fileID: 0}
+    weaponTag: Melee Weapon 1
+    available: 1
 --- !u!1 &5313054092001010438
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,8 +145,34 @@ PrefabInstance:
       propertyPath: targetTags.Array.data[0]
       value: Enemy
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3330622428255724809, guid: 62210e551a0109043a90b27ffb8e8595, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 62210e551a0109043a90b27ffb8e8595, type: 3}
+--- !u!1 &499287397765913109 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1406878146943033734, guid: 62210e551a0109043a90b27ffb8e8595, type: 3}
+  m_PrefabInstance: {fileID: 1543590107668691859}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3832090863792213031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499287397765913109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a82be78bd7c74e9104b90ff1641c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncedObjectTag: Ranged Weapon 1
+  useLocalChangeValues: 0
+  minPosChange: 0.001
+  minRotChange: 0.001
+  minScaleChange: 0.001
+  interpolatePosition: 0
+  interpolateRotation: 0
+  interpolateScale: 0
 --- !u!1 &499287398376750144 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1406878145276348371, guid: 62210e551a0109043a90b27ffb8e8595, type: 3}

@@ -13,6 +13,7 @@ namespace USNL {
         PlayerSetupInfo,
         PlayerReady,
         LevelSettings,
+        MouseScrollDelta,
     }
 
     public enum ServerPackets {
@@ -122,6 +123,20 @@ namespace USNL {
         public int FromClient { get => fromClient; set => fromClient = value; }
         public int LevelIndex { get => levelIndex; set => levelIndex = value; }
         public int Difficulty { get => difficulty; set => difficulty = value; }
+    }
+
+    public struct MouseScrollDeltaPacket {
+        private int fromClient;
+
+        private float y;
+
+        public MouseScrollDeltaPacket(int _fromClient, float _y) {
+            fromClient = _fromClient;
+            y = _y;
+        }
+
+        public int FromClient { get => fromClient; set => fromClient = value; }
+        public float Y { get => y; set => y = value; }
     }
 
 
@@ -288,6 +303,7 @@ namespace USNL.Package {
         PlayerSetupInfo,
         PlayerReady,
         LevelSettings,
+        MouseScrollDelta,
     }
 
     public enum ServerPackets {
@@ -387,6 +403,7 @@ namespace USNL.Package {
             { PlayerSetupInfo },
             { PlayerReady },
             { LevelSettings },
+            { MouseScrollDelta },
         };
 
         public static void WelcomeReceived(Packet _packet) {
@@ -444,6 +461,13 @@ namespace USNL.Package {
 
             LevelSettingsPacket levelSettingsPacket = new LevelSettingsPacket(_packet.FromClient, levelIndex, difficulty);
             PacketManager.instance.PacketReceived(_packet, levelSettingsPacket);
+        }
+
+        public static void MouseScrollDelta(Packet _packet) {
+            float y = _packet.ReadFloat();
+
+            MouseScrollDeltaPacket mouseScrollDeltaPacket = new MouseScrollDeltaPacket(_packet.FromClient, y);
+            PacketManager.instance.PacketReceived(_packet, mouseScrollDeltaPacket);
         }
     }
 
@@ -697,6 +721,7 @@ namespace USNL {
             CallOnPlayerSetupInfoPacketCallbacks,
             CallOnPlayerReadyPacketCallbacks,
             CallOnLevelSettingsPacketCallbacks,
+            CallOnMouseScrollDeltaPacketCallbacks,
         };
 
         public static event CallbackEvent OnServerStarted;
@@ -711,6 +736,7 @@ namespace USNL {
         public static event CallbackEvent OnPlayerSetupInfoPacket;
         public static event CallbackEvent OnPlayerReadyPacket;
         public static event CallbackEvent OnLevelSettingsPacket;
+        public static event CallbackEvent OnMouseScrollDeltaPacket;
 
         public static void CallOnServerStartedCallbacks(object _param) { if (OnServerStarted != null) { OnServerStarted(_param); } }
         public static void CallOnServerStoppedCallbacks(object _param) { if (OnServerStopped != null) { OnServerStopped(_param); } }
@@ -724,6 +750,7 @@ namespace USNL {
         public static void CallOnPlayerSetupInfoPacketCallbacks(object _param) { if (OnPlayerSetupInfoPacket != null) { OnPlayerSetupInfoPacket(_param); } }
         public static void CallOnPlayerReadyPacketCallbacks(object _param) { if (OnPlayerReadyPacket != null) { OnPlayerReadyPacket(_param); } }
         public static void CallOnLevelSettingsPacketCallbacks(object _param) { if (OnLevelSettingsPacket != null) { OnLevelSettingsPacket(_param); } }
+        public static void CallOnMouseScrollDeltaPacketCallbacks(object _param) { if (OnMouseScrollDeltaPacket != null) { OnMouseScrollDeltaPacket(_param); } }
     }
 }
 

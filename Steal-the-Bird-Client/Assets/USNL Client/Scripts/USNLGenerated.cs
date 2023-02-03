@@ -12,6 +12,7 @@ namespace USNL {
         PlayerSetupInfo,
         PlayerReady,
         LevelSettings,
+        MouseScrollDelta,
     }
 
     public enum ServerPackets {
@@ -371,10 +372,18 @@ namespace USNL {
             }
         }
 
-        public static void LevelSettings(int _levelIndex, int _difficulty) {
+        public static void LevelSettings(float _levelIndex, int _difficulty) {
             using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.LevelSettings)) {
                 _packet.Write(_levelIndex);
                 _packet.Write(_difficulty);
+
+                SendTCPData(_packet);
+            }
+        }
+
+        public static void MouseScrollDelta(float _y) {
+            using (Package.Packet _packet = new Package.Packet((int)USNL.ClientPackets.MouseScrollDelta)) {
+                _packet.Write(_y);
 
                 SendTCPData(_packet);
             }
@@ -394,6 +403,7 @@ namespace USNL.Package {
         PlayerSetupInfo,
         PlayerReady,
         LevelSettings,
+        MouseScrollDelta,
     }
 
     public enum ServerPackets {

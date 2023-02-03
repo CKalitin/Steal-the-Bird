@@ -9,7 +9,7 @@ public class CanvasManager : MonoBehaviour {
     [SerializeField] private GameObject timedOutCanvas;
     [SerializeField] private GameObject serverClosedCanvas;
 
-    private void Start() {
+    private void Awake() {
         CheckMatchState(MatchManager.instance.MatchState);
     }
 
