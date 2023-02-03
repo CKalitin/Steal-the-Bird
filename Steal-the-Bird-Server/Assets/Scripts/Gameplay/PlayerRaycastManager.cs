@@ -79,7 +79,13 @@ public class PlayerRaycastManager : MonoBehaviour {
         Ray ray = playerCameras[packet.FromClient].ViewportPointToRay(packet.MousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 9999, raycastLayerMask)) {
-            if (pwcs.ContainsKey(packet.FromClient)) pwcs[packet.FromClient].AimWeapon(hit.collider.transform.position);
+            if (pwcs.ContainsKey(packet.FromClient)) {
+                Vector3 _lookAt = hit.point;
+                if (hit.collider.tag == "Enemy" || hit.collider.gameObject.layer == 8) _lookAt = hit.collider.transform.position;
+
+                pwcs[packet.FromClient].AimWeapon(_lookAt);
+                GameController.instance.PlayerControllers[packet.FromClient].AimPlayer(_lookAt);
+            }
         }
     }
 

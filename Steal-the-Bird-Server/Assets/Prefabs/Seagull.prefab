@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1610936736040121804}
   m_Layer: 0
   m_Name: Seagull
-  m_TagString: Bird
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

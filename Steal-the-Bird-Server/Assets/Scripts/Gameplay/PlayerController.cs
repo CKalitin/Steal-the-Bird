@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using USNL;
 
 public class PlayerController : MonoBehaviour {
     [SerializeField] private int clientId;
@@ -13,6 +14,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance;
     [SerializeField] private LayerMask groundMask;
+    [Space]
+    [SerializeField] private Transform[] syncPos;
+    [SerializeField] private Transform[] syncRot;
 
     private Vector3 velocity;
     private bool isGrounded;
@@ -20,6 +24,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Other")]
     [SerializeField] private CharacterController characterController;
     [SerializeField] private PlayerWeaponController playerWeaponController;
+    [SerializeField] private USNL.SyncedObject syncedObject;
     [SerializeField] private Health health;
 
     USNL.ClientInput clientInput;
@@ -28,6 +33,7 @@ public class PlayerController : MonoBehaviour {
 
     public int ClientId { get => clientId; set => clientId = value; }
     public PlayerWeaponController PlayerWeaponController { get => playerWeaponController; set => playerWeaponController = value; }
+    public SyncedObject SyncedObject { get => syncedObject; set => syncedObject = value; }
 
     private void Awake() {
         previousHealth = health.CurrentHealth;
@@ -55,6 +61,10 @@ public class PlayerController : MonoBehaviour {
 
         velocity.y -= gravitySpeed * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
+
+        for (int i = 0; i < syncPos.Length; i++) {
+            syncPos[i].position = transform.position;
+        }
     }
 
     private void Update() {
@@ -67,5 +77,12 @@ public class PlayerController : MonoBehaviour {
         }
 
         USNL.PacketSend.HealthBar(clientId, health.CurrentHealth, health.MaxHealth);
+    }
+
+    public void AimPlayer(Vector3 _lookAt) {
+        for (int i = 0; i < syncRot.Length; i++) {
+            syncRot[i].LookAt(_lookAt);
+            syncRot[i].rotation = Quaternion.Euler(0f, syncRot[i].eulerAngles.y, 0f);
+        }
     }
 }

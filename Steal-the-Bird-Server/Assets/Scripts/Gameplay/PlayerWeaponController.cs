@@ -12,9 +12,6 @@ public class PlayerWeaponController : MonoBehaviour {
 
     float currentMouseScrollDelta;
     
-    [Header("Other")]
-    [SerializeField] private PlayerController playerController;
-    
     private int clientId;
 
     USNL.ClientInput clientInput;

@@ -18,6 +18,8 @@ public class GameController : MonoBehaviour {
 
     private MatchState previousMatchState = MatchState.Lobby;
 
+    public Dictionary<int, PlayerController> PlayerControllers { get => playerControllers; set => playerControllers = value; }
+
     #endregion
 
     #region Core
@@ -79,13 +81,13 @@ public class GameController : MonoBehaviour {
 
     private void SpawnPlayer(int _clientId) {
         GameObject newPlayer = Instantiate(playerPrefabs[PlayerInfoManager.instance.PlayerInfos[_clientId].CharacterId], playerSpawnPoint.position, playerSpawnPoint.rotation);
-        newPlayer.GetComponent<PlayerController>().ClientId = _clientId;
-        newPlayer.GetComponent<PlayerController>().PlayerWeaponController.ClientId = _clientId;
-        playerControllers.Add(_clientId, newPlayer.GetComponent<PlayerController>());
+        newPlayer.GetComponent<PlayerParent>().PlayerController.ClientId = _clientId;
+        newPlayer.GetComponent<PlayerParent>().PlayerController.PlayerWeaponController.ClientId = _clientId;
+        playerControllers.Add(_clientId, newPlayer.GetComponent<PlayerParent>().PlayerController);
 
         int[] connectedClients = USNL.ServerManager.GetConnectedClientIds();
         for (int i = 0; i < connectedClients.Length; i++) {
-            USNL.PacketSend.PlayerSpawned(connectedClients[i], _clientId, newPlayer.GetComponent<USNL.SyncedObject>().SyncedObjectUUID);
+            USNL.PacketSend.PlayerSpawned(connectedClients[i], _clientId, newPlayer.GetComponent<PlayerParent>().PlayerController.SyncedObject.SyncedObjectUUID);
         }
     }
 
