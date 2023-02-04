@@ -43,9 +43,10 @@ public class WeaponRanged : MonoBehaviour {
     public void Shoot() {
         if (coolingDownShot) return;
         if (useAmmo && ammoAmount <= 0) return;
-
+        Debug.Log("Shoot");
         RaycastHit hit;
         if (Physics.Raycast(shootPosition.position, shootPosition.forward, out hit, shotRange)) {
+            Debug.Log("Hit");
             damager.DealDamage(new Collider[1] { hit.collider }, -Mathf.Abs(shotDamage));
         }
         

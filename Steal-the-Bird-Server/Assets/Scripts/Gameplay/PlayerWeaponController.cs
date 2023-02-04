@@ -35,7 +35,11 @@ public class PlayerWeaponController : MonoBehaviour {
         clientInput = USNL.InputManager.instance.GetClientInput(clientId);
 
         PlayerRaycastManager.instance.Pwcs.Add(clientId, this);
-        
+
+        for (int i = 0; i < weapons.Length; i++) {
+            weapons[i].weapon.GetComponent<Damager>().ClientDamagerId = clientId;
+        }
+
         SetWeapon(0);
     }
 
