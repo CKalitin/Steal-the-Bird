@@ -51,6 +51,8 @@ namespace USNL {
         private Vector3 prevSOUpdateRot;
         private Vector3 prevSOUpdateScale;
 
+        private bool instantiated;
+
         public string SyncedObjectTag { get => syncedObjectTag; set => syncedObjectTag = value; }
         public int SyncedObjectUUID { get => syncedObjectUUID; set => syncedObjectUUID = value; }
 
@@ -72,11 +74,17 @@ namespace USNL {
             prevSOUpdatePos = transform.position;
             prevSOUpdateRot = transform.eulerAngles;
             prevSOUpdateScale = transform.lossyScale;
-
-            SyncedObjectManager.instance.InstantiateSyncedObject(this);
+            
+            if (SyncedObjectManager.instance != null) {
+                SyncedObjectManager.instance.InstantiateSyncedObject(this);
+                instantiated = true;
+            }
         }
 
         private void Start() {
+            if (!instantiated)
+                SyncedObjectManager.instance.InstantiateSyncedObject(this);
+            
             if (!useLocalChangeValues) {
                 minPosChange = SyncedObjectManager.instance.MinPosChange;
                 minRotChange = SyncedObjectManager.instance.MinRotChange;
