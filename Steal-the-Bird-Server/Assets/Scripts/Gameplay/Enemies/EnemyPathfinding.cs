@@ -8,10 +8,13 @@ public class EnemyPathfinding : MonoBehaviour {
     [SerializeField] private NavMeshAgent navMeshAgent;
     
     private bool pathfind = true;
-    
+
+    private Vector3 target;
+
     public NavMeshAgent NavMeshAgent { get => navMeshAgent; }
     public bool Pathfind { get => pathfind; set => pathfind = value; }
-    
+    public Vector3 Target { get => target; set => target = value; }
+
     private Vector3 GetClosestPlayer() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (players.Length <= 0) return transform.position;
@@ -21,7 +24,8 @@ public class EnemyPathfinding : MonoBehaviour {
     private void Update() {
         if (navMeshAgent.isOnNavMesh) {
             navMeshAgent.isStopped = !pathfind;
-            navMeshAgent.SetDestination(GetClosestPlayer());
+            target = GetClosestPlayer();
+            navMeshAgent.SetDestination(target);
         }
     }
 }
