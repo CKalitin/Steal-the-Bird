@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6496605457961160666}
   - component: {fileID: 1610936736040121804}
   m_Layer: 0
-  m_Name: Seagull
+  m_Name: Bird Eagle
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.675
+  m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8725316314000905913
 Rigidbody:
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349a82be78bd7c74e9104b90ff1641c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncedObjectTag: Seagull
+  syncedObjectTag: Bird Eagle
   useLocalChangeValues: 0
   minPosChange: 0.001
   minRotChange: 0.001
@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892fd77c12c492b4fb8f1284f520ece7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  currentHealth: 10
+  maxHealth: 20
+  currentHealth: 20
   destroyOnZeroHealth: 1
 --- !u!114 &1610936736040121804
 MonoBehaviour:
@@ -113,14 +113,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0239f8ef606b1b4181ddac423be71cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flySpeed: 250
-  turnSpeed: 0.8
-  rollModifier: 50
-  flightHeight: 7
-  swoopSpeed: 0.5
+  flySpeed: 300
+  turnSpeed: 0.675
+  rollModifier: 60
+  flightHeight: 8.5
+  swoopSpeed: 0.6
   swoopAngle: 50
-  damage: 5
-  playerAttackDistance: 9
+  damage: 15
+  playerAttackDistance: 10.5
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -145,15 +145,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 09cdd75c7022cf247a048782a0fcbac3, type: 3}
       propertyPath: m_LocalPosition.x

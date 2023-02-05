@@ -275,17 +275,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2284219960324187440}
     m_Modifications:
-    - target: {fileID: 1373453972934712666, guid: 232e889f79383aa45adcdd41c6973a1a, type: 3}
-      propertyPath: playerController
-      value: 
-      objectReference: {fileID: 2796080324868461084}
     - target: {fileID: 1664545250018669066, guid: 232e889f79383aa45adcdd41c6973a1a, type: 3}
       propertyPath: m_Name
       value: Player Weapons
-      objectReference: {fileID: 0}
-    - target: {fileID: 3148850103446960804, guid: 232e889f79383aa45adcdd41c6973a1a, type: 3}
-      propertyPath: playerController
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8598937025302962370, guid: 232e889f79383aa45adcdd41c6973a1a, type: 3}
       propertyPath: m_RootOrder
@@ -344,6 +336,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9327bbd0d68109a4baae025377a415d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &3519181888308502174 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4454768149437138441, guid: 232e889f79383aa45adcdd41c6973a1a, type: 3}
+  m_PrefabInstance: {fileID: 937911248797898903}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8814018248209217621 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8598937025302962370, guid: 232e889f79383aa45adcdd41c6973a1a, type: 3}
@@ -370,7 +367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2371786410241645153, guid: 4fe0634dddf1ccd42bbd87202d4624b4, type: 3}
       propertyPath: syncRot.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -2371786410241645153, guid: 4fe0634dddf1ccd42bbd87202d4624b4, type: 3}
       propertyPath: syncPos.Array.data[0]
@@ -384,6 +381,10 @@ PrefabInstance:
       propertyPath: syncRot.Array.data[0]
       value: 
       objectReference: {fileID: 1980982152953315526}
+    - target: {fileID: -2371786410241645153, guid: 4fe0634dddf1ccd42bbd87202d4624b4, type: 3}
+      propertyPath: syncRot.Array.data[1]
+      value: 
+      objectReference: {fileID: 3519181888308502174}
     - target: {fileID: -2371786410241645153, guid: 4fe0634dddf1ccd42bbd87202d4624b4, type: 3}
       propertyPath: playerWeaponController
       value: 

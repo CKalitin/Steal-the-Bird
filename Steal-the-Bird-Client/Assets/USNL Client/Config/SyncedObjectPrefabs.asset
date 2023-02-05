@@ -16,7 +16,7 @@ MonoBehaviour:
   - tag: Player 1
     prefab: {fileID: 7273311560703294795, guid: 351c6b65f56209d4493b010d3cbde58a,
       type: 3}
-  - tag: Seagull
+  - tag: Bird Seagull
     prefab: {fileID: 6581614858996632650, guid: 6d6e6cafb97e9ad4791fe7c9be0cf568,
       type: 3}
   - tag: Ranged Weapon 1
@@ -28,6 +28,12 @@ MonoBehaviour:
   - tag: Player 3
     prefab: {fileID: 7273311560703294795, guid: b31d27a47f0a1e94b94d1c078de1475b,
       type: 3}
-  - tag: Test Enemy
+  - tag: Enemy Squirrel
     prefab: {fileID: 7812863445703857389, guid: a62977a4de317f34abbdab2971589440,
+      type: 3}
+  - tag: Enemy Wolf
+    prefab: {fileID: 7812863445703857389, guid: 2f43e3cc185816245bac743c492e7a6b,
+      type: 3}
+  - tag: Bird Eagle
+    prefab: {fileID: 6581614858996632650, guid: 145961e7357e35942bcdb190c4e8af0f,
       type: 3}

@@ -14,12 +14,12 @@ GameObject:
   - component: {fileID: 3960247047629341124}
   - component: {fileID: 5614903060923314746}
   - component: {fileID: 1264840158439485719}
-  - component: {fileID: 6321936792934081310}
   - component: {fileID: 9015014348685845016}
   - component: {fileID: 6573448321785431773}
+  - component: {fileID: 7259502123631381538}
   m_Layer: 0
-  m_Name: Test Enemy
-  m_TagString: Untagged
+  m_Name: Enemy Squirrel
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,10 +33,11 @@ Transform:
   m_GameObject: {fileID: 6321936792934081311}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4868265728403861346}
+  - {fileID: 3265546168141899116}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -101,9 +102,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.25, z: 0}
+  m_Height: 1.2
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5614903060923314746
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,10 +131,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3
-  m_Acceleration: 6
+  m_Speed: 5
+  m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 360
+  m_AngularSpeed: 280
   m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -142,26 +143,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6321936792934081310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6321936792934081311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 349a82be78bd7c74e9104b90ff1641c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncedObjectTag: Test Enemy
-  useLocalChangeValues: 0
-  minPosChange: 0.001
-  minRotChange: 0.001
-  minScaleChange: 0.001
-  interpolatePosition: 0
-  interpolateRotation: 0
-  interpolateScale: 0
 --- !u!114 &9015014348685845016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +173,73 @@ MonoBehaviour:
   enemyPathfinding: {fileID: 9015014348685845016}
   meleeWeapon: {fileID: 8969743925286956329}
   animator: {fileID: 0}
+--- !u!114 &7259502123631381538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321936792934081311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892fd77c12c492b4fb8f1284f520ece7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 8
+  currentHealth: 8
+  destroyOnZeroHealth: 1
+--- !u!1 &8261349907892640111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3265546168141899116}
+  - component: {fileID: 8536185886729408150}
+  m_Layer: 0
+  m_Name: Synced Object
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3265546168141899116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261349907892640111}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6321936792934081306}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8536185886729408150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261349907892640111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a82be78bd7c74e9104b90ff1641c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncedObjectTag: Enemy Squirrel
+  useLocalChangeValues: 0
+  minPosChange: 0.001
+  minRotChange: 0.001
+  minScaleChange: 0.001
+  interpolatePosition: 0
+  interpolateRotation: 0
+  interpolateScale: 0
 --- !u!1001 &5767336352497363134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -247,7 +295,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3203008525353551255, guid: 62210e551a0109043a90b27ffb8e8595, type: 3}
+      propertyPath: attackDamage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4221777876913259617, guid: 62210e551a0109043a90b27ffb8e8595, type: 3}
+      propertyPath: targetTags.Array.data[0]
+      value: Player
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3330622428255724809, guid: 62210e551a0109043a90b27ffb8e8595, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 62210e551a0109043a90b27ffb8e8595, type: 3}
 --- !u!4 &4868265728403861346 stripped
 Transform:

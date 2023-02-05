@@ -85,7 +85,7 @@ public class PlayerWeaponController : MonoBehaviour {
         }
 
         for (int i = 0; i < weapons.Length; i++) {
-            if (Input.GetKeyDown((KeyCode)(i + 49))) SetWeapon(i);
+            if (clientInput.GetKeyDown((KeyCode)(i + 49))) SetWeapon(i);
         }
     }
 

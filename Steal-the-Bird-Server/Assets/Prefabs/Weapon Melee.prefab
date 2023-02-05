@@ -62,7 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rateOfAttack: 0.5
   attackDamage: 10
-  attackRange: 1.5
+  attackRange: 1.8
   dealDamageDelay: 0
   attackPosition: {fileID: 8364644507574377139}
   damager: {fileID: 4221777876913259617}
