@@ -172,7 +172,7 @@ MonoBehaviour:
   rotationSpeed: 120
   enemyPathfinding: {fileID: 9015014348685845016}
   meleeWeapon: {fileID: 8969743925286956329}
-  animator: {fileID: 0}
+  syncedObject: {fileID: 8536185886729408150}
 --- !u!114 &7259502123631381538
 MonoBehaviour:
   m_ObjectHideFlags: 0

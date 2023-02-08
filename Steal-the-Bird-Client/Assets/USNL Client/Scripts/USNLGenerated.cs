@@ -44,6 +44,7 @@ namespace USNL {
         HealthBar,
         LevelSettings,
         PlayerConfig,
+        EnemyAnimation,
     }
 
     #endregion
@@ -200,6 +201,19 @@ namespace USNL {
         public string Username { get => username; set => username = value; }
     }
 
+    public struct EnemyAnimationPacket {
+        private int syncedObjectUUID;
+        private int animationIndex;
+
+        public EnemyAnimationPacket(int _syncedObjectUUID, int _animationIndex) {
+            syncedObjectUUID = _syncedObjectUUID;
+            animationIndex = _animationIndex;
+        }
+
+        public int SyncedObjectUUID { get => syncedObjectUUID; set => syncedObjectUUID = value; }
+        public int AnimationIndex { get => animationIndex; set => animationIndex = value; }
+    }
+
 
     #endregion
 
@@ -236,6 +250,7 @@ namespace USNL {
             { HealthBar },
             { LevelSettings },
             { PlayerConfig },
+            { EnemyAnimation },
         };
 
         public static void PlayerSpawned(Package.Packet _packet) {
@@ -319,6 +334,14 @@ namespace USNL {
 
             USNL.PlayerConfigPacket playerConfigPacket = new USNL.PlayerConfigPacket(clientId, characterId, username);
             Package.PacketManager.instance.PacketReceived(_packet, playerConfigPacket);
+        }
+
+        public static void EnemyAnimation(Package.Packet _packet) {
+            int syncedObjectUUID = _packet.ReadInt();
+            int animationIndex = _packet.ReadInt();
+
+            USNL.EnemyAnimationPacket enemyAnimationPacket = new USNL.EnemyAnimationPacket(syncedObjectUUID, animationIndex);
+            Package.PacketManager.instance.PacketReceived(_packet, enemyAnimationPacket);
         }
     }
 
@@ -435,6 +458,7 @@ namespace USNL.Package {
         HealthBar,
         LevelSettings,
         PlayerConfig,
+        EnemyAnimation,
     }
     #endregion
 
@@ -729,6 +753,7 @@ namespace USNL.Package {
             { USNL.PacketHandlers.HealthBar },
             { USNL.PacketHandlers.LevelSettings },
             { USNL.PacketHandlers.PlayerConfig },
+            { USNL.PacketHandlers.EnemyAnimation },
         };
 
         public static void Welcome(Package.Packet _packet) {
@@ -972,6 +997,7 @@ namespace USNL {
             CallOnHealthBarPacketCallbacks,
             CallOnLevelSettingsPacketCallbacks,
             CallOnPlayerConfigPacketCallbacks,
+            CallOnEnemyAnimationPacketCallbacks,
         };
 
         public static event CallbackEvent OnConnected;
@@ -1005,6 +1031,7 @@ namespace USNL {
         public static event CallbackEvent OnHealthBarPacket;
         public static event CallbackEvent OnLevelSettingsPacket;
         public static event CallbackEvent OnPlayerConfigPacket;
+        public static event CallbackEvent OnEnemyAnimationPacket;
 
         public static void CallOnConnectedCallbacks(object _param) { if (OnConnected != null) { OnConnected(_param); } }
         public static void CallOnDisconnectedCallbacks(object _param) { if (OnDisconnected != null) { OnDisconnected(_param); } }
@@ -1037,6 +1064,7 @@ namespace USNL {
         public static void CallOnHealthBarPacketCallbacks(object _param) { if (OnHealthBarPacket != null) { OnHealthBarPacket(_param); } }
         public static void CallOnLevelSettingsPacketCallbacks(object _param) { if (OnLevelSettingsPacket != null) { OnLevelSettingsPacket(_param); } }
         public static void CallOnPlayerConfigPacketCallbacks(object _param) { if (OnPlayerConfigPacket != null) { OnPlayerConfigPacket(_param); } }
+        public static void CallOnEnemyAnimationPacketCallbacks(object _param) { if (OnEnemyAnimationPacket != null) { OnEnemyAnimationPacket(_param); } }
     }
 }
 

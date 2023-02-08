@@ -80,6 +80,8 @@ public class GameController : MonoBehaviour {
     #region Game Controller
 
     private void SpawnPlayer(int _clientId) {
+        if (!USNL.ServerManager.instance.GetClientConnected(_clientId)) return;
+
         GameObject newPlayer = Instantiate(playerPrefabs[PlayerInfoManager.instance.PlayerInfos[_clientId].CharacterId], playerSpawnPoint.position, playerSpawnPoint.rotation);
         newPlayer.GetComponent<PlayerParent>().PlayerController.ClientId = _clientId;
         newPlayer.GetComponent<PlayerParent>().PlayerController.PlayerWeaponController.ClientId = _clientId;

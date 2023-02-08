@@ -31,7 +31,7 @@ MonoBehaviour:
   - tag: Enemy Squirrel
     prefab: {fileID: 7812863445703857389, guid: a62977a4de317f34abbdab2971589440,
       type: 3}
-  - tag: Enemy Wolf
+  - tag: Enemy Bear
     prefab: {fileID: 7812863445703857389, guid: 2f43e3cc185816245bac743c492e7a6b,
       type: 3}
   - tag: Bird Eagle

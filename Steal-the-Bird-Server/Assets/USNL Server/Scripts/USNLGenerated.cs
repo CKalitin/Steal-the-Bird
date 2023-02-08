@@ -45,6 +45,7 @@ namespace USNL {
         HealthBar,
         LevelSettings,
         PlayerConfig,
+        EnemyAnimation,
     }
 
     #endregion
@@ -288,6 +289,15 @@ namespace USNL {
                 SendTCPDataToAll(_packet);
             }
         }
+
+        public static void EnemyAnimation(int _syncedObjectUUID, int _animationIndex) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.EnemyAnimation)) {
+                _packet.Write(_syncedObjectUUID);
+                _packet.Write(_animationIndex);
+
+                SendTCPDataToAll(_packet);
+            }
+        }
         }
 
     #endregion
@@ -335,6 +345,7 @@ namespace USNL.Package {
         HealthBar,
         LevelSettings,
         PlayerConfig,
+        EnemyAnimation,
     }
     #endregion
 

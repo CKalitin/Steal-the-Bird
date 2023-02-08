@@ -1352,7 +1352,7 @@ MonoBehaviour:
   enemyParent: {fileID: 1418105547}
   enemies:
   - prefab: {fileID: 6321936792934081311, guid: 6b40e306769faa74c8db587ea74accd5, type: 3}
-    probability: 1
+    probability: 0.0001
   - prefab: {fileID: 6321936792934081311, guid: ff9ef1efd4690554e84b9a37ee88cf4a, type: 3}
     probability: 0.45
   enemySpawnRate: 1
