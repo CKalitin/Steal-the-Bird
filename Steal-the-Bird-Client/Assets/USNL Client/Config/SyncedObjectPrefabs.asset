@@ -35,5 +35,4 @@ MonoBehaviour:
     prefab: {fileID: 7812863445703857389, guid: 2f43e3cc185816245bac743c492e7a6b,
       type: 3}
   - tag: Bird Eagle
-    prefab: {fileID: 6581614858996632650, guid: 145961e7357e35942bcdb190c4e8af0f,
-      type: 3}
+    prefab: {fileID: 575087629967075371, guid: e69604a734dfb3545a1a9295443a43e7, type: 3}

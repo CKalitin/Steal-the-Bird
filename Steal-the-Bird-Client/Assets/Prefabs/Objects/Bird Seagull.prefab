@@ -340,7 +340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sinkSpeed: 0.055
   fallSpeedDivider: 42
-  despawnTime: 60
+  despawnTime: 60000
   birdAnimator: {fileID: 4430238877880163190}
 --- !u!114 &4430238877880163190
 MonoBehaviour:

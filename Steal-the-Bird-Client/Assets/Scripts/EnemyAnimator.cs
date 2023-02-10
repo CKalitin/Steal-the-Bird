@@ -39,7 +39,7 @@ public class EnemyAnimator : MonoBehaviour {
     private void UpdateAnimation() {
         Vector3 diff = transform.position - previousPos;
         posUpdateDeltaTime = Time.time - previousTime;
-        Debug.Log(Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(previousPos.x, previousPos.z)) + ", " + runSpeed * posUpdateDeltaTime);
+        
         if (isAttacking) {
             previousTime = Time.time;
             previousPos = transform.position;

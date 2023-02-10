@@ -678,7 +678,7 @@ MonoBehaviour:
   - prefab: {fileID: 7498374795693127707, guid: 5e58402b9ceb6de47ba386d3b68d11a7, type: 3}
     probability: 1
   - prefab: {fileID: 7498374795693127707, guid: ad7e436d4cecede4586ef6e7433fb506, type: 3}
-    probability: 0.25
+    probability: 0.5
   peacefulBirdSpawnRate: 0.7
   peacefulSpawnPoints:
   - spawnPoint: {fileID: 1010300153}
