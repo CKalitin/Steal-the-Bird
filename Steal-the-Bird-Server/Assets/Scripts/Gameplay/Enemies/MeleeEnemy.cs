@@ -35,6 +35,7 @@ public class MeleeEnemy : MonoBehaviour {
     }
 
     private void RotateTowardsPlayer() {
+        if (enemyPathfinding.Target == transform.position) return;
         Vector3 targetDirection = (enemyPathfinding.Target - transform.position).normalized;
         if (targetDirection == Vector3.zero)
             targetDirection = transform.forward;

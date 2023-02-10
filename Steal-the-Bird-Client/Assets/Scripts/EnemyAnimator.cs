@@ -23,6 +23,8 @@ public class EnemyAnimator : MonoBehaviour {
     private void Start() {
         previousTime = Time.time;
         previousPos = transform.position;
+        
+        SetAnimatorVariables(false, false, true);
     }
 
     private void Update() {
@@ -37,7 +39,7 @@ public class EnemyAnimator : MonoBehaviour {
     private void UpdateAnimation() {
         Vector3 diff = transform.position - previousPos;
         posUpdateDeltaTime = Time.time - previousTime;
-
+        Debug.Log(Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(previousPos.x, previousPos.z)) + ", " + runSpeed * posUpdateDeltaTime);
         if (isAttacking) {
             previousTime = Time.time;
             previousPos = transform.position;
@@ -45,17 +47,11 @@ public class EnemyAnimator : MonoBehaviour {
         }
         
         if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(previousPos.x, previousPos.z)) > runSpeed * posUpdateDeltaTime) {
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isRunning", true);
-            animator.SetBool("isIdle", false);
+            SetAnimatorVariables(false, true, false);
         } else if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(previousPos.x, previousPos.z)) > walkSpeed * posUpdateDeltaTime) {
-            animator.SetBool("isWalking", true);
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isIdle", false);
+            SetAnimatorVariables(true, false, false);
         } else {
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isIdle", true);
+            SetAnimatorVariables(false, false, true);
         }
 
         previousTime = Time.time;
@@ -70,14 +66,11 @@ public class EnemyAnimator : MonoBehaviour {
             isAttacking = false;
         } else {
             isAttacking = true;
-
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isIdle", false);
+            
+            SetAnimatorVariables(false, false, false);
 
             StartCoroutine(AttackCoroutine());
         }
-        Debug.Log(isAttacking);
     }
 
     private IEnumerator AttackCoroutine() {
@@ -85,5 +78,11 @@ public class EnemyAnimator : MonoBehaviour {
             animator.SetTrigger("isAttacking");
             yield return new WaitForSeconds(attackTime);
         }
+    }
+
+    private void SetAnimatorVariables(bool isWalking, bool isRunning, bool isIdle) {
+        animator.SetBool("isWalking", isWalking);
+        animator.SetBool("isRunning", isRunning);
+        animator.SetBool("isIdle", isIdle);
     }
 }

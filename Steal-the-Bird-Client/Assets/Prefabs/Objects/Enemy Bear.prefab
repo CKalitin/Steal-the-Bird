@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4419924610038778468}
   - component: {fileID: 9164140579028490732}
   - component: {fileID: 1917567336438642705}
+  - component: {fileID: 9007823456288196724}
   m_Layer: 0
   m_Name: Enemy Bear
   m_TagString: Untagged
@@ -112,6 +113,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interpolate: 0
+--- !u!114 &9007823456288196724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812863445703857389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71eb7646ed4f6b44dbd8ed481a8a67e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 0.5
+  runSpeed: 2
+  attackTime: 2
+  animator: {fileID: 7828318416900403659}
+  syncedObject: {fileID: 1917567336438642705}
 --- !u!1001 &2854463938571240528
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181,29 +199,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f2d282b0f6d7ef49ae276a9513aff8c, type: 3}
---- !u!1 &3813139251244799364 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1402847258671059412, guid: 7f2d282b0f6d7ef49ae276a9513aff8c,
-    type: 3}
-  m_PrefabInstance: {fileID: 2854463938571240528}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2007589114909545590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3813139251244799364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71eb7646ed4f6b44dbd8ed481a8a67e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 0.5
-  runSpeed: 2
-  attackTime: 2
-  animator: {fileID: 7828318416900403659}
-  syncedObject: {fileID: 1917567336438642705}
 --- !u!4 &3813139251244799367 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1402847258671059415, guid: 7f2d282b0f6d7ef49ae276a9513aff8c,
