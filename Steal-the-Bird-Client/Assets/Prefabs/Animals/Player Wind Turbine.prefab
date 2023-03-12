@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6838777789252214253}
+  - component: {fileID: 2127269733}
   m_Layer: 0
   m_Name: Player Wind Turbine
   m_TagString: Untagged
@@ -32,6 +33,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2127269733
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838777789252214250}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cf8dd9cc13ffc854f91b89063a53252e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &6838777787228326830
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -108,6 +129,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5790054195529030178, guid: 8a71381313ca6f749985c991cfacae55,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.99999404
+      objectReference: {fileID: 0}
+    - target: {fileID: -5790054195529030178, guid: 8a71381313ca6f749985c991cfacae55,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.003461391
+      objectReference: {fileID: 0}
+    - target: {fileID: -5790054195529030178, guid: 8a71381313ca6f749985c991cfacae55,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.000042083004
+      objectReference: {fileID: 0}
+    - target: {fileID: -5790054195529030178, guid: 8a71381313ca6f749985c991cfacae55,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.00000047055985
+      objectReference: {fileID: 0}
+    - target: {fileID: -5790054195529030178, guid: 8a71381313ca6f749985c991cfacae55,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -0.397
+      objectReference: {fileID: 0}
+    - target: {fileID: -5790054195529030178, guid: 8a71381313ca6f749985c991cfacae55,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 359.995
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8a71381313ca6f749985c991cfacae55,
         type: 3}

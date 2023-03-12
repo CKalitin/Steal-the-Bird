@@ -8,7 +8,7 @@ public class Bird : MonoBehaviour {
     [SerializeField] private USNL.SyncedObject syncedObject;
 
     private void OnDestroy() {
-        if (GameController.ApplicationQuitting) return; // Fixes bug
+        if (GameController.ApplicationQuitting) return; // If application is quitting, don't spawn dead bird
 
         birdModel.parent = null;
 

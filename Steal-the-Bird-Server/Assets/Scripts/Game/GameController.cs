@@ -85,6 +85,7 @@ public class GameController : MonoBehaviour {
         GameObject newPlayer = Instantiate(playerPrefabs[PlayerInfoManager.instance.PlayerInfos[_clientId].CharacterId], playerSpawnPoint.position, playerSpawnPoint.rotation);
         newPlayer.GetComponent<PlayerParent>().PlayerController.ClientId = _clientId;
         newPlayer.GetComponent<PlayerParent>().PlayerController.PlayerWeaponController.ClientId = _clientId;
+        newPlayer.GetComponent<PlayerParent>().PlayerController.PlayerWeaponController.PlayerSyncedObjectUUID = newPlayer.GetComponent<PlayerParent>().PlayerController.SyncedObject.SyncedObjectUUID;
         playerControllers.Add(_clientId, newPlayer.GetComponent<PlayerParent>().PlayerController);
 
         int[] connectedClients = USNL.ServerManager.GetConnectedClientIds();

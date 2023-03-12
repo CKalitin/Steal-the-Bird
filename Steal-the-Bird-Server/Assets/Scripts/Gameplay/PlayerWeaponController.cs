@@ -13,12 +13,14 @@ public class PlayerWeaponController : MonoBehaviour {
     float currentMouseScrollDelta;
     
     private int clientId;
+    private int playerSyncedObjectUUID;
 
     USNL.ClientInput clientInput;
 
-    public int ClientId { get => clientId; set => clientId = value; }
     public int CurrentWeaponIndex { get => currentWeaponIndex; }
     public WeaponStruct[] Weapons { get => weapons; }
+    public int ClientId { get => clientId; set => clientId = value; }
+    public int PlayerSyncedObjectUUID { get => playerSyncedObjectUUID; set => playerSyncedObjectUUID = value; }
 
     [Serializable]
     public struct WeaponStruct {
@@ -59,10 +61,16 @@ public class PlayerWeaponController : MonoBehaviour {
 
     private void Attack() {
         if (clientInput.GetKey(KeyCode.Mouse0) && weapons[currentWeaponIndex].available) {
-            if (weapons[currentWeaponIndex].weapon.GetComponent<WeaponMelee>())
+            if (weapons[currentWeaponIndex].weapon.GetComponent<WeaponMelee>()/* && !weapons[currentWeaponIndex].weapon.GetComponent<WeaponMelee>().CoolingDown*/) {
+                Debug.Log(weapons[currentWeaponIndex].weapon.GetComponent<WeaponMelee>());
                 weapons[currentWeaponIndex].weapon.GetComponent<WeaponMelee>().Attack();
-            else if (weapons[currentWeaponIndex].weapon.GetComponent<WeaponRanged>())
+                USNL.PacketSend.PlayerAnimation(playerSyncedObjectUUID, 0);
+            }
+            else if (weapons[currentWeaponIndex].weapon.GetComponent<WeaponRanged>() && !weapons[currentWeaponIndex].weapon.GetComponent<WeaponRanged>().CoolingDown) {
                 weapons[currentWeaponIndex].weapon.GetComponent<WeaponRanged>().Shoot();
+                USNL.PacketSend.PlayerAnimation(playerSyncedObjectUUID, 1);
+
+            }
         }
     }
 
@@ -70,6 +78,7 @@ public class PlayerWeaponController : MonoBehaviour {
         for (int i = 0; i < weapons.Length; i++) {
             if (weapons[i].weapon.GetComponent<WeaponRanged>())
                 weapons[i].weapon.GetComponent<WeaponRanged>().transform.LookAt(_lookAt);
+            USNL.PacketSend.PlayerAim(playerSyncedObjectUUID, _lookAt);
         }
     }
 

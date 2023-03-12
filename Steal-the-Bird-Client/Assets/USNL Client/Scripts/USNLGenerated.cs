@@ -45,6 +45,8 @@ namespace USNL {
         LevelSettings,
         PlayerConfig,
         EnemyAnimation,
+        PlayerAnimation,
+        PlayerAim,
     }
 
     #endregion
@@ -214,6 +216,32 @@ namespace USNL {
         public int AnimationIndex { get => animationIndex; set => animationIndex = value; }
     }
 
+    public struct PlayerAnimationPacket {
+        private int syncedObjectUUID;
+        private int animationIndex;
+
+        public PlayerAnimationPacket(int _syncedObjectUUID, int _animationIndex) {
+            syncedObjectUUID = _syncedObjectUUID;
+            animationIndex = _animationIndex;
+        }
+
+        public int SyncedObjectUUID { get => syncedObjectUUID; set => syncedObjectUUID = value; }
+        public int AnimationIndex { get => animationIndex; set => animationIndex = value; }
+    }
+
+    public struct PlayerAimPacket {
+        private int syncedObjectUUID;
+        private Vector3 target;
+
+        public PlayerAimPacket(int _syncedObjectUUID, Vector3 _target) {
+            syncedObjectUUID = _syncedObjectUUID;
+            target = _target;
+        }
+
+        public int SyncedObjectUUID { get => syncedObjectUUID; set => syncedObjectUUID = value; }
+        public Vector3 Target { get => target; set => target = value; }
+    }
+
 
     #endregion
 
@@ -251,6 +279,8 @@ namespace USNL {
             { LevelSettings },
             { PlayerConfig },
             { EnemyAnimation },
+            { PlayerAnimation },
+            { PlayerAim },
         };
 
         public static void PlayerSpawned(Package.Packet _packet) {
@@ -342,6 +372,22 @@ namespace USNL {
 
             USNL.EnemyAnimationPacket enemyAnimationPacket = new USNL.EnemyAnimationPacket(syncedObjectUUID, animationIndex);
             Package.PacketManager.instance.PacketReceived(_packet, enemyAnimationPacket);
+        }
+
+        public static void PlayerAnimation(Package.Packet _packet) {
+            int syncedObjectUUID = _packet.ReadInt();
+            int animationIndex = _packet.ReadInt();
+
+            USNL.PlayerAnimationPacket playerAnimationPacket = new USNL.PlayerAnimationPacket(syncedObjectUUID, animationIndex);
+            Package.PacketManager.instance.PacketReceived(_packet, playerAnimationPacket);
+        }
+
+        public static void PlayerAim(Package.Packet _packet) {
+            int syncedObjectUUID = _packet.ReadInt();
+            Vector3 target = _packet.ReadVector3();
+
+            USNL.PlayerAimPacket playerAimPacket = new USNL.PlayerAimPacket(syncedObjectUUID, target);
+            Package.PacketManager.instance.PacketReceived(_packet, playerAimPacket);
         }
     }
 
@@ -459,6 +505,8 @@ namespace USNL.Package {
         LevelSettings,
         PlayerConfig,
         EnemyAnimation,
+        PlayerAnimation,
+        PlayerAim,
     }
     #endregion
 
@@ -754,6 +802,8 @@ namespace USNL.Package {
             { USNL.PacketHandlers.LevelSettings },
             { USNL.PacketHandlers.PlayerConfig },
             { USNL.PacketHandlers.EnemyAnimation },
+            { USNL.PacketHandlers.PlayerAnimation },
+            { USNL.PacketHandlers.PlayerAim },
         };
 
         public static void Welcome(Package.Packet _packet) {
@@ -998,6 +1048,8 @@ namespace USNL {
             CallOnLevelSettingsPacketCallbacks,
             CallOnPlayerConfigPacketCallbacks,
             CallOnEnemyAnimationPacketCallbacks,
+            CallOnPlayerAnimationPacketCallbacks,
+            CallOnPlayerAimPacketCallbacks,
         };
 
         public static event CallbackEvent OnConnected;
@@ -1032,6 +1084,8 @@ namespace USNL {
         public static event CallbackEvent OnLevelSettingsPacket;
         public static event CallbackEvent OnPlayerConfigPacket;
         public static event CallbackEvent OnEnemyAnimationPacket;
+        public static event CallbackEvent OnPlayerAnimationPacket;
+        public static event CallbackEvent OnPlayerAimPacket;
 
         public static void CallOnConnectedCallbacks(object _param) { if (OnConnected != null) { OnConnected(_param); } }
         public static void CallOnDisconnectedCallbacks(object _param) { if (OnDisconnected != null) { OnDisconnected(_param); } }
@@ -1065,6 +1119,8 @@ namespace USNL {
         public static void CallOnLevelSettingsPacketCallbacks(object _param) { if (OnLevelSettingsPacket != null) { OnLevelSettingsPacket(_param); } }
         public static void CallOnPlayerConfigPacketCallbacks(object _param) { if (OnPlayerConfigPacket != null) { OnPlayerConfigPacket(_param); } }
         public static void CallOnEnemyAnimationPacketCallbacks(object _param) { if (OnEnemyAnimationPacket != null) { OnEnemyAnimationPacket(_param); } }
+        public static void CallOnPlayerAnimationPacketCallbacks(object _param) { if (OnPlayerAnimationPacket != null) { OnPlayerAnimationPacket(_param); } }
+        public static void CallOnPlayerAimPacketCallbacks(object _param) { if (OnPlayerAimPacket != null) { OnPlayerAimPacket(_param); } }
     }
 }
 

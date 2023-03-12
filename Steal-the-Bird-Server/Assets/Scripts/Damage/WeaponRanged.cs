@@ -36,6 +36,8 @@ public class WeaponRanged : MonoBehaviour {
     public int AmmoAmount { get => ammoAmount; set => ammoAmount = value; }
     public int MaxAmmo { get => maxAmmo; set => maxAmmo = value; }
 
+    public bool CoolingDown { get => coolingDownShot; }
+
     private void Start() {
         if (playerController != null) damager.ClientDamagerId = playerController.ClientId;
     }

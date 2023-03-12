@@ -46,6 +46,8 @@ namespace USNL {
         LevelSettings,
         PlayerConfig,
         EnemyAnimation,
+        PlayerAnimation,
+        PlayerAim,
     }
 
     #endregion
@@ -298,6 +300,24 @@ namespace USNL {
                 SendTCPDataToAll(_packet);
             }
         }
+
+        public static void PlayerAnimation(int _syncedObjectUUID, int _animationIndex) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerAnimation)) {
+                _packet.Write(_syncedObjectUUID);
+                _packet.Write(_animationIndex);
+
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void PlayerAim(int _syncedObjectUUID, Vector3 _target) {
+            using (USNL.Package.Packet _packet = new USNL.Package.Packet((int)ServerPackets.PlayerAim)) {
+                _packet.Write(_syncedObjectUUID);
+                _packet.Write(_target);
+
+                SendTCPDataToAll(_packet);
+            }
+        }
         }
 
     #endregion
@@ -346,6 +366,8 @@ namespace USNL.Package {
         LevelSettings,
         PlayerConfig,
         EnemyAnimation,
+        PlayerAnimation,
+        PlayerAim,
     }
     #endregion
 

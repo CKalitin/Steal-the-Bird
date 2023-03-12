@@ -168,5 +168,23 @@ MonoBehaviour:
     sendType: 1
     protocol: 0
     notes: 
-  ClientPacketFoldouts: 0000000000
-  ServerPacketFoldouts: 00000000000000000001
+  - packetName: Player Animation
+    packetVariables:
+    - variableName: Synced Object UUID
+      variableType: 2
+    - variableName: Animation Index
+      variableType: 2
+    sendType: 1
+    protocol: 0
+    notes: 
+  - packetName: Player Aim
+    packetVariables:
+    - variableName: Synced Object UUID
+      variableType: 2
+    - variableName: Target
+      variableType: 8
+    sendType: 1
+    protocol: 0
+    notes: 
+  ClientPacketFoldouts: 0001010000
+  ServerPacketFoldouts: 000000000101000000000000

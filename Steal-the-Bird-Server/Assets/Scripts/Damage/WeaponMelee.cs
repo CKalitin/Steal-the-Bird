@@ -19,6 +19,8 @@ public class WeaponMelee : MonoBehaviour {
 
     bool coolingDownAttack = false;
 
+    public bool CoolingDown { get => coolingDownAttack; }
+
     public void Attack() {
         if (!coolingDownAttack) {
             coolingDownAttack = true;
